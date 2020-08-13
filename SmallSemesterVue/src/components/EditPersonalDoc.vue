@@ -5,14 +5,14 @@
             <div class="plaintext_new">
             <br>
                 <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="文档名">
+                <el-form-item label="文档名" :disabled=true>
                     <el-col :span="22">
                     <el-input v-model="form.doc_name"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="简介">
                     <el-col :span="22">
-                    <el-input type="textarea" :rows="4"  v-model="form.introduction"></el-input>
+                    <el-input type="textarea" :rows="4"  v-model="form.introduction" :disabled=true></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="文件位置">
@@ -93,24 +93,30 @@ export default {
     },
     created:function(){
         axios({
-                method: 'post',
-                url: 'http://localhost:8000/api/showpersonaldoc/',
-                data: {'doc_id':this.$route.query.doc_id,'username': localStorage.getItem('username')}
-            })
-            .then(response => {
-                console.log(response)
-                if(response.data.code===200){
-                    this.content=response.data.doc.doc_content
-                }
-                else if(response.data.code===400){
-                    alert('文件不存在')
-                    this.$router.go(0)
-                }
-                else{
-                    alert('错误')
-                    this.$router.go(0)
-                }
-            })
+            method: 'post',
+            url: 'http://localhost:8000/api/showpersonaldoc/',
+            data: {'doc_id':this.$route.query.doc_id,'username': localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code===200){
+                this.content=response.data.doc_content
+                this.form.doc_name = response.data.doc_name
+                this.form.introduction = response.data.doc_intro
+            }
+            else if(response.data.code===400){
+                alert('文件不存在')
+                this.$router.go(0)
+            }
+            else{
+                alert('错误')
+                this.$router.go(0)
+            }
+        })
+        .catch(error => {
+            alert('有错误')
+            this.$router.go(0)                
+        })
     },
     methods: {
          // 失去焦点

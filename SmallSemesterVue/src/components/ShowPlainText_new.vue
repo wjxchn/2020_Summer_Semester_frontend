@@ -3,9 +3,13 @@
         <Guider id="navBar" :class="{isFixed:istabBar}"/>
         <main id="mainPart" role="main" class="container">
             <div class="showplaintext_new">
-                <h4 v-text="doc_name">文档名:{{doc_name}}</h4>
-                <h4 v-text="doc_creater">作者:{{doc_creater}}</h4>
-                <h4 v-text="doc_intro">文档信息:{{doc_intro}}</h4>
+                <h4>文档名:</h4>
+                <h4 v-text="doc_name">{{doc_name}}</h4>
+                <h4>作者:</h4>
+                <h4 v-text="doc_creater">{{doc_creater}}</h4>
+                <h4>文档信息:</h4>
+                <h4 v-text="doc_intro">{{doc_intro}}</h4>
+                <h4>内容:</h4>
                 <span v-html="htmlData">
                     {{htmlData}}
                 </span>
