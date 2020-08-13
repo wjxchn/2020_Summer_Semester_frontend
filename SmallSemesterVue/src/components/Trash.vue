@@ -65,14 +65,6 @@
                   label="创建者"
                   width="180">
                 </el-table-column>
-
-                <el-table-column
-                  fixed="right"
-                  prop="docid"
-                  label="所属团队"
-                  width="180">
-                </el-table-column>
-
                 <el-table-column
                   fixed="right"
                   prop="createtime"
