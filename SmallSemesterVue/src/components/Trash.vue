@@ -22,10 +22,7 @@
                     <span>工作台</span>
                 </template>
                     <el-menu-item index="2-1" @click="Mywork" :loading="logining"><i class="el-icon-notebook-2" style="color:black"></i>我的文档</el-menu-item>
-                    <el-submenu index="2-2">
-                        <template slot="title" ><i class="el-icon-connection"></i>我的团队</template>
-                        <el-menu-item  @click="Myteam" :loading="logining" v-for="(item,index) in sideData" :key="index" >{{item.name}}</el-menu-item>
-                        </el-submenu>
+                    <el-menu-item   index="2-2" @click="Myteam" :loading="logining"><i class="el-icon-set-up" style="color:black"></i>我的团队</el-menu-item>
                     <el-menu-item index="2-3" @click="Trash" :loading="logining"><i class="el-icon-delete" style="color:black"></i>回收站</el-menu-item>
                     <el-menu-item index="2-4" @click="Message" :loading="logining"><i class="el-icon-chat-dot-round" style="color:black"></i>收件箱</el-menu-item>
             </el-submenu>
@@ -43,7 +40,7 @@
         <main id="mainPart" role="main" class="container">
             <h5 fixed="right" style="float:left"> 回收站 </h5>
           
-            <el-button type="danger" icon="el-icon-delete" style="float:right">全部删除</el-button>
+            <el-button type="danger" icon="el-icon-delete" style="float:right" @click="Deleteall">全部删除</el-button>
 
           <div class="recycler">         
 
@@ -77,7 +74,7 @@
                   width="260">
                 <template slot-scope="scope">
                 <el-button type="primary" class="el-icon-refresh" @click="Recoverdoc(scope.row)"></el-button>
-                <el-button type="danger"  @click="deletedoc"><v class="el-icon-delete"></v></el-button>
+                <el-button type="danger"  @click="Deletedoc(scope.row)"><v class="el-icon-delete"></v></el-button>
                 </template>
                 </el-table-column>
             </el-table>
@@ -112,27 +109,6 @@ export default {
     },
     data () {
         return {
-            sideData: [{
-                id:'1',
-                name: '特朗狗',
-                owner: '特朗普',
-                time: '2020/8/20'
-            }, {
-                id:'2',
-                name: '奥巴马',
-                owner: '奥巴马',
-                time: '2020/8/20'
-            }, {
-                id:'3',
-                name: '克林顿组',
-                owner: '克林顿',
-                time: '2020/8/20'
-            }, {
-                id:'4',
-                name: '小布什组',
-                owner: '小布什',
-                time: '2020/8/20'
-            }],
             FileTime:'2020-8-11 12:00',
             tableData:[],
             istabBar: false
@@ -186,6 +162,72 @@ export default {
                     alert("恢复文档失败")
                     this.$router.go(0)                     
                 }
+                else{
+                    alert("错误")
+                    this.$router.go(0)
+                }
+            })
+            .catch(error => {
+                alert("错误")
+                this.$router.go(0)
+            })
+        },
+        Deletedoc(row){
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/deletepersonaldoc/',
+                data: {'docid': row.docid}
+            })
+            .then(response =>{
+                console.log(response)
+                if(response.data.code === 200){
+                    alert("删除文档成功")
+                    this.$router.go(0)   
+                }
+                else if(response.data.code === 400){
+                    alert("删除文档失败")
+                    this.$router.go(0)                     
+                }
+                else{
+                    alert("错误")
+                    this.$router.go(0)
+                }
+            })
+            .catch(error => {
+                alert("错误")
+                this.$router.go(0)
+
+            })
+        },
+        Deleteall(item){
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/deleteallpersonaldoc/',
+                data: {'list': this.tableData}
+            })
+            .then(response =>{
+                console.log(response)
+                if(response.data.code === 200){
+                    alert("清空回收站成功")
+                    this.$router.go(0)   
+                }
+                else if(response.data.code === 400){
+                    alert("清空回收站失败")
+                    this.$router.go(0)                     
+                }
+                else if(response.data.code === 300){
+                    alert("回收站为空")
+                    this.$router.go(0)
+                }
+                else{
+                    alert("错误")
+                    this.$router.go(0)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                alert('出现错误')
+                this.$router.go(0)
             })
         },
         // 添加一个方法 兼容

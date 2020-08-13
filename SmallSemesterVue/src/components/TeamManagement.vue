@@ -1,6 +1,42 @@
 <template>
     <div>
         <Guider id="navBar" :class="{isFixed:istabBar}"/>
+        <el-container>
+            <el-aside class="leftside" width="210px">
+
+            <!--     ↓↓↓↓↓↓↓↓↓↓↓↓↓↓  这个default-active是指当前激活的页面，把页面对应的index写进去，例如：当前页面是我的文档，则写进去2-1 -->
+            <el-menu default-active="" class="el-menu-vertical-demo"
+            @open="handleOpen" @close="handleClose" background-color="#fff"
+            text-color="#000000" active-text-color="#f96332" >
+            <el-submenu index="1">
+                <template slot="title">
+                    <i class="el-icon-s-home"></i>
+                    <span>主页</span>
+                </template>
+                    <el-menu-item index="1-1" @click="Home" :loading="logining" ><i class="el-icon-house" style="color:black"></i>首页</el-menu-item>
+                    <el-menu-item index="1-2" @click="Person" :loading="logining"><i class="el-icon-user" style="color:black"></i>个人资料</el-menu-item>
+            </el-submenu>
+            <el-submenu index="2">
+                <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span>工作台</span>
+                </template>
+                    <el-menu-item index="2-1" @click="Mywork" :loading="logining"><i class="el-icon-notebook-2" style="color:black"></i>我的文档</el-menu-item>
+                    <el-menu-item   index="2-2" @click="Myteam" :loading="logining"><i class="el-icon-set-up" style="color:black"></i>我的团队</el-menu-item>
+                    <el-menu-item index="2-3" @click="Trash" :loading="logining"><i class="el-icon-delete" style="color:black"></i>回收站</el-menu-item>
+                    <el-menu-item index="2-4" @click="Message" :loading="logining"><i class="el-icon-chat-dot-round" style="color:black"></i>收件箱</el-menu-item>
+            </el-submenu>
+            <el-submenu index="3">
+                <template slot="title">
+                    <i class="el-icon-s-opportunity"></i>
+                    <span>其他</span>
+                </template>
+                    <el-menu-item index="3-1" @click="Help" :loading="logining"><i class="el-icon-view" style="color:black"></i>帮助</el-menu-item>
+                    <el-menu-item index="3-2" @click="Aboutus" :loading="logining"><i class="el-icon-link" style="color:black"></i>开发者信息</el-menu-item>
+            </el-submenu>
+            </el-menu>
+            </el-aside>
+        <el-container>
         <el-main id="TeamManagement" role="main" class="container">
             <h5>特朗普团队 的团队主页</h5>
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
@@ -96,6 +132,8 @@
        
 
         </el-main>
+        </el-container>
+        </el-container>
         <BottomGuider/>
     </div>
 </template>

@@ -3,7 +3,9 @@
         <Guider id="navBar" :class="{isFixed:istabBar}"/>
         <main id="mainPart" role="main" class="container">
             <div class="showplaintext_new">
-                <h1>Example heading <span class="badge badge-secondary">New</span></h1>
+                <h4 v-text="doc_name">文档名:{{doc_name}}</h4>
+                <h4 v-text="doc_creater">作者:{{doc_creater}}</h4>
+                <h4 v-text="doc_intro">文档信息:{{doc_intro}}</h4>
                 <span v-html="htmlData">
                     {{htmlData}}
                 </span>
@@ -26,6 +28,9 @@ export default {
     data () {
         return {
             istabBar: false,
+            doc_name: '',
+            doc_creater: '',
+            doc_intro: '',
             htmlData: ''
         }
     },
@@ -47,23 +52,37 @@ export default {
                 }
         }
     },
-    mounted:function() {
+    created:function(){
         axios({
-        method: 'get',
-        url: 'http://localhost:8000/api/getplaintext/',
+        method: 'post',
+        url: 'http://localhost:8000/api/showpersonaldoc/',
+        data: {'username': localStorage.getItem('username'), 'doc_id': this.$route.query.doc_id}
         })
         .then(response=>{
-        this.htmlData = response.data.content
+            if(response.data.code === 200){
+                this.doc_name = response.data.doc_name
+                this.doc_creater =response.data.doc_creater
+                this.doc_intro = response.data.doc_intro
+                this.htmlData = response.data.doc_content
+            }
+            else if(response.data.code === 400){
+                alert('有错误')
+            }
+            else{
+                alert('错误')
+            }
         })
         .catch(error=>{
-        console.log(error)
-        alert('出现错误')
+            console.log(error)
+            alert('出现错误')
         })
-            window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
-        },
-        destroyed () {
-            window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
-        }
+    },
+    mounted:function() {
+        window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
+    },
+    destroyed () {
+        window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
+    }
 }
 </script>
 

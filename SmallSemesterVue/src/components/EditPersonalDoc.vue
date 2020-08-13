@@ -50,7 +50,6 @@ import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
 import axios from 'axios'
 export default {
-    name: 'PlainText_new',
     components: {
         Guider,
         BottomGuider
@@ -92,6 +91,27 @@ export default {
                  }
         }
     },
+    created:function(){
+        axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/showpersonaldoc/',
+                data: {'doc_id':this.$route.query.doc_id,'username': localStorage.getItem('username')}
+            })
+            .then(response => {
+                console.log(response)
+                if(response.data.code===200){
+                    this.content=response.data.doc.doc_content
+                }
+                else if(response.data.code===400){
+                    alert('文件不存在')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+    },
     methods: {
          // 失去焦点
         onEditorBlur(editor) {},
@@ -108,17 +128,16 @@ export default {
             console.log(this.content);
             axios({
                 method: 'post',
-                url: 'http://localhost:8000/api/addpersonaldoc/',
-                data: {'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction, 'doc_creater': localStorage.getItem('username')}
+                url: 'http://localhost:8000/api/changepersonaldoc/',
+                data: {'doc_id':this.$route.query.doc_id, 'content': this.content}
             })
             .then(response => {
                 console.log(response)
                 if(response.data.code===200){
-                    alert('添加富文本成功')
-                    this.$router.push('/')
+                    this.$router.push('/PersonalDoc');
                 }
                 else if(response.data.code===400){
-                    alert('添加富文本失败')
+                    alert('编辑失败')
                 }
                 else{
                     alert('错误')
