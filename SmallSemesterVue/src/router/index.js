@@ -20,6 +20,7 @@ const routerOptions = [
   { path: '/trash' , component: 'Trash'},
   { path: '/help' , component: 'Help'},
   { path: '/person' , component: 'Person'},
+  { path: '/message' , component: 'Message'},
   { path: '*', component: 'NotFound' },
 ]
 

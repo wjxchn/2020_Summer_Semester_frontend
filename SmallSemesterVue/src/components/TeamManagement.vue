@@ -251,6 +251,30 @@ export default {
         },
         handleDelete(index, row) {
             console.log(index, row);
+        },
+        Home(){
+            this.$router.push('/');
+        },
+        Person(){
+            this.$router.push('/Person');
+        },
+        Mywork(){
+            this.$router.push('/Personaldoc');
+        },
+        Myteam(){
+            this.$router.push('/Team');
+        },
+        Trash(){
+            this.$router.push('/Trash');
+        },
+        Message(){
+            this.$router.push('/Message');
+        },
+        Help(){
+            this.$router.push('/Help');
+        },
+        Aboutus(){
+            this.$router.push('/Aboutus');
         }
     },
     mounted () {
