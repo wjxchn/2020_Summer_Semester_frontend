@@ -24,6 +24,7 @@ const routerOptions = [
   { path: '/person' , component: 'Person'},
   { path: '/message' , component: 'Message'},
   { path: '*', component: 'NotFound' },
+]
 const routes = routerOptions.map(route => {
   return {
     ...route,
