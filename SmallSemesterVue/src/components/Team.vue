@@ -38,10 +38,7 @@
             </el-aside>
         <el-container>
         <main id="mainPart" role="main" class="container">
-            <el-row>
-                <i class="el-icon-user-solid"></i>
-                  <el-button type="text">我的团队</el-button>
-            </el-row>
+            <h5 style="padding:15px">我的团队</h5>
             <el-table
             :data="tableData"
             style="width: 100%">
@@ -69,7 +66,22 @@
             </template>
             </el-table-column>
             </el-table>     
-            <el-button type="primary">创建团队</el-button>
+            <el-button type="primary" @click="dialogFormVisible = true">创建团队</el-button>
+            <el-dialog title="创建团队" :visible.sync="dialogFormVisible">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="团队名称" :label-width="formLabelWidth" prop="name" required>
+                <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="团队简介" :label-width="formLabelWidth" prop="introduction" required>
+                <el-input type="textarea" v-model="ruleForm.introduction"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm',ruleForm),dialogFormVisible = false">确 定</el-button>
+            </div>
+            </el-dialog>
+
         </main>
         </el-container>
         </el-container>
@@ -78,6 +90,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
 export default {
@@ -88,29 +101,27 @@ export default {
     },
     data () {
         return {
-            tableData: [{
-                id:'1',
-                name: '特朗狗',
-                owner: '特朗普',
-                time: '2020/8/20'
-            }, {
-                id:'2',
-                name: '奥巴马',
-                owner: '奥巴马',
-                time: '2020/8/20'
-            }, {
-                id:'3',
-                name: '克林顿组',
-                owner: '克林顿',
-                time: '2020/8/20'
-            }, {
-                id:'4',
-                name: '小布什组',
-                owner: '小布什',
-                time: '2020/8/20'
-            }],
+            dialogFormVisible:false,
+            tableData: [],
+            ruleForm:{
+                name:'',
+                introduction:''
+            },
+            rules:{
+                name: [
+                { required: true, message: '请输入团队名称', trigger: 'blur' },
+                { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
+            ],
+                introduction:[
+                    {required:true, message:'请输入团队简介', trigger:'blur'},
+                    {min:5,max:50,message:'长度在 5 到 50 个字符',trigger:'blur'}
+                ]
+            },
             istabBar: false
         }
+    },
+    created() {
+        this.getTeamList()
     },
     methods: {
         handleOpen(key, keyPath) {
@@ -142,7 +153,7 @@ export default {
         },
         Aboutus(){
             this.$router.push('/Aboutus');
-        },
+        },  
         // 添加一个方法 兼容
         handleScroll () {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
@@ -157,14 +168,47 @@ export default {
                     this.istabBar = false
                     mainPart.style.paddingTop = "0px";
                 }
-        }
+        },
+        getNowDate(){
+            let strTime=new Date();
+            return strTime.getFullYear()+'/'+strTime.getMonth()+'/'+strTime.getDate()+' '+strTime.getHours()+':'+strTime.getMinutes()+':'+strTime.getSeconds();
+        },
+        addTeam(item){
+            axios.post('api/post/add/Team',{
+                name:item.name,
+                introduction:item.introduction,
+                owner:localStorage.getItem('username'),
+                time:this.getNowDate(),
+            }).then(res=>{
+                console.log(res)
+            })
+        },
+        getTeamList(){
+            axios.post('/api/post/teamlist').then(res=>{
+                this.tableData = res.data.sideData
+            })
+        },
+        submitForm(formName,item){
+            this.$refs[formName].validate((valid) => {
+            if (valid) {
+                this.addTeam(item);
+                alert('提交成功');
+            } else {
+                console.log('提交失败');
+                return false;
+            }
+            this.getTeamList();
+            }); 
+
+        },
+        
     },
     mounted () {
         window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
     },
     destroyed () {
         window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
-    }
+    },
 }
 </script>
 
