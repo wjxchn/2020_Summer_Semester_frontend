@@ -2,15 +2,15 @@
     <div>
         <Guider id="navBar" :class="{isFixed:istabBar}"/>
         <el-container>
-            <el-aside class="leftside" width="210px">
+            <el-aside  width="210px">
 
             <!--     ↓↓↓↓↓↓↓↓↓↓↓↓↓↓  这个default-active是指当前激活的页面，把页面对应的index写进去，例如：当前页面是我的文档，则写进去2-1 -->
-            <el-menu default-active="2-2" class="el-menu-vertical-demo"
+            <el-menu default-active="1-2" class="el-menu-vertical-demo"
             @open="handleOpen" @close="handleClose" background-color="#fff"
             text-color="#000000" active-text-color="#f96332" >
             <el-submenu index="1">
                 <template slot="title">
-                    <i class="el-icon-s-home"></i>
+                    <i class="el-icon-copy-document"></i>
                     <span>主页</span>
                 </template>
                     <el-menu-item index="1-1" @click="Home" :loading="logining" ><i class="el-icon-house" style="color:black"></i>首页</el-menu-item>
@@ -18,7 +18,7 @@
             </el-submenu>
             <el-submenu index="2">
                 <template slot="title">
-                    <i class="el-icon-menu"></i>
+                    <i class="el-icon-copy-document"></i>
                     <span>工作台</span>
                 </template>
                     <el-menu-item index="2-1" @click="Mywork" :loading="logining"><i class="el-icon-notebook-2" style="color:black"></i>我的文档</el-menu-item>
@@ -31,7 +31,7 @@
             </el-submenu>
             <el-submenu index="3">
                 <template slot="title">
-                    <i class="el-icon-s-opportunity"></i>
+                    <i class="el-icon-copy-document"></i>
                     <span>其他</span>
                 </template>
                     <el-menu-item index="3-1" @click="Help" :loading="logining"><i class="el-icon-view" style="color:black"></i>帮助</el-menu-item>
@@ -41,38 +41,45 @@
             </el-aside>
         <el-container>
         <main id="mainPart" role="main" class="container">
-            <el-row>
-                <i class="el-icon-user-solid"></i>
-                  <el-button type="text">我的团队</el-button>
-            </el-row>
-            <el-table
-            :data="sideData"
-            style="width: 100%">
-            <el-table-column
-                prop="name"
-                label="组名"
-                width="180">
-            </el-table-column>
-            <el-table-column
-                prop="owner"
-                label="组长"
-                width="180">
-            </el-table-column>
-            <el-table-column
-                prop="time"
-                label="创建时间">
-            </el-table-column>
-            <el-table-column label="操作">
-            <template slot-scope="scope">
-                <el-button
-                size="mini">查看</el-button>
-                <el-button
-                size="mini"
-                type="danger">退出</el-button>
-            </template>
-            </el-table-column>
-            </el-table>     
-            <el-button type="primary">创建团队</el-button>
+            <div class="div1">
+                <div class="div2">
+                    <div class="picture" style="width:100%;height:100%;background-color:transparent;">
+                    </div>
+                    
+                </div>
+                <div class="div3" >
+                    <el-card class="box-card" style="box-shadow:0px 0px  10px 5px #aaa;">
+                        <div slot="header" >
+                            <span>个人简介</span>
+                         </div>   
+                                <div style="height:10px;background-color:transparent"></div>
+
+                                <el-input clearable v-model="input" placeholder="请输入内容"></el-input>
+                        
+                        
+                    </el-card>
+                </div>
+                 <div class="div4">
+                    <el-card class="box-card" style="width:100%;box-shadow:0px 0px  10px 5px #aaa;">
+                        <div slot="header">
+                            <span>个人信息</span>
+                        </div>
+                        <div style="width:50%;height:100%;float:left">
+                            <el-table :data="tableData1" style="width: 100%">
+                                <el-table-column prop="info" label=""></el-table-column>
+                            </el-table>
+                        </div>
+
+                        <div style="width:50%;height:100%;float:right">
+                            <el-table :data="tableData2" style="width: 100%">
+                                <el-table-column prop="info" label=""></el-table-column>
+                            </el-table>
+                        </div>
+                   
+                    </el-card>
+                </div>
+
+            </div>
         </main>
         </el-container>
         </el-container>
@@ -84,13 +91,14 @@
 import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
 export default {
-    owner: 'PageDemo',
+    name: 'PageDemo',
     components: {
         Guider,
         BottomGuider
     },
     data () {
         return {
+            input: '',
             sideData: [{
                 id:'1',
                 name: '特朗狗',
@@ -112,10 +120,16 @@ export default {
                 owner: '小布什',
                 time: '2020/8/20'
             }],
+            tableData1: [{info:"姓名"},{info:"性别"},{info:"用户编号"}],
+            tableData2: [{info:"xxx"},{info:"男"},{info:"12345678"}],
             istabBar: false
         }
     },
     methods: {
+        //侧边栏的跳转
+        click(){
+            this.caninput = !this.caninput;
+        },
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -172,6 +186,43 @@ export default {
 </script>
 
 <style>
+*{
+    margin:0;
+}
+.div1{
+    border:20px solid transparent;
+    width:100%;
+    height:1000px;
+    background-color: transparent;
+}
+.div2{
+    margin-top: 10px;
+    width:100%;
+    height:200px;
+    background-color: transparent;
+}
+.div3{
+    float:left;
+    margin-top: 10px;
+    width:70%;
+    height:720px;
+    background-color:transparent;
+}
+.div4{
+    float:right;
+    margin-top: 10px;
+    width:25%;
+    height:720px;
+    background-color: transparent;
+}
+
+.picture{
+
+    background-image: url("../assets/timg.jpg");
+
+    background-size: 100% 100%;
+
+}
 .isFixed {
     position: fixed;
     top: 0;
@@ -185,4 +236,5 @@ export default {
 #mainPart {
     width: 100%;
 }
+
 </style>

@@ -2,7 +2,7 @@
     <div>
         <Guider id="navBar" :class="{isFixed:istabBar}"/>
         <el-container>
-            <el-aside  width="210px">
+            <el-aside class="leftside" width="210px">
 
             <!--     ↓↓↓↓↓↓↓↓↓↓↓↓↓↓  这个default-active是指当前激活的页面，把页面对应的index写进去，例如：当前页面是我的文档，则写进去2-1 -->
             <el-menu default-active="" class="el-menu-vertical-demo"
@@ -10,7 +10,7 @@
             text-color="#000000" active-text-color="#f96332" >
             <el-submenu index="1">
                 <template slot="title">
-                    <i class="el-icon-copy-document"></i>
+                    <i class="el-icon-s-home"></i>
                     <span>主页</span>
                 </template>
                     <el-menu-item index="1-1" @click="Home" :loading="logining" ><i class="el-icon-house" style="color:black"></i>首页</el-menu-item>
@@ -18,17 +18,20 @@
             </el-submenu>
             <el-submenu index="2">
                 <template slot="title">
-                    <i class="el-icon-copy-document"></i>
+                    <i class="el-icon-menu"></i>
                     <span>工作台</span>
                 </template>
                     <el-menu-item index="2-1" @click="Mywork" :loading="logining"><i class="el-icon-notebook-2" style="color:black"></i>我的文档</el-menu-item>
-                    <el-menu-item index="2-2" @click="Myteam" :loading="logining"><i class="el-icon-connection" style="color:black"></i>我的团队</el-menu-item>
+                    <el-submenu index="2-2">
+                        <template slot="title" ><i class="el-icon-connection"></i>我的团队</template>
+                        <el-menu-item  @click="Myteam" :loading="logining" v-for="(item,index) in sideData" :key="index" >{{item.name}}</el-menu-item>
+                        </el-submenu>
                     <el-menu-item index="2-3" @click="Trash" :loading="logining"><i class="el-icon-delete" style="color:black"></i>回收站</el-menu-item>
                     <el-menu-item index="2-4" @click="Message" :loading="logining"><i class="el-icon-chat-dot-round" style="color:black"></i>收件箱</el-menu-item>
             </el-submenu>
             <el-submenu index="3">
                 <template slot="title">
-                    <i class="el-icon-copy-document"></i>
+                    <i class="el-icon-s-opportunity"></i>
                     <span>其他</span>
                 </template>
                     <el-menu-item index="3-1" @click="Help" :loading="logining"><i class="el-icon-view" style="color:black"></i>帮助</el-menu-item>
@@ -37,7 +40,7 @@
             </el-menu>
             </el-aside>
         <el-container>
-        <main id="mainPart" role="main" class="container">
+        <main id="mainPart" role="main" class="container" color="black">
 
     <!-- 页面内部的内容写在main中间即可 -->
 
@@ -58,7 +61,28 @@ export default {
         BottomGuider
     },
     data () {
-        return {
+       return {
+            sideData: [{
+                id:'1',
+                name: '特朗狗',
+                owner: '特朗普',
+                time: '2020/8/20'
+            }, {
+                id:'2',
+                name: '奥巴马',
+                owner: '奥巴马',
+                time: '2020/8/20'
+            }, {
+                id:'3',
+                name: '克林顿组',
+                owner: '克林顿',
+                time: '2020/8/20'
+            }, {
+                id:'4',
+                name: '小布什组',
+                owner: '小布什',
+                time: '2020/8/20'
+            }],
             istabBar: false
         }
     },
@@ -81,6 +105,9 @@ export default {
         },
         Myteam(){
             this.$router.push('/Team');
+        },
+        TeamM(){
+            this.$router.push('/TeamManagement');
         },
         Trash(){
             this.$router.push('/Trash');

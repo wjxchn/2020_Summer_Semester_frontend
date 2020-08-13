@@ -18,6 +18,8 @@ const routerOptions = [
   { path: '/teammanagement', component:'TeamManagement'},
   { path: '/createteam' , component: 'CreateTeam'},
   { path: '/trash' , component: 'Trash'},
+  { path: '/help' , component: 'Help'},
+  { path: '/person' , component: 'Person'},
   { path: '*', component: 'NotFound' },
 ]
 
