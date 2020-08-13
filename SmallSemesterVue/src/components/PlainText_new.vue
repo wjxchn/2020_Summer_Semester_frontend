@@ -115,6 +115,7 @@ export default {
                 console.log(response)
                 if(response.data.code===200){
                     alert('添加富文本成功')
+                    this.$router.push('/')
                 }
                 else if(response.data.code===400){
                     alert('添加富文本失败')

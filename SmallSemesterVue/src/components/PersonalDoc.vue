@@ -55,19 +55,15 @@
                 <p class="history"> 最近浏览 </p>
                 
                 <el-row>
-                     <el-col :span="8" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 2 : 0">
-                <el-card class="box-card">
-                <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2170127953,2276382196&fm=26&gp=0.jpg" class="image">
-                <div class="card">
-                    <span>最近的文档</span>
-                    <div class="bottom clearfix">
-                    <time class="time">{{ FileTime }}</time>
-                    <el-button type="text" class="button">操作按钮</el-button>
-                    </div>
-                </div>
-                </el-card>
-        </el-col>
-        </el-row>
+                     <el-col :span="8" v-for="item in latestData" :key="item.divid" :offset="index > 0 ? 2 : 0">
+                        <el-card class="box-card">
+                        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2170127953,2276382196&fm=26&gp=0.jpg" class="image">
+                        <div class="card">
+                            <el-button type="text" class="button" v-model="item.doc_name" @click="tolatestcontent">{{item.doc_name}}</el-button>
+                        </div>                    
+                        </el-card>
+                    </el-col>
+                </el-row>
 
                 <hr>
                 <el-table
@@ -150,24 +146,41 @@ export default {
     },
     created:function(){
         axios({
-                method: 'post',
-                url: 'http://localhost:8000/api/showpersonaldoclist/',
-                data: {'username': localStorage.getItem('username')}
-            })
-            .then(response => {
-                console.log(response)
-                if(response.data.code===200){
-                    this.$set(this,'tableData',response.data.list)
-                }
-                else if(response.data.code===400){
-                    alert('文件不存在')
-                    this.$router.go(0)
-                }
-                else{
-                    alert('错误')
-                    this.$router.go(0)
-                }
-            })
+            method: 'post',
+            url: 'http://localhost:8000/api/showpersonaldoclist/',
+            data: {'username': localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code===200){
+                this.$set(this,'tableData',response.data.list)
+            }
+            else if(response.data.code===400){
+                alert('文件不存在')
+                this.$router.go(0)
+            }
+            else{
+                alert('错误')
+                this.$router.go(0)
+            }
+        });
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/latestbrowse/',
+            data: {'username': localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code===200){
+                this.$set(this,'latestData',response.data.browselistdata)
+            }
+            else if(response.data.code===400){
+            }
+            else{
+                alert('错误')
+                this.$router.go(0)
+            }
+        });        
     },
     methods: {
         //侧边栏的跳转
@@ -267,13 +280,17 @@ export default {
                     this.$router.go(0)
                 }
             })
+        },
+        handleview(row){
+            console.log(row.docid)//此时就能拿到整行的信息
+            this.$router.push({path: '/showplaintext_new', query: {doc_id: row.docid}})            
+        }
     },
     mounted () {
         window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
     },
     destroyed () {
         window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
-    }
     }
 }
 </script>
