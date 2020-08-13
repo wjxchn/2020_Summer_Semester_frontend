@@ -52,14 +52,14 @@
                     {{htmlData}}
                 </span>
                 <br>
-                <p class="history"> 最近浏览 </p>
+                <p class="history"> 最近浏览记录 </p>
                 
                 <el-row>
                      <el-col :span="8" v-for="item in latestData" :key="item.divid" :offset="index > 0 ? 2 : 0">
                         <el-card class="box-card">
                         <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2170127953,2276382196&fm=26&gp=0.jpg" class="image">
                         <div class="card">
-                            <el-button type="text" class="button" v-model="item.doc_name" @click="tolatestcontent">{{item.doc_name}}</el-button>
+                            <el-button type="text" class="button" v-model="item.doc_name" @click="tolatestcontent(item.doc_id)">{{item.doc_name}}</el-button>
                         </div>                    
                         </el-card>
                     </el-col>
@@ -141,6 +141,7 @@ export default {
         return {
             FileTime:'2020-8-11 12:00',
             tableData:[],
+            latestData: [],
             istabBar: false
         }
     },
@@ -284,6 +285,9 @@ export default {
         handleview(row){
             console.log(row.docid)//此时就能拿到整行的信息
             this.$router.push({path: '/showplaintext_new', query: {doc_id: row.docid}})            
+        },
+        tolatestcontent(indocid){
+            this.$router.push({path: '/showplaintext_new', query: {doc_id: indocid}})
         }
     },
     mounted () {
