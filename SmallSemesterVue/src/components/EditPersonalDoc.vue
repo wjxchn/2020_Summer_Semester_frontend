@@ -7,12 +7,12 @@
                 <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="文档名">
                     <el-col :span="22">
-                    <el-input v-model="form.doc_name"  :disabled="isUnmodifiable"></el-input>
+                    <el-input v-model="form.doc_name"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="简介">
                     <el-col :span="22">
-                    <el-input type="textarea" :rows="4"  v-model="form.introduction" :disabled="isUnmodifiable"></el-input>
+                    <el-input type="textarea" :rows="4"  v-model="form.introduction"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="文件位置">
@@ -26,7 +26,6 @@
                 </el-form-item>
                 </el-form>
                 <quill-editor class="editor"
-                :disabled="isUnmodifiable"
                 ref="myTextEditor"
                 v-model="content"
                 style="height:400px"
@@ -38,10 +37,9 @@
                 </quill-editor>
 
                 <br><br><br>
-                 <el-button type="primary" class="btn btn-primary" style="float:right" @click="submitPlainText" plain>提交</el-button>
-                 <el-button class="btn btn-primary" style="float:right" @click="ChangeModifiable" plain>修改</el-button>
-
-  </div>
+                 
+                 <el-button class="btn btn-primary" style="float:right" @click="submitPlainText" plain>提交修改</el-button>
+            </div>
         </main>
         <BottomGuider/>
     </div>
@@ -87,11 +85,11 @@ export default {
                 theme: 'snow', //主题 snow/bubble
                 syntax: true, //语法检测
         },
-             form: {
+            form: {
                 doc_name: '',
                 introduction:'',
                 address:''
-                 }
+            }
         }
     },
     created:function(){
@@ -145,7 +143,7 @@ export default {
             axios({
                 method: 'post',
                 url: 'http://localhost:8000/api/changepersonaldoc/',
-                data: {'doc_id':this.$route.query.doc_id, 'content': this.content}
+                data: {'doc_id':this.$route.query.doc_id, 'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction}
             })
             .then(response => {
                 console.log(response)
