@@ -108,8 +108,8 @@ export default {
             console.log(this.content);
             axios({
                 method: 'post',
-                url: 'http://localhost:8000/api/addplaintext/',
-                data: {'content': this.content}
+                url: 'http://localhost:8000/api/addpersonaldoc/',
+                data: {'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction, 'doc_creater': localStorage.getItem('username')}
             })
             .then(response => {
                 console.log(response)
