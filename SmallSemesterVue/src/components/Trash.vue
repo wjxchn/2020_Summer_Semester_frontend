@@ -68,25 +68,25 @@
 
                 <el-table-column
                   fixed="right"
-                  prop="belong"
+                  prop="docid"
                   label="所属团队"
                   width="180">
                 </el-table-column>
 
                 <el-table-column
                   fixed="right"
-                  prop="creation_time"
-                  label="删除时间"
+                  prop="createtime"
+                  label="创建时间"
                   width="180">
                 </el-table-column>  
                 <el-table-column
                   fixed="right"
                   label="操作"
                   width="260">
-
-                <el-button type="primary" class="el-icon-refresh" ></el-button>
+                <template slot-scope="scope">
+                <el-button type="primary" class="el-icon-refresh" @click="Recoverdoc(scope.row)"></el-button>
                 <el-button type="danger"  @click="deletedoc"><v class="el-icon-delete"></v></el-button>
-         
+                </template>
                 </el-table-column>
             </el-table>
               <el-pagination
@@ -111,6 +111,7 @@
 <script>
 import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
+import axios from 'axios'
 export default {
     name: 'PageDemo',
     components: {
@@ -141,25 +142,7 @@ export default {
                 time: '2020/8/20'
             }],
             FileTime:'2020-8-11 12:00',
-            tableData:[{
-                docname:'高尔夫中的治国理念',
-                creator:'Trump',
-                belong:'The White House',
-                creation_time:'2020-8-11 12:00',
-                docid:'1'
-            },{
-                docname:'Nobody can know better than me',
-                creator:'Trump',
-                belong:'The White House',
-                creation_time:'2020-8-11 12:00',
-                docid:'2'
-            },{
-                docname:'Make America Great Again!',
-                creator:'Trump',
-                belong:'The White House',
-                creation_time:'2020-8-11 12:00',
-                docid:'3'
-            }],
+            tableData:[],
             istabBar: false
         }
     },
@@ -195,6 +178,24 @@ export default {
         Aboutus(){
             this.$router.push('/Aboutus');
         },
+        Recoverdoc(row){
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/recoverfromrecycle/',
+                data: {'docid': row.docid}
+            })
+            .then(response =>{
+                console.log(response)
+                if(response.data.code === 200){
+                    alert("恢复文档成功")
+                    this.$router.go(0)   
+                }
+                else if(response.data.code === 400){
+                    alert("恢复文档失败")
+                    this.$router.go(0)                     
+                }
+            })
+        },
         // 添加一个方法 兼容
         handleScroll () {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
@@ -210,6 +211,29 @@ export default {
                     mainPart.style.paddingTop = "0px";
                 }
         }
+    },
+    created: function(){
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/showrecycledoclist/',
+            data: {'username': localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code === 400){
+                alert('查看文档失败')
+                this.$router.go(0)                
+            }
+            else if(response.data.code === 200){
+                this.$set(this, 'tableData', response.data.list)
+                console.log(this.tableData)
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            alert('出现错误')
+            this.$router.go(0)
+        })             
     },
     mounted () {
         window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
