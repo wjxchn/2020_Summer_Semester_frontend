@@ -22,10 +22,7 @@
                     <span>工作台</span>
                 </template>
                     <el-menu-item index="2-1" @click="Mywork" :loading="logining"><i class="el-icon-notebook-2" style="color:black"></i>我的文档</el-menu-item>
-                    <el-submenu index="2-2">
-                        <template slot="title" ><i class="el-icon-connection"></i>我的团队</template>
-                        <el-menu-item  @click="Myteam" :loading="logining" v-for="(item,index) in sideData" :key="index" >{{item.name}}</el-menu-item>
-                        </el-submenu>
+                    <el-menu-item   index="2-2" @click="Myteam" :loading="logining"><i class="el-icon-set-up" style="color:black"></i>我的团队</el-menu-item>
                     <el-menu-item index="2-3" @click="Trash" :loading="logining"><i class="el-icon-delete" style="color:black"></i>回收站</el-menu-item>
                     <el-menu-item index="2-4" @click="Message" :loading="logining"><i class="el-icon-chat-dot-round" style="color:black"></i>收件箱</el-menu-item>
             </el-submenu>
@@ -46,7 +43,7 @@
                   <el-button type="text">我的团队</el-button>
             </el-row>
             <el-table
-            :data="sideData"
+            :data="tableData"
             style="width: 100%">
             <el-table-column
                 prop="name"
@@ -65,7 +62,7 @@
             <el-table-column label="操作">
             <template slot-scope="scope">
                 <el-button
-                size="mini">查看</el-button>
+                size="mini">管理</el-button>
                 <el-button
                 size="mini"
                 type="danger">退出</el-button>
@@ -91,7 +88,7 @@ export default {
     },
     data () {
         return {
-            sideData: [{
+            tableData: [{
                 id:'1',
                 name: '特朗狗',
                 owner: '特朗普',

@@ -22,10 +22,7 @@
                     <span>工作台</span>
                 </template>
                     <el-menu-item index="2-1" @click="Mywork" :loading="logining"><i class="el-icon-notebook-2" style="color:black"></i>我的文档</el-menu-item>
-                    <el-submenu index="2-2">
-                        <template slot="title" ><i class="el-icon-connection"></i>我的团队</template>
-                        <el-menu-item  @click="Myteam" :loading="logining" v-for="(item,index) in sideData" :key="index" >{{item.name}}</el-menu-item>
-                        </el-submenu>
+                    <el-menu-item   index="2-2" @click="Myteam" :loading="logining"><i class="el-icon-set-up" style="color:black"></i>我的团队</el-menu-item>
                     <el-menu-item index="2-3" @click="Trash" :loading="logining"><i class="el-icon-delete" style="color:black"></i>回收站</el-menu-item>
                     <el-menu-item index="2-4" @click="Message" :loading="logining"><i class="el-icon-chat-dot-round" style="color:black"></i>收件箱</el-menu-item>
             </el-submenu>
@@ -89,27 +86,6 @@ export default {
     },
     data () {
         return {
-            sideData: [{
-                id:'1',
-                name: '特朗狗',
-                owner: '特朗普',
-                time: '2020/8/20'
-            }, {
-                id:'2',
-                name: '奥巴马',
-                owner: '奥巴马',
-                time: '2020/8/20'
-            }, {
-                id:'3',
-                name: '克林顿组',
-                owner: '克林顿',
-                time: '2020/8/20'
-            }, {
-                id:'4',
-                name: '小布什组',
-                owner: '小布什',
-                time: '2020/8/20'
-            }],
             istabBar: false
         }
     },
