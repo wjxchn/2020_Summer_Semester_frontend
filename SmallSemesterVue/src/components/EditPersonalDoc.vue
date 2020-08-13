@@ -5,14 +5,14 @@
             <div class="plaintext_new">
             <br>
                 <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="文档名" :disabled=true>
+                <el-form-item label="文档名">
                     <el-col :span="22">
-                    <el-input v-model="form.doc_name"></el-input>
+                    <el-input v-model="form.doc_name"  :disabled="isUnmodifiable"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="简介">
                     <el-col :span="22">
-                    <el-input type="textarea" :rows="4"  v-model="form.introduction" :disabled=true></el-input>
+                    <el-input type="textarea" :rows="4"  v-model="form.introduction" :disabled="isUnmodifiable"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="文件位置">
@@ -26,6 +26,7 @@
                 </el-form-item>
                 </el-form>
                 <quill-editor class="editor"
+                :disabled="isUnmodifiable"
                 ref="myTextEditor"
                 v-model="content"
                 style="height:400px"
@@ -38,6 +39,7 @@
 
                 <br><br><br>
                  <el-button type="primary" class="btn btn-primary" style="float:right" @click="submitPlainText" plain>提交</el-button>
+                 <el-button class="btn btn-primary" style="float:right" @click="ChangeModifiable" plain>修改</el-button>
 
   </div>
         </main>
@@ -56,6 +58,7 @@ export default {
     },
     data () {
         return {
+            isUnmodifiable:true,
             istabBar: false,
             content: null,
             form:null,
@@ -120,6 +123,13 @@ export default {
     },
     methods: {
          // 失去焦点
+        ChangeModifiable() {
+            if(this.isUnmodifiable==false)
+                this.isUnmodifiable=true;
+            else
+                this.isUnmodifiable=false;
+            return;
+        },
         onEditorBlur(editor) {},
         // 获得焦点
         onEditorFocus(editor) {},
