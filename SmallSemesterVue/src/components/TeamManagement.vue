@@ -43,7 +43,50 @@
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
             <el-tab-pane label="团队文档" name="first">
                 <el-button style="width:70px;background-color:#f96332;color:white;float:right">新建</el-button>
-                <el-button  style="width:70px;background-color:#f96332;color:white;float:right">添加</el-button>
+                   
+                <el-button  style="width:70px;background-color:#f96332;color:white;float:right"  @click="dialogFormVisible = true;getPersonalDoc()">添加</el-button>
+                 <el-dialog title="选择文件" :visible.sync="dialogFormVisible">
+                    <el-table
+                        ref="multipleTable"
+                        :data="PersonalDocData"
+                        tooltip-effect="dark"
+                        style="width: 100%"
+                        @selection-change="handleSelectionChange">
+                       <el-table-column
+                            type="selection"
+                            width="55">
+                        </el-table-column>
+                        <el-table-column
+                        prop="docname"
+                        label="文档名"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                        fixed="right"
+                        prop="creator"
+                        label="创建者"
+                        width="180">
+                        </el-table-column>
+                        <el-table-column
+                        fixed="right"
+                        prop="belong"
+                        label="所属团队"
+                        width="180">
+                        </el-table-column>
+                        <el-table-column
+                        fixed="right"
+                        prop="createtime"
+                        label="最近打开"
+                        width="180">
+                        </el-table-column>  
+                    </el-table>
+                    <div style="margin-top: 20px">
+                        <el-button @click="dialogFormVisible=false" style="float:right;margin-left:10px;margin-right:10px" type="danger">取消</el-button>
+                        <el-button @click="submitSelectedDoc();dialogFormVisible=false" style="float:right" type="primary">确定</el-button>
+                        
+                        <el-button @click="toggleSelection()">取消选择</el-button>
+                    </div>                   
+                    </el-dialog>
                 <el-table
                     :data="DocData.filter(data => !search || data.docname.toLowerCase().includes(search.toLowerCase()))"
                     style="width: 100%"
@@ -140,6 +183,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
 export default {
@@ -212,26 +256,16 @@ export default {
           address: '白宫'
         }],
         search: '',
-        DocData:[{
-                docname:'高尔夫中的治国理念',
-                creator:'Trump',
-                belong:'The White House',
-                creation_time:'2020-8-11 12:00',
-                docid:'1'
-            },{
-                docname:'Nobody can know better than me',
-                creator:'Trump',
-                belong:'The White House',
-                creation_time:'2020-8-11 12:00',
-                docid:'2'
-            },{
-                docname:'Make America Great Again!',
-                creator:'Trump',
-                belong:'The White House',
-                creation_time:'2020-8-11 12:00',
-                docid:'3'
-            }],
+        DocData:[],
+            dialogFormVisible: false,
+            formLabelWidth: '120px',
+            PersonalDocData:[],
+            multipleSelection: []
         }
+        
+    },
+    created(){
+        this.getTeamDoc();
     },
     methods: {
         //侧边栏的跳转
@@ -315,6 +349,80 @@ export default {
         },
         Aboutus(){
             this.$router.push('/Aboutus');
+        },
+        getPersonalDoc(){
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/showpersonaldoclist/',
+            data: {'username': localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code===200){
+                this.$set(this,'PersonalDocData',response.data.list)
+            }
+            else if(response.data.code===400){
+                alert('文件不存在')
+                this.$router.go(0)
+            }
+            else{
+                alert('错误')
+                this.$router.go(0)
+            }
+        });
+        },
+        toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+        },
+        handleSelectionChange(val) {
+        this.multipleSelection = val;
+        },
+        submitSelectedDoc(){  
+            for(var i=0;i<this.multipleSelection.length;i++)
+            {
+                this.submitADoc(this.multipleSelection[i]);
+            }
+            this.getTeamDoc();
+        },
+        submitADoc(item){
+            console.log(item);
+            axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/addgroupdoc/',
+            data: {'username': localStorage.getItem('username'),
+                   'list':item
+            },
+        })
+        .then(response => {
+            console.log(response)
+        });
+        },
+        getTeamDoc(){
+            axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/show_group_doclist/',
+            data: {'username': localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code===200){
+                this.$set(this,'DocData',response.data.list)
+            }
+            else if(response.data.code===400){
+                alert('文件不存在')
+                this.$router.go(0)
+            }
+            else{
+                alert('错误')
+                this.$router.go(0)
+            }
+        });
         }
     },
     mounted () {
