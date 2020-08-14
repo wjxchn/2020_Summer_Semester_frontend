@@ -44,7 +44,7 @@
     <br>
     <el-tabs type="card">
         <el-tab-pane label="系统通知">
-            <el-card class="box-card" v-for="(item) in MessageData" :key="item">
+            <el-card class="box-card" v-for="(item) in MessageData" :key="item" style="margin-bottom:20px">
             <div slot="header" class="clearfix">
                 <span class="title" >{{item.MessageTitle}}</span>
                 <span class="time">{{item.date}}</span>
@@ -70,6 +70,7 @@
 <script>
 import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
+import axios from 'axios'
 export default {
     name: 'PageDemo',
     components: {
@@ -81,32 +82,11 @@ export default {
             opend:['1','2','3'],
             uniqueOpened:false,
             istabBar: false,
-            MessageData:[
-                {
-                    id:'1',
-                    MessageTitle:'特朗普决定变更国籍为中国',
-                    MessageContent:'北京时间8月26日，特朗普来到中国，在天安门面前大喊:\'Make Chine Great Again！\'，然后宣誓入籍中国。',
-                    date:'2000-8-13 19:19:68'
-                },
-                {
-                    id:'2',
-                    MessageTitle:'奥巴马决定变更国籍为中国',
-                    MessageContent:'北京时间8月26日，特朗普来到中国，在天安门面前大喊:\'Make Chine Great Again！\'，然后宣誓入籍中国。',
-                    date:'2000-8-13 19:19:68'
-                },
-                {
-                    id:'3',
-                    MessageTitle:'希拉里决定变更国籍为中国',
-                    MessageContent:'北京时间8月26日，特朗普来到中国，在天安门面前大喊:\'Make Chine Great Again！\'，然后宣誓入籍中国。',
-                    date:'2000-8-13 19:19:68'
-                },{
-                    id:'4',
-                    MessageTitle:'比利海灵顿决定变更国籍为中国',
-                    MessageContent:'北京时间8月26日，特朗普来到中国，在天安门面前大喊:\'Make Chine Great Again！\'，然后宣誓入籍中国。',
-                    date:'2000-8-13 19:19:68'
-                }
-            ]
+            MessageData:[]
         }
+    },
+    created(){
+        this.getMessage()
     },
     methods: {
         //侧边栏的跳转
@@ -160,7 +140,12 @@ export default {
                     this.istabBar = false
                     mainPart.style.paddingTop = "0px";
                 }
-        }
+        },
+    getMessage(){
+         axios.post('/api/post/messagelist').then(res=>{
+                this.MessageData = res.data.MessageList
+            })
+    }
     },
     mounted () {
         window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕

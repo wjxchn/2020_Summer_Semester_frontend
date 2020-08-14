@@ -14,6 +14,24 @@ var {TeamList} = Mock.mock({
         }
     ]
 })
+var {MessageList} = Mock.mock({
+    'MessageList|8-10': [
+        {
+            "id":"@increment()",
+            "MessageTitle":'@ctitle(7,15)',
+            "date":'@date(yyyy/MM/dd hh:mm:ss)',
+            "MessageContent":'@cparagraph(5,50)'
+        }
+    ]
+})
+Mock.mock('/api/post/messagelist','post',(options)=>{
+    return{
+        status:200,
+        message:'获取消息列表成功',
+        MessageList:MessageList,
+        total: MessageList.length
+    }
+})
 Mock.mock('/api/post/teamlist','post',(options)=>{
     return{
         status:200,
