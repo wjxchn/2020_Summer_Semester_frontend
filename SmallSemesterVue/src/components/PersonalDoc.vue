@@ -38,17 +38,14 @@
             </el-menu>
             </el-aside>
         <el-container>
-        <main id="mainPart" role="main" class="container">
+        <main id="mainPart" role="main" class="container">  
             <div class="personaldoc" >
+            <div style="padding-top:20px">
                 <div style="float:right">
                 <el-input  placeholder="请输入内容" style="width:250px">
                 <el-button  slot="append" icon="el-icon-search"></el-button></el-input>
-                <router-link to='/PlainText_new'>
+                <router-link to='/DocForm'>
                     <el-button style="background-color:#f96332;color:white"  >新建 </el-button>
-                    
-                </router-link>
-                <router-link to='/CreateFromDemo'>
-                   <el-button style="background-color:#f96332;color:white"  >使用模板创建 </el-button>
                     
                 </router-link>
                 </div>
@@ -57,6 +54,7 @@
                 <span v-html="htmlData">
                     {{htmlData}}
                 </span>
+            </div>
                 <br>
                 <p class="history"> 最近浏览记录 </p>
                 
