@@ -11,7 +11,7 @@
                         <a :value="showusername" style="color:white" href="/personaldoc" v-if="play">{{showusername}}</a>
                         <a style="width:70px;background-color:#f96332;color:white" class="btn btn-sm btn-outline-secondary guider-black" href="/login" v-if="!play" >登录</a>
                         <i style="width:20px"></i>
-                        <a style="width:70px;background-color:#f96332;color:white" class="btn btn-sm btn-outline-secondary guider-black" @click="tologout" v-if="play" >退出</a>
+                        <a style="width:70px;background-color:#f96332;color:white" class="btn btn-sm btn-outline-secondary guider-black" href="/" @click="tologout" v-if="play" >退出</a>
                         <a style="width:70px;background-color:#f96332;color:white" class="btn btn-sm btn-outline-secondary guider-black" href="/regi" v-if="!play" >注册</a>
                     </div>
                 </div>
@@ -33,7 +33,6 @@ export default {
         tologout(){
             localStorage.removeItem('playcookie');
             localStorage.removeItem('username');
-            this.$router.push('/firstpage');
             this.$router.go(0);
             
         }
