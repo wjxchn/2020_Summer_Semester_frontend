@@ -38,10 +38,10 @@
             </el-aside>
         <el-container>
         <main id="mainPart" role="main" class="container">
-            <h5>{{this.$route.query.group_name}}团队 的团队主页</h5>
+            <h5 style="padding:20px">{{this.$route.query.group_name}}团队 的团队主页</h5>
         <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="团队文档" name="first">
-                <el-button style="width:70px;background-color:#f96332;color:white;float:right" @click="NewGroupdoc">新建</el-button>
+                <el-button style="width:70px;background-color:#f96332;color:white;float:right;margin-left:15px" @click="NewGroupdoc" >新建</el-button>
                 <el-button  style="width:70px;background-color:#f96332;color:white;float:right" @click="dialogFormVisible = true;getPersonalDoc()">添加</el-button>
                  <el-dialog title="选择文件" :visible.sync="dialogFormVisible">
                     <el-table
