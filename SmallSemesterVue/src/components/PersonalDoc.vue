@@ -89,12 +89,6 @@
                     label="创建者"
                     width="180">
                     </el-table-column>
-                     <el-table-column
-                    fixed="right"
-                    prop="belong"
-                    label="所属团队"
-                    width="180">
-                    </el-table-column>
                     <el-table-column
                     fixed="right"
                     prop="createtime"
@@ -104,15 +98,19 @@
                      <el-table-column
                     fixed="right"
                     label="操作"
-                    width="290px">
+                    width="150px">
                     
                     <template   slot-scope="scope">
-                    
-                        <el-button @click="handleview(scope.row)" style="background-color:#f96332;color:white"><v class="el-icon-view"></v></el-button>
-                        <el-button @click="handleedit(scope.row)" style="background-color:#f96332;color:white" ><v class="el-icon-edit"></v></el-button>
-                        <el-button @click="handlefavorite(scope.row)" style="background-color:#f96332;color:white" ><v class="el-icon-star-off"></v></el-button>
-                        <el-button @click="handledelete(scope.row)" type="danger"><v class="el-icon-delete"></v></el-button>
-                    
+                    <el-dropdown  split-button style="color:#f96332">
+                        <v class="el-icon-folder-opened"></v>操作
+                        <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item><el-button @click="handleview(scope.row)" size="small" style="background-color:#f96332;color:white"><v class="el-icon-view">查看</v></el-button></el-dropdown-item>
+                        <el-dropdown-item><el-button @click="handleedit(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-edit">编辑</v></el-button></el-dropdown-item>
+                        <el-dropdown-item><el-button @click="handlefavorite(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-star-off">收藏</v></el-button></el-dropdown-item>
+                        <el-dropdown-item><el-button @click="handledelete(scope.row)" size="small" type="danger"><v class="el-icon-delete">删除</v></el-button></el-dropdown-item>
+                        <el-dropdown-item><el-button @click="分享" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-share">分享</v></el-button></el-dropdown-item>
+                    </el-dropdown-menu>
+                    </el-dropdown>
                     </template>
                     
                     </el-table-column>
