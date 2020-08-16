@@ -129,13 +129,13 @@
                         <div slot="header">
                             <span>个人信息</span>
                         </div>
-                        <div style="width:40%;height:100%;float:left">
+                        <div style="width:30%;height:100%;float:left">
                             <el-table :data="tableData1" style="width: 100%">
                                 <el-table-column prop="info" label=""></el-table-column>
                             </el-table>
                         </div>
 
-                        <div style="width:60%;height:100%;float:right">
+                        <div style="width:70%;height:100%;float:right">
                             <el-table :data="tableData2" style="width: 100%">
                                 <el-table-column prop="info" label=""></el-table-column>
                             </el-table>
@@ -404,14 +404,14 @@ export default {
 .div3{
     float:left;
     margin-top: 10px;
-    width:70%;
+    width:69%;
     height:720px;
     background-color:transparent;
 }
 .div4{
     float:right;
     margin-top: 10px;
-    width:28%;
+    width:30%;
     height:720px;
     background-color: transparent;
 }
