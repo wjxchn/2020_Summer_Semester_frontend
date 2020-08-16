@@ -47,24 +47,15 @@
                 <el-breadcrumb-item>查看文档</el-breadcrumb-item>
             </el-breadcrumb>
             </div>
-            <div class="hd3">
-                <el-row :gutter="20">
-                    <el-col :span="8"><div class="grid-content bg-purple">
-                    <h4 style="text-align:center;display:block;color:white">文档名：</h4>
-                    <h4 v-text="doc_name" style="text-align:center;color:white">{{doc_name}}</h4>
-                    </div>
-                    </el-col>
-                    <el-col :span="8"><div class="grid-content bg-purple">
-                    <h4 style="text-align:center;display:block;color:white">作者：</h4>
-                    <h4 v-text="doc_name" style="text-align:center;color:white">{{doc_name}}</h4>
-                    </div>
-                    </el-col><el-col :span="8"><div class="grid-content bg-purple">
-                    <h4 style="text-align:center;display:block;color:white">文档信息：</h4>
-                    <h4 v-text="doc_name" style="text-align:center;color:white">{{doc_name}}</h4>
-                    </div>
-                    </el-col>
-                </el-row>
-            </div>
+  <br>
+            <el-button style="background-color:#f96332;color:white;float: right;" size="medium" round>修改</el-button>
+            <br><br>
+            <div class="zw" >
+                <el-card class="box-card" style="width:100%">
+                    <div slot="header" class="clearfix">
+                        <h3 style="text-align:center">{{doc_name}}</h3>
+                        <p style="text-align:right;padding-top:10px;font-size:13px;color:rgb(153,153,153)">创建者：{{doc_creater}}</p>   
+                        <span style="font-size: 13px;color: rgb(102,102,102);">简介：{{doc_intro}}</span>
 
             <div class="zw">
                 <el-card class="box-card">

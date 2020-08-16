@@ -70,7 +70,7 @@
                 <quill-editor class="editor"
                 ref="myTextEditor"
                 v-model="content"
-                style="height:400px"
+                style="height:100%;width:92%"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
                 @focus="onEditorFocus($event)"
@@ -108,6 +108,7 @@ export default {
             form:null,
             editorOption: {
                 modules: {
+                    
                 toolbar: [
                     ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
                     ["blockquote", "code-block"], // 引用  代码块
