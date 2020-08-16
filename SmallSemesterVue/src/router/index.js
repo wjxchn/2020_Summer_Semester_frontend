@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 const routerOptions = [
   { path: '/', component: 'Firstpage' },//主页
+  { path: '/aboutus' , component: 'Aboutus' },//开发者信息页面
   { path: '/animation', component: 'Animation' },//封面（暂时弃置）
   { path: '/article', component: 'Article' },//文章（暂时弃置）
   { path: '/bottomguider', component: 'BottomGuider' },//底边栏挂件
