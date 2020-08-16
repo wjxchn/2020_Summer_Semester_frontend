@@ -31,9 +31,10 @@ export default {
             this.unfoldcheck = !this.unfoldcheck
         },
         tologout(){
-            this.$router.push('/firstpage');
             localStorage.removeItem('playcookie');
             localStorage.removeItem('username');
+            this.$router.push('/firstpage');
+            this.$router.go(0);
             
         }
     },
