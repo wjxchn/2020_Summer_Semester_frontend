@@ -8,7 +8,7 @@
                          <el-image style="height:70px;width:270px" :src="'http://r.photo.store.qq.com/psc?/V143D3j445iBwL/45NBuzDIW489QBoVep5mcQPgG0kiB0YEcveF4w7BTYDb1y3jx**7F0Oz1D6j66zTAfIVP2tCVMnKXZbFu9y*Mj6sMhTrGjUqDQl9CPJzItA!/r'"></el-image>
                     </div>
                     <div class="lori col-4 d-flex justify-content-end align-items-center">
-                        <a :value="showusername" v-if="play">{{showusername}}</a>
+                        <a :value="showusername" style="color:white" href="/personaldoc" v-if="play">{{showusername}}</a>
                         <a style="width:70px;background-color:#f96332;color:white" class="btn btn-sm btn-outline-secondary guider-black" href="/login" v-if="!play" >登录</a>
                         <i style="width:20px"></i>
                         <a style="width:70px;background-color:#f96332;color:white" class="btn btn-sm btn-outline-secondary guider-black" @click="tologout" v-if="play" >退出</a>
