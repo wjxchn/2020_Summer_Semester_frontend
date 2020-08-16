@@ -56,13 +56,6 @@
                   prop="docname"
                   label="文档名">
                 </el-table-column>
-
-                <el-table-column
-                  fixed="right"
-                  prop="creator"
-                  label="创建者"
-                  width="180">
-                </el-table-column>
                 <el-table-column
                   fixed="right"
                   prop="createtime"
@@ -74,7 +67,7 @@
                   label="操作"
                   width="260">
                 <template slot-scope="scope">
-                <el-button type="primary" class="el-icon-refresh" @click="Recoverdoc(scope.row)"></el-button>
+                <el-button style="background-color:#f96332;color:white" class="el-icon-refresh" @click="Recoverdoc(scope.row)"></el-button>
                 <el-button type="danger"  @click="Deletedoc(scope.row)"><v class="el-icon-delete"></v></el-button>
                 </template>
                 </el-table-column>
