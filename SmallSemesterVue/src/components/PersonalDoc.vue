@@ -44,12 +44,7 @@
                 <el-input  placeholder="请输入内容" style="width:250px">
                 <el-button  slot="append" icon="el-icon-search"></el-button></el-input>
                 <router-link to='/DocForm'>
-                    <el-button style="background-color:#f96332;color:white"  >新建 </el-button>
-                    
-                </router-link>
-                <router-link to='/CreateFromDemo'>
-                   <el-button style="background-color:#f96332;color:white"  >使用模板创建 </el-button>
-                    
+                    <el-button style="background-color:#f96332;color:white"  >新建 </el-button>                 
                 </router-link>
                 </div>
     
@@ -108,13 +103,17 @@
                         <el-dropdown-item><el-button @click="handleedit(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-edit">编辑</v></el-button></el-dropdown-item>
                         <el-dropdown-item><el-button @click="handlefavorite(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-star-off">收藏</v></el-button></el-dropdown-item>
                         <el-dropdown-item><el-button @click="handledelete(scope.row)" size="small" type="danger"><v class="el-icon-delete">删除</v></el-button></el-dropdown-item>
-                        <el-dropdown-item><el-button @click="分享" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-share">分享</v></el-button></el-dropdown-item>
+                        <el-dropdown-item><el-button @click="handleshare(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-share">分享</v></el-button>
+
+                        </el-dropdown-item>
+                        
                     </el-dropdown-menu>
                     </el-dropdown>
                     </template>
                     
                     </el-table-column>
                  </el-table>
+                 
                  <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
@@ -125,6 +124,14 @@
                     :total="3">
                 </el-pagination>
             </div>
+             <el-dialog title="分享文档" :visible.sync="dialogFormVisible" width="60%">
+                        <el-input type="textarea" style="width:90%" readonly="true" :value="docname" id="input"></el-input>
+                        <div slot="footer" class="dialog-footer">
+                    <el-button @click="copyUrl()">复制到剪切板</el-button>
+                    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                </div>
+            </el-dialog>
+           
         </main>
         </el-container>
         </el-container>
@@ -146,11 +153,25 @@ export default {
     data () {
         return {
             opend:['1','2','3'],
+            docname:'',
             uniqueOpened:false,
             FileTime:'2020-8-11 12:00',
             tableData:[],
             latestData: [],
-            istabBar: false
+            istabBar: false,
+            form: {
+            name: '',
+            region: '',
+            date1: '',
+            date2: '',
+            delivery: false,
+            type: [],
+            resource: '',
+            desc: ''
+            },
+            formLabelWidth: '120px',
+            dialogFormVisible: false,
+            url: 'http://localhost:8000/api/showpersonaldoclist/'
         }
     },
     created:function(){
@@ -256,7 +277,12 @@ export default {
             console.log(row.docid)//此时就能拿到整行的信息
             this.$router.push({path: '/editpersonaldoc', query: {doc_id: row.docid}})
         },
-
+        //分享文档
+        handleshare(row){
+            this.docname=" 【福报文档】 "+row.docname+ "  \n  " +this.url;
+            this.dialogFormVisible = true;
+            return;
+        },
         //删除文档
         handledelete(row){
             console.log(row);
@@ -299,6 +325,12 @@ export default {
         },
         tolatestcontent(indocid){
             this.$router.push({path: '/showplaintext_new', query: {doc_id: indocid}})
+        },
+        copyUrl(){
+            var url=document.getElementById("input");
+            url.select();
+            document.execCommand("Copy");
+            alert("复制成坤！")
         }
     },
     mounted () {

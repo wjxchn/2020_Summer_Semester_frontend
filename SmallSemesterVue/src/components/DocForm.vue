@@ -88,22 +88,22 @@ export default {
             DocFormData:[
                 {
                     index:"1",
-                    url:"http://m.qpic.cn/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/bqQfVz5yrrGYSXMvKr.cqal0AN6VQ0iw2YAmTiXSTlQWFKocisyr4FdC.N2I3kH32qPK41I1ovIrf4ToCYLDjrFbCS5JBcplEHLnwOX09M8!/b&bo=iwE1AgAAAAADB58!&rf=viewer_4",
+                    url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEMT8KH0kcT3GJdu591pDPMHvKRq6V0oZz2WYRGHa*5HDdbsK3Jtiy7R3RREPBMdTE3dyu1Vc5B3WNGtjpY.*oqM!/r",
                     name:"空白文档"
                 },
                 {
                     index:"2",
-                    url:"http://m.qpic.cn/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/bqQfVz5yrrGYSXMvKr.cqVYbsi3361Tl8U.RzQolBhjzyp1f6JVmaATAaUfQFJGXvvHvv5Fv8.Bp8xcRutbzK0NDXIvMBqJ3ft7FfeAMtOs!/b&bo=gQKJAwAAAAADBys!&rf=viewer_4",
+                    url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEHeIaLb1nBdjPmb.0O68t0xWJgDJuwdk3eCyySdqAhMkqFiRn5LgVaTaBxdwlXYEuIOo2nFBDj0p0WcWXeFuh8Q!/r",
                     name:"2019年终总结通用模板"
                 },
                 {
                     index:"3",
-                    url:"http://m.qpic.cn/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEE3HyXMqX8rSCLTDyTAF8MW8NSvqDvHUtkAKqFy68jrJzqn9POwNla2oXQgooKgOmxlIbY4b15Jwxt80YXenGCo!/b&bo=fAKJAwAAAAADJ*Y!&rf=viewer_4",
+                    url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrENR9RqfZdv7djXdnENnqrNUCOh2*J27vcJutVYM6RAKu74keFAYfPSFda.7p2ZsjTPQqZ0oq2Sh3O5NuILAZYoM!/r",
                     name:"个人借款协议（无居间人）"
                 },
                 {
                     index:"4",
-                    url:"http://m.qpic.cn/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/bqQfVz5yrrGYSXMvKr.cqSzkACjEy70*RAD5.Da9Vv0*.q5OOV.DmMQ2edWjzTtbnBk1J.1iI3duH9INwOep4me5QaDpo1dvSiR.LeXU.7s!/b&bo=fwKKAwAAAAADB9Y!&rf=viewer_4",
+                    url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEExUsMhEflJArhirKLG6TLQHljbfxE3ApdSkVBLjwC1jrQ0uokJSIIkU1Y0H7b70ma8We1GVl2jroX58S0b.ZTo!/r",
                     name:"外贸合同"
                 }
             ]
