@@ -161,7 +161,19 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
-            <el-tab-pane label="分享" name="third">分享</el-tab-pane>
+            <el-tab-pane label="团队通知" name="third">
+              <div style="float:right">
+                    <el-button style="width:150px;background-color:#f96332;color:white">发布通知</el-button>
+                 </div>
+                    <el-card class="box-card" v-for="(item) in MessageData" :key="item">
+                <div slot="header" class="clearfix">
+                    <span class="title" >{{item.MessageTitle}}</span>
+                    <span class="time">{{item.date}}</span>
+                </div>
+                <div class="text item" >
+                    {{ item.MessageContent }}
+                </div>
+            </el-tab-pane>
             <el-tab-pane label="历史记录" name="fourth">历史记录</el-tab-pane>
         </el-tabs>
         </main>
@@ -438,6 +450,29 @@ export default {
 </script>
 
 <style scoped>
+.time{
+    font-size: 13px;
+    margin: 20px;
+    color:rgb(153, 153 ,153)
+}
+.text {
+    font-size: 15px;
+    color: rgb(102,102,102);
+}
+  .item {
+    margin-bottom: 18px;
+}
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+.box-card {
+    width: 100%;
+}
 .isFixed {
     position: fixed;
     top: 0;
