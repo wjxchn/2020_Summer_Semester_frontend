@@ -28,6 +28,7 @@ const routerOptions = [
   { path: '/team', component:'Team'},//我的团队页面
   { path: '/teammanagement', component:'TeamManagement'},//团队管理页面
   { path: '/trash' , component: 'Trash'},//回收站页面
+  { path: '/docform', component:'DocForm'},//文档模板
   { path: '*', component: 'NotFound' },
 ]
 const routes = routerOptions.map(route => {

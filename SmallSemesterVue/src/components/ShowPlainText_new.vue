@@ -56,42 +56,25 @@
                         <h3 style="text-align:center">{{doc_name}}</h3>
                         <p style="text-align:right;padding-top:10px;font-size:13px;color:rgb(153,153,153)">创建者：{{doc_creater}}</p>   
                         <span style="font-size: 13px;color: rgb(102,102,102);">简介：{{doc_intro}}</span>
-
-            <div class="zw">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <h4 style="text-align:center">文档内容</h4>
-                        <el-button @click="dialogFormVisible = true" style="background-color:#f96332;color:white;float: right;" size="medium" round>写评论</el-button>
-                        <el-dialog title="创建评论" :visible.sync="dialogFormVisible">
-                        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                            <el-form-item label="评论内容" :label-width="formLabelWidth" prop="content" required>
-                            <el-input v-model="ruleForm.content"></el-input>
-                            </el-form-item>
-                        </el-form>
-                        <div slot="footer" class="dialog-footer">
-                            <el-button style="width:70px;background-color:#f96332;color:white" @click="addCommentFunc(),dialogFormVisible = false">确 定</el-button>
-                        </div>
-                        </el-dialog>
                     </div>
                     <span v-html="htmlData">
                         {{htmlData}}
                     </span>
-                </el-card>
-
-            
-
-                <!-- 正文的回复点赞-->
-                <div style="height:50px;width:100%;margin-top:20px">
-                    
-                    
-                    <el-button @click="thumb" style="float:right;margin-left:10px;"><i class="el-icon-thumb" style="width:30px;"></i></el-button>
-                    <el-button @click="showInput" style="float:right"><i class="el-icon-chat-round" style="width:30px;"></i></el-button>
-                </div>
-                <div v-bind:class="{'div1':isTrue}"><el-input v-model="input" placeholder="请输入内容"></el-input></div>
-
-
+            </el-card>
             </div>
-                <div style="font-size:30px;margin-top:100px"><b>评论区</b></div>
+                <!-- 正文的回复点赞-->
+                    
+                    
+                   
+                <div style="font-size:30px;margin-top:100px">
+                    <b>评论区</b>
+                     <el-button @click="thumb" style="float:right;margin-left:10px;"><i class="el-icon-thumb" style="width:30px;"></i></el-button>
+                    <el-button @click="showInput" style="float:right"><i class="el-icon-chat-round" style="width:30px;"></i></el-button>
+                <div v-bind:class="{'div1':isTrue}" :rules="rules" prop="content" required>
+                    <el-input v-model="ruleForm.content" placeholder="请输入内容"></el-input>
+                     <el-button style="width:70px;background-color:#f96332;color:white" @click="addCommentFunc(),dialogFormVisible = false">确 定</el-button>
+                    </div>
+                    </div>
                 <div style="width:100%;background-color:transparent" v-for="item in commentData" :key="item.com_id">
                   
                     <el-card class="box-card" style="width:100%;margin-top:20px;">
