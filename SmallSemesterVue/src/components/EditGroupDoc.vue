@@ -75,7 +75,7 @@
 
                 <br><br><br>
                  
-                 <el-button class="btn btn-primary" style="float:right" @click="submitPlainText" plain>提交修改</el-button>
+                 <el-button class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="submitPlainText" plain>提交修改</el-button>
             </div>
         </div>
         </main>
