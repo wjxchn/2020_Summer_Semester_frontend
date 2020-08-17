@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import 'bootstrap'
 import $ from 'jquery'
+import './mock/index.js'
 
 Vue.config.productionTip = false
 
@@ -19,6 +20,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(Element)
 
 import verify from "vue-verify-plugin";
+
 
 
 

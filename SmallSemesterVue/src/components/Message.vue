@@ -43,7 +43,7 @@
     <br>
     <el-tabs type="card">
         <el-tab-pane label="系统通知">
-            <el-card class="box-card" v-for="(item) in MessageData" :key="item" style="margin-bottom:20px">
+            <el-card class="box-card" v-for="(item) in SystemMessageData" :key="item" style="margin-bottom:20px">
             <div slot="header" class="clearfix">
                 <span class="title" >{{item.MessageTitle}}</span>
                 <span class="time">{{item.date}}</span>
@@ -53,7 +53,21 @@
             </div>
         </el-card>
         </el-tab-pane>
-        <el-tab-pane label="团队通知">配置管理</el-tab-pane>
+        <el-tab-pane label="团队通知">
+            <el-card class="box-card" v-for="(item) in TeamMessageData" :key="item" style="margin-bottom:20px">
+            <div slot="header" class="clearfix">
+                <span class="title" >{{item.MessageTitle}}</span>
+                <span class="time">{{item.date}}</span>
+                <div v-if="item.class == 'TeamInvitation' " align="right">
+                    <el-button type="primary" @click="AcceptTeamInvitation(item);item.class=''">接受</el-button>
+                    <el-button type="danger" @click="item.class=''">忽略</el-button>
+                </div>
+            </div>
+            <div class="text item" >
+                {{ item.MessageContent }}
+            </div>
+            </el-card>
+        </el-tab-pane>
         <el-tab-pane label="文档通知">角色管理</el-tab-pane>
         </el-tabs>
 
@@ -81,7 +95,14 @@ export default {
             opend:['1','2','3'],
             uniqueOpened:false,
             istabBar: false,
-            MessageData:[]
+            SystemMessageData:[],
+            TeamMessageData:[{
+                TeamName:"药水哥的宁配吗",
+                MessageTitle:"团队【药水哥的宁配吗】邀请您加入",
+                date:"2020/10/10",
+                MessageContent:"你看到药水哥来了 开始freestyle 准备接受我的ruap（rap） 午夜一哥不会怕 全体倒立把“好汀”给我准备好 你评论what？ei what？ 他竟在玩hiphop",
+                class:"TeamInvitation"
+            }],
         }
     },
        created(){
@@ -137,10 +158,33 @@ export default {
                     mainPart.style.paddingTop = "0px";
                 }
                         },
-    getMessage(){
+        getSystemMessage(){
          axios.post('/api/post/messagelist').then(res=>{
-                this.MessageData = res.data.MessageList
+                this.SystemMessageData = res.data.MessageList
             })
+        },
+        AcceptTeamInvitation(item){
+            axios({
+                method:'post',
+                url:'http://localhost:8000/api/addgroupmember/',
+                data:{'username':localStorage.getItem('username'),
+                'teamname':item.TeamName}
+            }).then(response=>{
+                console.log(response)
+                if(response.data.code === 200){
+                    alert('加入团队成昆！')
+                    this.$router.go(0)
+                    }
+                else if(response.data.code === 400){
+                    alert('加入团队失败')
+                    this.$router.go(0)
+                }
+                else{
+                    alert("错误")
+                    this.$router.go(0)
+                }
+            })
+            return;
         }
     },
     mounted () {

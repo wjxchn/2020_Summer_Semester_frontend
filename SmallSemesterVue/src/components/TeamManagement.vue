@@ -129,8 +129,18 @@
                 <el-dialog
                 title="邀请成员"
                 :visible.sync="InvitedialogVisible">
-                <label style="padding-right:10px">请输入用户名</label><el-input v-model="InvitedUsername" id="invitedUsername" style="width:40%"></el-input>
-                <el-button @click="I">确定</el-button>
+                <label style="padding-right:10px">请输入用户名</label>
+                <el-input v-model="InvitedUsername" id="invitedUsername" style="width:70%" value=''></el-input>
+                <el-button @click="GetInvitedPersonList()">查找</el-button>
+                <el-table
+                :data="InvitedPersonList">
+                    <el-table-column label="用户名" prop="username" header-align="center" align="center"></el-table-column>
+                    <el-table-column label="操作" prop="doing" width="150" fixed="right" header-align="center" align="center">
+                        <template slot-scope="scope">
+                        <el-button @click="InvitePerson(scope.row)">邀请</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
                 </el-dialog>
                 <el-table
                     :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
@@ -144,12 +154,13 @@
                     <el-table-column
                     label="权限"
                     prop="authority" width="300px">
+                    <template slot-scope="scope">
                         <div style="width:100%;height:50px">
-                            <el-slider  v-model="value" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change"></el-slider>
+                            <el-slider  v-model="scope.row.authority" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change"></el-slider>
                         </div>
-                        
-
+                    </template>  
                     </el-table-column>
+                    
                     <el-table-column
                     label="身份"
                     prop="identity">
@@ -209,7 +220,7 @@ export default {
     },
     data () {
         return {
-            value: [0,2],
+            value: 1,
             marks:{
                 0:'低',
                 1:'中',
@@ -220,7 +231,7 @@ export default {
             uniqueOpened:false,
             activeName: 'first',
             istabBar: false,
-            tableData: ['1','2'],     //团队成员管理数据
+            tableData: [{name:'1',authority:1,identity:'33333'},{name:'1',authority:2,identity:'33333'}],     //团队成员管理数据
             search: '',              
             DocData:[],            //显示团队文件数据
             dialogFormVisible: false,
@@ -228,6 +239,7 @@ export default {
             PersonalDocData:[],
             multipleSelection: [],
             InvitedialogVisible:false,
+            InvitedPersonList:[],
             InvitedUsername:'',
             MessageData:[
                 {
@@ -506,6 +518,42 @@ export default {
                 this.$router.go(0)
             }
         });
+        },
+        GetInvitedPersonList(){
+            var username = this.InvitedUsername;
+            console.log(username);
+            axios({
+                method:'post',
+                url:'http://localhost:8000/api/returnusername/',
+                data:{'InvitedUsername': username}
+            })
+            .then(response =>{
+                console.log(response)
+                if(response.data.code === 200){
+                    this.$set(this,'InvitedPersonList',response.data.list)
+                }
+                else if(response.data.code === 400){
+                    alert('文件不存在')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+        },
+        InvitePerson(row){
+            var username = row.username;
+            console.log(username);
+            axios({
+                method:'post',
+                url:'http://localhost:8000/api/sendTeamInvitation/',
+                data:{'username':username,'class':'TeamInvitation',groupname:this.$route.query.group_name}
+            }).then(response =>{
+                if(response.data.code === 200){
+                    alert('发送邀请成昆！')
+                }
+            })
         }
     },
     mounted () {
