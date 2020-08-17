@@ -153,6 +153,15 @@ export default {
         Aboutus(){
             this.$router.push('/Aboutus');
         },
+        handleview(row){
+            console.log(row.docid)//此时就能拿到整行的信息
+            this.$router.push({path: '/showplaintext_new', query: {doc_id: row.doc_id}})            
+        },
+        handleedit(row){
+            console.log(row.docid)//此时就能拿到整行的信息
+            this.$router.push({path: '/editpersonaldoc', query: {doc_id: row.doc_id}})
+        },
+        //收藏文档
         RmFavorDoc(row){
             axios({
                 method: 'post',
