@@ -283,7 +283,7 @@ export default {
         },
         //分享文档
         handleshare(row){
-            this.docname=" 【福报文档】 "+row.docname+ "  \n  " +this.url;
+            this.docname=" 【福报文档】 "+row.docname+ "  \n  " +"http://localhost:8000/showplaintext_new?doc_id="+row.docid;
             this.dialogFormVisible = true;
             return;
         },

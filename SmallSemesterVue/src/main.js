@@ -5,7 +5,6 @@ import App from './App'
 import router from './router'
 import 'bootstrap'
 import $ from 'jquery'
-import './mock/index.js'
 
 Vue.config.productionTip = false
 

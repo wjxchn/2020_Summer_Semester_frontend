@@ -1,31 +1,30 @@
 <template>
     <div>
         <Guider id="navBar" :class="{isFixed:istabBar}"/>
-        <el-container>
+      <el-container>
             <el-aside class="leftside" width="210px">
 
             <!--     ↓↓↓↓↓↓↓↓↓↓↓↓↓↓  这个default-active是指当前激活的页面，把页面对应的index写进去，例如：当前页面是我的文档，则写进去2-1 -->
-            <el-menu default-active="" class="el-menu-vertical-demo" :default-openeds="opend"
+            <el-menu default-active="1-1" class="el-menu-vertical-demo" :default-openeds="opend"
             @open="handleOpen" @close="handleClose" background-color="#fff"
             text-color="#000000" active-text-color="#f96332" >
             <el-submenu index="1">
                 <template slot="title">
-                    <i class="el-icon-s-home"></i>
-                    <span>主页</span>
-                </template>
-                    <el-menu-item index="1-1" @click="Home" :loading="logining" ><i class="el-icon-house" style="color:black"></i>首页</el-menu-item>
-                    <el-menu-item index="1-2" @click="Person" :loading="logining"><i class="el-icon-user" style="color:black"></i>个人资料</el-menu-item>
-            </el-submenu>
-            <el-submenu index="2">
-                <template slot="title">
                     <i class="el-icon-menu"></i>
                     <span>工作台</span>
                 </template>
-                    <el-menu-item index="2-1" @click="Mywork" :loading="logining"><i class="el-icon-notebook-2" style="color:black"></i>我的文档</el-menu-item>
-                    <el-menu-item index="2-2" @click="Myteam" :loading="logining"><i class="el-icon-set-up" style="color:black"></i>我的团队</el-menu-item>
-                    <el-menu-item index="2-3" @click="MyFavorite" :loading="logining"><i class="el-icon-sunny" style="color:black"></i>我的收藏</el-menu-item>
-                    <el-menu-item index="2-4" @click="Trash" :loading="logining"><i class="el-icon-delete" style="color:black"></i>回收站</el-menu-item>
-                    <el-menu-item index="2-5" @click="Message" :loading="logining"><i class="el-icon-chat-dot-round" style="color:black"></i>收件箱</el-menu-item>
+                    <el-menu-item index="1-1" @click="Mywork" :loading="logining"><i class="el-icon-notebook-2" style="color:black"></i>我的文档</el-menu-item>
+                    <el-menu-item index="1-2" @click="Myteam" :loading="logining"><i class="el-icon-set-up" style="color:black"></i>我的团队</el-menu-item>
+                    <el-menu-item index="1-3" @click="MyFavorite" :loading="logining"><i class="el-icon-star-off" style="color:black"></i>我的收藏</el-menu-item>
+                    <el-menu-item index="1-4" @click="Trash" :loading="logining"><i class="el-icon-delete" style="color:black"></i>回收站</el-menu-item>
+                    <el-menu-item index="1-5" @click="Message" :loading="logining"><i class="el-icon-chat-dot-round" style="color:black"></i>收件箱</el-menu-item>
+            </el-submenu>
+            <el-submenu index="2">
+                <template slot="title">
+                    <i class="el-icon-s-home"></i>
+                    <span>个人信息</span>
+                </template>
+                    <el-menu-item index="2-1" @click="Person" :loading="logining"><i class="el-icon-user" style="color:black"></i>个人资料</el-menu-item>
             </el-submenu>
             <el-submenu index="3">
                 <template slot="title">
@@ -38,7 +37,7 @@
             </el-menu>
             </el-aside>
         <el-container>
-        <main id="mainPart" role="main" class="container" color="black">
+        <main id="mainPart" role="main" class="container">
 
     <!-- 页面内部的内容写在main中间即可 -->
         <div class="header" style="padding:20px">
@@ -55,7 +54,7 @@
                 <div style="padding: 14px;">
                     <p style="text-align:center;font-size:18px">{{item.name}}</p>
                     <div class="bottom clearfix">
-                        <el-button type="primary" class="button" style="float:right">创建</el-button>
+                        <el-button type="primary" class="button" style="float:right" @click="createFile(item.index)">创建</el-button>
                     </div>
                 </div>
                 </el-card>
@@ -87,22 +86,22 @@ export default {
             istabBar: false,
             DocFormData:[
                 {
-                    index:"1",
+                    index:0,
                     url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEMT8KH0kcT3GJdu591pDPMHvKRq6V0oZz2WYRGHa*5HDdbsK3Jtiy7R3RREPBMdTE3dyu1Vc5B3WNGtjpY.*oqM!/r",
                     name:"空白文档"
                 },
                 {
-                    index:"2",
+                    index:1,
                     url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEHeIaLb1nBdjPmb.0O68t0xWJgDJuwdk3eCyySdqAhMkqFiRn5LgVaTaBxdwlXYEuIOo2nFBDj0p0WcWXeFuh8Q!/r",
                     name:"2019年终总结通用模板"
                 },
                 {
-                    index:"3",
+                    index:2,
                     url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrENR9RqfZdv7djXdnENnqrNUCOh2*J27vcJutVYM6RAKu74keFAYfPSFda.7p2ZsjTPQqZ0oq2Sh3O5NuILAZYoM!/r",
                     name:"个人借款协议（无居间人）"
                 },
                 {
-                    index:"4",
+                    index:3,
                     url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEExUsMhEflJArhirKLG6TLQHljbfxE3ApdSkVBLjwC1jrQ0uokJSIIkU1Y0H7b70ma8We1GVl2jroX58S0b.ZTo!/r",
                     name:"外贸合同"
                 }
@@ -116,9 +115,6 @@ export default {
         },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
-        },
-        Home(){
-            this.$router.push('/');
         },
         Person(){
             this.$router.push('/Person');
@@ -161,6 +157,14 @@ export default {
                     this.istabBar = false
                     mainPart.style.paddingTop = "0px";
                 }
+        },
+        createFile(pos){
+            if(pos === 0){
+                this.$router.push('/plaintext_new')
+            }
+            else{
+                this.$router.push({path: '/createfromdemo', query: {'demo_id': pos}})
+            }
         }
     },
     mounted () {

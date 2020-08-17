@@ -45,15 +45,6 @@
             </el-breadcrumb>
         </div><br><br>
             <div class="plaintext_new">
-                <el-radio-group v-model="demo_id">
-                    <el-radio label=1>模板1</el-radio>
-                    <el-radio label=2>模板2</el-radio>
-                    <el-radio label=3>模板3</el-radio>
-                    <el-radio label=4>模板4</el-radio>
-                </el-radio-group>
-                <el-button @click="selectdemo" type="primary" style="margin-left: 30px;background-color:#f96332;color:white">
-                选择模板
-                </el-button>
                 <br>
                 <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="文档名">
@@ -145,6 +136,29 @@ export default {
                  }
         }
     },
+    created:function(){
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/returndemo/',
+            data: {'demo_id': this.$route.query.demo_id}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code===200){
+                this.content = response.data.content
+            }
+            else if(response.data.code===400){
+                alert('选择模板失败')
+            }
+            else{
+                alert('错误')
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            alert('出现错误')
+        })
+    },
     methods: {
         //侧边栏的跳转
         handleOpen(key, keyPath) {
@@ -202,7 +216,7 @@ export default {
                 console.log(response)
                 if(response.data.code===200){
                     alert('添加富文本成功')
-                    this.$router.push('/')
+                    this.$router.push('/Personaldoc')
                 }
                 else if(response.data.code===400){
                     alert('添加富文本失败')
@@ -230,29 +244,6 @@ export default {
                     this.istabBar = false
                     mainPart.style.paddingTop = "0px";
                 }
-        },
-        selectdemo(){
-            axios({
-                method: 'post',
-                url: 'http://localhost:8000/api/returndemo/',
-                data: {'demo_id': this.demo_id}
-            })
-            .then(response => {
-                console.log(response)
-                if(response.data.code===200){
-                    this.content = response.data.content
-                }
-                else if(response.data.code===400){
-                    alert('选择模板失败')
-                }
-                else{
-                    alert('错误')
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                alert('出现错误')
-            })
         }
     },
     computed: {

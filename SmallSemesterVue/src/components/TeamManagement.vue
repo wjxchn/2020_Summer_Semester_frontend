@@ -38,7 +38,9 @@
             </el-aside>
         <el-container>
         <main id="mainPart" role="main" class="container">
-            <h5 style="padding:20px">{{this.$route.query.group_name}}团队 的团队主页</h5>
+
+    
+        <h5 style="padding:20px">{{this.$route.query.group_name}}团队 的团队主页</h5>
         <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="团队文档" name="first">
                 <el-button style="width:70px;background-color:#f96332;color:white;float:right;margin-left:15px" @click="NewGroupdoc" >新建</el-button>
@@ -132,16 +134,21 @@
                 </el-dialog>
                 <el-table
                     :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-                    style="width: 100%"
+                    style="width: 100%;"
                     max-height="450"
                     >
                     <el-table-column
                     label="姓名"
-                    prop="name">
+                    prop="name" width="150px">
                     </el-table-column>
                     <el-table-column
                     label="权限"
-                    prop="authority">
+                    prop="authority" width="300px">
+                        <div style="width:100%;height:50px">
+                            <el-slider  v-model="value" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change"></el-slider>
+                        </div>
+                        
+
                     </el-table-column>
                     <el-table-column
                     label="身份"
@@ -158,11 +165,11 @@
                     <template slot-scope="scope">
                         <el-button style="width:80px;background-color:#f96332;color:white"
                         size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">权限管理</el-button>
+                        @click="prioritymanagement(scope.row)">权限管理</el-button>
                         <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                       @click="handleDeletePerson(scope.row)">删除</el-button>
                     </template>
                     </el-table-column>
                 </el-table>
@@ -181,6 +188,7 @@
                 </div>
                     </el-card>
             </el-tab-pane>
+            <el-tab-pane label="分享" name="third">分享</el-tab-pane>
             <el-tab-pane label="历史记录" name="fourth">历史记录</el-tab-pane>
         </el-tabs>
         </main>
@@ -202,11 +210,18 @@ export default {
     },
     data () {
         return {
+            value: [0,2],
+            marks:{
+                0:'低',
+                1:'中',
+                2:'高'
+            },
+            authoritylevel:0,
             opend:['1','2','3'],
             uniqueOpened:false,
             activeName: 'first',
             istabBar: false,
-            tableData: [],     //团队成员管理数据
+            tableData: ['1','2'],     //团队成员管理数据
             search: '',              
             DocData:[],            //显示团队文件数据
             dialogFormVisible: false,
@@ -259,6 +274,9 @@ export default {
     },
     
     methods: {
+        change(e){
+            this.authoritylevel=e
+        },
         //侧边栏的跳转
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
@@ -272,7 +290,8 @@ export default {
         },
         handleEdit(row){
             console.log(row.docid)//此时就能拿到整行的信息
-            this.$router.push({path: '/editpersonaldoc', query: {doc_id: row.docid}})
+            this.$router.push({path: '/editgroupdoc', query: {doc_id: row.docid, group_id: this.$route.query.group_id, group_name:
+                                this.$route.query.group_name}})
         },
         handleDelete(row){
             console.log(row.docid)
@@ -290,6 +309,39 @@ export default {
                 else if(response.data.code === 400){
                     alert('删除团队文档失败')
                     this.$router.go(0)
+                }
+                else{
+                    alert("错误")
+                    this.$router.go(0)
+                }
+            })
+            .catch(error =>{
+                console.log(error)
+                alert('出现错误')
+                this.$router.go(0)
+            })
+
+        },
+        handleDeletePerson(row){
+            console.log(row.name)
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/deletegroupmember/',
+                data: {'groupid': this.$route.query.group_id,
+                       'usernameA':localStorage.getItem('username'),
+                       'usernameB':row.name}
+            })
+            .then(response =>{
+                console.log(response)
+                if(response.data.code === 200){
+                    alert('删除团队成员成功')
+                    this.$router.go(0)
+                }
+                else if(response.data.code === 400){
+                    alert('非团队管理员无权限删除团队成员')
+                }
+                else if(response.data.code === 401){
+                    alert('无法删除团队创建者')
                 }
                 else{
                     alert("错误")
@@ -412,15 +464,15 @@ export default {
             {
                 this.submitADoc(this.multipleSelection[i]);
             }
-            this.getTeamDoc();
+            this.$router.go(0)
         },
         submitADoc(item){
             console.log(item);
             axios({
             method: 'post',
             url: 'http://localhost:8000/api/addgroupdoc/',
-            data: {'username': localStorage.getItem('username'),
-                   'list':item
+            data: {'groupid': this.$route.query.group_id,
+                   'item':item
             },
         })
         .then(response => {
@@ -459,29 +511,6 @@ export default {
 </script>
 
 <style scoped>
-.time{
-    font-size: 13px;
-    margin: 20px;
-    color:rgb(153, 153 ,153)
-}
-.text {
-    font-size: 15px;
-    color: rgb(102,102,102);
-}
-  .item {
-    margin-bottom: 18px;
-}
-.clearfix:before,
-.clearfix:after {
-    display: table;
-    content: "";
-  }
-  .clearfix:after {
-    clear: both
-  }
-.box-card {
-    width: 100%;
-}
 .isFixed {
     position: fixed;
     top: 0;
