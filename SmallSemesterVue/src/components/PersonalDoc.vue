@@ -124,7 +124,7 @@
                     :page-sizes="[5, 10, 15, 20]"
                     :page-size="1"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="3">
+                    :total="total">
                 </el-pagination>
             </div>
              <el-dialog title="分享文档" :visible.sync="dialogFormVisible" width="40%">
@@ -155,6 +155,7 @@ export default {
     
     data () {
         return {
+            total:0,
             opend:['1','2','3'],
             docname:'',
             uniqueOpened:false,
@@ -280,6 +281,31 @@ export default {
         handleedit(row){
             console.log(row.docid)//此时就能拿到整行的信息
             this.$router.push({path: '/editpersonaldoc', query: {doc_id: row.docid}})
+        },
+        //收藏文档
+        handlefavorite(row){
+            console.log(row.docid)
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/addfavoritedoc/',
+                data: {'username': localStorage.getItem('username'), 'doc_id': row.docid}
+            })
+            .then(response =>{
+                if(response.data.code === 200){
+                    alert('收藏文档成功')
+                }
+                else if(response.data.code === 400){
+                    alert('收藏文档失败')
+                }
+                else {
+                    alert('错误')
+                }
+
+            })
+            .catch(error =>{
+                console.log(error)
+                alert('错误')
+            })
         },
         //分享文档
         handleshare(row){

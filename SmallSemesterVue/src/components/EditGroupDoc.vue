@@ -39,12 +39,6 @@
         <el-container>
         <main id="mainPart" role="main" class="container">
         <div class="a4">
-        <div class="header">
-            <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
-            <el-breadcrumb-item>新建文档</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
             <div class="plaintext_new">
             <br>
                 <el-form ref="form" :model="form" label-width="80px">
@@ -71,7 +65,7 @@
                 <quill-editor class="editor"
                 ref="myTextEditor"
                 v-model="content"
-                style="height:800px;width:92%"
+                style="height:800px"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
                 @focus="onEditorFocus($event)"
@@ -80,10 +74,10 @@
                 </quill-editor>
 
                 <br><br><br>
-                 <el-button type="primary" class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="submitPlainText" plain>提交</el-button>
-
-                </div>
-                </div>
+                 
+                 <el-button class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="submitPlainText" plain>提交修改</el-button>
+            </div>
+        </div>
         </main>
         </el-container>
         </el-container>
@@ -96,7 +90,6 @@ import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
 import axios from 'axios'
 export default {
-    name: 'PlainText_new',
     components: {
         Guider,
         BottomGuider
@@ -105,12 +98,13 @@ export default {
         return {
             opend:['1','2','3'],
             uniqueOpened:false,
+            isUnmodifiable:true,
             istabBar: false,
-            content: '',
+            content: null,
             form:null,
             editorOption: {
+
                 modules: {
-                    
                 toolbar: [
                     ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
                     ["blockquote", "code-block"], // 引用  代码块
@@ -132,7 +126,7 @@ export default {
                 readyOnly: false, //是否只读
                 theme: 'snow', //主题 snow/bubble
                 syntax: true, //语法检测
-            },
+        },
             form: {
                 doc_name: '',
                 introduction:'',
@@ -140,18 +134,35 @@ export default {
             }
         }
     },
+    created:function(){
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/showpersonaldoc/',
+            data: {'doc_id':this.$route.query.doc_id,'username': localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code===200){
+                this.content=response.data.doc_content
+                this.form.doc_name = response.data.doc_name
+                this.form.introduction = response.data.doc_intro
+            }
+            else if(response.data.code===400){
+                alert('文件不存在')
+                this.$router.go(0)
+            }
+            else{
+                alert('错误')
+                this.$router.go(0)
+            }
+        })
+        .catch(error => {
+            alert('有错误')
+            this.$router.go(0)                
+        })
+    },
     methods: {
-         // 失去焦点
-        onEditorBlur(editor) {},
-        // 获得焦点
-        onEditorFocus(editor) {},
-        // 开始
-        onEditorReady(editor) {},
-        // 值发生变化
-        onEditorChange(editor) {
-            this.content = editor.html;
-            console.log(editor);
-        },
+        //侧边栏的跳转
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -185,21 +196,38 @@ export default {
         Aboutus(){
             this.$router.push('/Aboutus');
         },
+         // 失去焦点
+        ChangeModifiable() {
+            if(this.isUnmodifiable==false)
+                this.isUnmodifiable=true;
+            else
+                this.isUnmodifiable=false;
+            return;
+        },
+        onEditorBlur(editor) {},
+        // 获得焦点
+        onEditorFocus(editor) {},
+        // 开始
+        onEditorReady(editor) {},
+        // 值发生变化
+        onEditorChange(editor) {
+            this.content = editor.html;
+            console.log(editor);
+        },
         submitPlainText(){
             console.log(this.content);
             axios({
                 method: 'post',
-                url: 'http://localhost:8000/api/addpersonaldoc/',
-                data: {'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction, 'doc_creater': localStorage.getItem('username')}
+                url: 'http://localhost:8000/api/changepersonaldoc/',
+                data: {'doc_id':this.$route.query.doc_id, 'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction}
             })
             .then(response => {
                 console.log(response)
                 if(response.data.code===200){
-                    alert('添加富文本成功')
-                    this.$router.push('/Personaldoc')
+                    this.$router.push({path: '/teammanagement', query: {group_id: this.$route.query.group_id, group_name: this.$route.query.group_name}});
                 }
                 else if(response.data.code===400){
-                    alert('添加富文本失败')
+                    alert('编辑失败')
                 }
                 else{
                     alert('错误')
@@ -244,9 +272,6 @@ export default {
 .a4{
     width:800px;
     margin:auto;
-}
-.header{
-    margin-top:2%;
 }
 .isFixed {
     position: fixed;

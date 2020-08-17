@@ -220,7 +220,7 @@ export default {
     },
     data () {
         return {
-            value: 1,
+            value: 0,
             marks:{
                 0:'低',
                 1:'中',
