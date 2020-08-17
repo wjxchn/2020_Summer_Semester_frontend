@@ -40,6 +40,7 @@
 
 
         <main id="mainPart" role="main" class="container">
+        <div class="a4">
             <div class="showplaintext_new">
             <div class="header">
                 <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -97,6 +98,7 @@
                     <div v-text="item.com_content">{{item.com_content}}</div>
                     </el-card>
                 </div>                
+            </div>
             </div>
         </main>
         </el-container>
@@ -298,6 +300,10 @@ export default {
 </script>
 
 <style scoped>
+.a4{
+    width:800px;
+    margin:auto;
+}
 .div1{
     display: none;
 }
