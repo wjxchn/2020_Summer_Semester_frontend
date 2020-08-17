@@ -227,44 +227,39 @@ export default {
                 this.$router.go(0)
             });            
         },
-        getTeamList(){
-            axios({
-                method: 'post',
-                url: 'http://localhost:8000/api/showgrouplist/',
-                data: {'creater': localStorage.getItem('username')}
-            })
-            .then(response => {
-                console.log(response)
-                if(response.data.code===200){
-                    this.tableData = response.data.grouplist
-                }
-                else if(response.data.code===400){
-                    alert('加载团队列表失败')
-                    this.$router.go(0)
-                }
-                else{
-                    alert('错误')
-                    this.$router.go(0)
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                alert('出现错误')
-                this.$router.go(0)
-            });
-        },
         submitForm(formName,item){
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                this.addTeam(item);
-                alert('提交成功');
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:8000/api/creategroup/',
+                    data: {'creater': localStorage.getItem('username'), 'name': this.ruleForm.name, 'introduction': this.ruleForm.introduction}
+                })
+                .then(response => {
+                    console.log(response)
+                    if(response.data.code===200){
+                        alert('创建团队成功')
+                        this.$router.go(0)
+                    }
+                    else if(response.data.code===400){
+                        alert('创建团队失败')
+                        this.$router.go(0)
+                    }
+                    else{
+                        alert('错误')
+                        this.$router.go(0)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    alert('出现错误')
+                    this.$router.go(0)
+                }); 
             } else {
-                console.log('提交失败');
+                console.log('输入不合法');
                 return false;
             }
-            this.getTeamList();
-            }); 
-
+            });
         },
         
     },
