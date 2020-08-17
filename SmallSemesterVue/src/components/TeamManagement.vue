@@ -156,14 +156,9 @@
                     prop="authority" width="300px">
                     <template slot-scope="scope">
                         <div style="width:100%;height:50px">
-                            <el-slider  v-model="scope.row.authority" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change"></el-slider>
+                            <el-slider  v-model="scope.row.authority" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change(scope.row)"></el-slider>
                         </div>
                     </template>  
-                    </el-table-column>
-                    
-                    <el-table-column
-                    label="身份"
-                    prop="identity">
                     </el-table-column>
                     <el-table-column
                     align="right">
@@ -174,9 +169,6 @@
                         placeholder="输入关键字搜索"/>
                     </template>
                     <template slot-scope="scope">
-                        <el-button style="width:80px;background-color:#f96332;color:white"
-                        size="mini"
-                        @click="prioritymanagement(scope.row)">权限管理</el-button>
                         <el-button
                         size="mini"
                         type="danger"
@@ -294,7 +286,27 @@ export default {
     
     methods: {
         change(e){
-            this.authoritylevel=e
+            //this.authoritylevel=e
+            console.log(e.authority)
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/changeauthority/',
+                data: {'username': e.name, 'authority': e.authority, 'group_id':this.$route.query.group_id}
+            })
+            .then(response => {
+                if(response.data.code === 200){
+                    alert('修改成功')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('修改失败')
+                    this.$router.go(0)                    
+                }
+            })
+            .catch(error => {
+                alert('错误')
+                this.$router.go(0)
+            })
         },
         //侧边栏的跳转
         handleOpen(key, keyPath) {
