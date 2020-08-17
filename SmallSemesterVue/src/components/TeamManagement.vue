@@ -144,10 +144,11 @@
                     <el-table-column
                     label="权限"
                     prop="authority" width="300px">
+                    <template slot-scope="scope">
                         <div style="width:100%;height:50px">
-                            <el-slider  v-model="value" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change"></el-slider>
+                            <el-slider  v-model="scope.row.authority" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change"></el-slider>
                         </div>
-                        
+                    </template>
 
                     </el-table-column>
                     <el-table-column
@@ -209,7 +210,7 @@ export default {
     },
     data () {
         return {
-            value: [0,2],
+            value: 0,
             marks:{
                 0:'低',
                 1:'中',
@@ -220,7 +221,7 @@ export default {
             uniqueOpened:false,
             activeName: 'first',
             istabBar: false,
-            tableData: ['1','2'],     //团队成员管理数据
+            tableData: [{name:'1',authority:1,identity:'33333'},{name:'1',authority:2,identity:'33333'}],     //团队成员管理数据
             search: '',              
             DocData:[],            //显示团队文件数据
             dialogFormVisible: false,
