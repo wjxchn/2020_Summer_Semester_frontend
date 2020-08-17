@@ -70,7 +70,13 @@
                   label="操作"
                   width="260">
                 <template slot-scope="scope">
-                <el-button type="danger"  @click="RmFavorDoc(scope.row)">从收藏中移除</el-button>
+                <el-dropdown  split-button style="color:#f96332;float:right">
+                        <v class="el-icon-folder-opened"></v>操作
+                        <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item><el-button @click="handleview(scope.row)" size="small" style="background-color:#f96332;color:white"><v class="el-icon-view">查看</v></el-button></el-dropdown-item>
+                        <el-dropdown-item><el-button @click="handleedit(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-edit">编辑</v></el-button></el-dropdown-item>
+                        <el-dropdown-item><el-button @click="RmFavorDoc(scope.row)" size="small" type="danger"><v class="el-icon-delete">移除</v></el-button></el-dropdown-item>
+                </el-dropdown-menu>
                 </template>
                 </el-table-column>
             </el-table>
