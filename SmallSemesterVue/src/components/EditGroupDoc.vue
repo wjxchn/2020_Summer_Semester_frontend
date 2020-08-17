@@ -38,6 +38,7 @@
             </el-aside>
         <el-container>
         <main id="mainPart" role="main" class="container">
+        <div class="a4">
             <div class="plaintext_new">
             <br>
                 <el-form ref="form" :model="form" label-width="80px">
@@ -64,7 +65,7 @@
                 <quill-editor class="editor"
                 ref="myTextEditor"
                 v-model="content"
-                style="height:400px"
+                style="height:800px"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
                 @focus="onEditorFocus($event)"
@@ -76,6 +77,7 @@
                  
                  <el-button class="btn btn-primary" style="float:right" @click="submitPlainText" plain>提交修改</el-button>
             </div>
+        </div>
         </main>
         </el-container>
         </el-container>
@@ -267,6 +269,10 @@ export default {
 </script>
 
 <style scoped>
+.a4{
+    width:800px;
+    margin:auto;
+}
 .isFixed {
     position: fixed;
     top: 0;
