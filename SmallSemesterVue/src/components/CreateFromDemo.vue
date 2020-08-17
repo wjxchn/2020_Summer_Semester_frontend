@@ -57,15 +57,6 @@
                     <el-input type="textarea" :rows="4"  v-model="form.introduction"></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="文件位置">
-                    <el-col :span="20">
-                    <el-input v-model="form.address" value="/个人文档" :disabled=true></el-input>
-                    </el-col>
-                    <el-col class="line" :span="2"></el-col>
-                    <el-col :span="3">
-                    <el-button>更改</el-button>
-                    </el-col>
-                </el-form-item>
                 </el-form>
                 <quill-editor class="editor"
                 ref="myTextEditor"

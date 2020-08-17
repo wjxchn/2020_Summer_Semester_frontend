@@ -185,21 +185,6 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
-            <el-tab-pane label="团队通知" name="third">
-              <div style="float:right">
-                    <el-button style="width:150px;background-color:#f96332;color:white">发布通知</el-button>
-                 </div>
-                    <el-card class="box-card" v-for="(item) in MessageData" :key="item">
-                <div slot="header" class="clearfix">
-                    <span class="title" >{{item.MessageTitle}}</span>
-                    <span class="time">{{item.date}}</span>
-                </div>
-                <div class="text item" >
-                    {{ item.MessageContent }}
-                </div>
-                    </el-card>
-            </el-tab-pane>
-            <el-tab-pane label="历史记录" name="fourth">历史记录</el-tab-pane>
         </el-tabs>
         </main>
         </el-container>
@@ -242,15 +227,7 @@ export default {
             multipleSelection: [],
             InvitedialogVisible:false,
             InvitedPersonList:[],
-            InvitedUsername:'',
-            MessageData:[
-                {
-                    id:'1',
-                    MessageTitle:'特朗普决定变更国籍为中国',
-                    MessageContent:'北京时间8月26日，特朗普来到中国，在天安门面前大喊:\'Make Chine Great Again！\'，然后宣誓入籍中国。',
-                    date:'2000-8-13 19:19:68'
-                }
-                ]
+            InvitedUsername:''
         }
     },
     created:function(){

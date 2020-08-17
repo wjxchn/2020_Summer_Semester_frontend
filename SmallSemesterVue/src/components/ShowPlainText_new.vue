@@ -48,9 +48,7 @@
                 <el-breadcrumb-item>查看文档</el-breadcrumb-item>
             </el-breadcrumb>
             </div>
-  <br>
-            <el-button style="background-color:#f96332;color:white;float: right;" size="medium" round>修改</el-button>
-            <br><br>
+            <br><br><br>
             <div class="zw" >
                 <el-card class="box-card" style="width:100%">
                     <div slot="header" class="clearfix">
@@ -69,7 +67,6 @@
                    
                 <div style="font-size:30px;margin-top:100px">
                     <b>评论区</b>
-                     <el-button @click="thumb" style="float:right;margin-left:10px;"><i class="el-icon-thumb" style="width:30px;"></i></el-button>
                     <el-button @click="showInput" style="float:right"><i class="el-icon-chat-round" style="width:30px;"></i></el-button>
                 <div v-bind:class="{'div1':isTrue}" :rules="rules" prop="content" required>
                     <el-input v-model="ruleForm.content" placeholder="请输入内容"></el-input>

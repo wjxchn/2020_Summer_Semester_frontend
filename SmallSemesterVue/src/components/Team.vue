@@ -224,33 +224,6 @@ export default {
             let strTime=new Date();
             return strTime.getFullYear()+'/'+strTime.getMonth()+'/'+strTime.getDate()+' '+strTime.getHours()+':'+strTime.getMinutes()+':'+strTime.getSeconds();
         },
-        addTeam(item){
-            axios({
-                method: 'post',
-                url: 'http://localhost:8000/api/creategroup/',
-                data: {'creater': localStorage.getItem('username'), 'name': this.ruleForm.name, 'introduction': this.ruleForm.introduction}
-            })
-            .then(response => {
-                console.log(response)
-                if(response.data.code===200){
-                    alert('创建团队成功')
-                    this.$router.go(0)
-                }
-                else if(response.data.code===400){
-                    alert('创建团队失败')
-                    this.$router.go(0)
-                }
-                else{
-                    alert('错误')
-                    this.$router.go(0)
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                alert('出现错误')
-                this.$router.go(0)
-            });            
-        },
         getTeamList(){
             axios({
                 method: 'post',
@@ -280,17 +253,38 @@ export default {
         submitForm(formName,item){
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                this.addTeam(item);
-                alert('提交成功');
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:8000/api/creategroup/',
+                    data: {'creater': localStorage.getItem('username'), 'name': this.ruleForm.name, 'introduction': this.ruleForm.introduction}
+                })
+                .then(response => {
+                    console.log(response)
+                    if(response.data.code===200){
+                        alert('创建团队成功')
+                        this.$router.go(0)
+                    }
+                    else if(response.data.code===400){
+                        alert('创建团队失败')
+                        this.$router.go(0)
+                    }
+                    else{
+                        alert('错误')
+                        this.$router.go(0)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    alert('出现错误')
+                    this.$router.go(0)
+                });
             } else {
                 console.log('提交失败');
+                alert('组名长度在 2 到 15 个字符,简介长度在 5 到 50 个字符')
                 return false;
             }
-            this.getTeamList();
             }); 
-
-        },
-        
+        },  
     },
     mounted () {
         window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
