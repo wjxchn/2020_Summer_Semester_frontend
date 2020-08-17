@@ -130,10 +130,10 @@
                 :visible.sync="DismissDialogVisible"
                 width=200px>
                  <p>确定解散您的团队吗？</p>
-                <el-button type="danger" @click="dismiss;DismissDialogVisible=false">确定</el-button>
+                <el-button type="danger" @click="dismiss(),DismissDialogVisible=false">确定</el-button>
                 <el-button @click="DismissDialogVisible=false">取消</el-button>
                 </el-dialog>
-                <el-button style="width:100px;background-color:#f96332;color:white;float:right;margin-right:15px" @click="InvitedialogVisible=true">邀请成员</el-button>
+                <el-button style="width:100px;background-color:#f96332;color:white;float:right;margin-right:15px" @click="checkinvite">邀请成员</el-button>
                 <el-dialog
                 title="邀请成员"
                 :visible.sync="InvitedialogVisible">
@@ -307,15 +307,15 @@ export default {
             axios({
                 method: 'post',
                 url: 'http://localhost:8000/api/changeauthority/',
-                data: {'username': e.name, 'authority': e.authority, 'group_id':this.$route.query.group_id}
+                data: {'username': localStorage.getItem('username'), 'targetusername': e.name, 'authority': e.authority, 'group_id':this.$route.query.group_id}
             })
             .then(response => {
-                if(response.data.code === 200){
-                    alert('修改成功')
+                if(response.data.code === 400){
+                    alert('错误')
                     this.$router.go(0)
                 }
-                else{
-                    alert('修改失败')
+                else {
+                    alert(response.data.msg)
                     this.$router.go(0)                    
                 }
             })
@@ -337,15 +337,43 @@ export default {
         },
         handleEdit(row){
             console.log(row.docid)//此时就能拿到整行的信息
-            this.$router.push({path: '/editgroupdoc', query: {doc_id: row.docid, group_id: this.$route.query.group_id, group_name:
-                                this.$route.query.group_name}})
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/checkauthority/',
+                data: {'username': localStorage.getItem('username'), 'group_id': this.$route.query.group_id}
+            })
+            .then(response =>{
+                if(response.data.code === 200){
+                    if(response.data.authority >= 1){
+                        this.$router.push({path: '/editgroupdoc', query: {doc_id: row.docid, group_id: this.$route.query.group_id, group_name:
+                                            this.$route.query.group_name}})
+                    }
+                    else{
+                        alert('您的权限不足。')
+                    }
+                }
+                else if(response.data.code === 400){
+                    alert('错误')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+            .catch(error =>{
+                console.log(error)
+                alert('错误')
+                this.$router.go(0)
+            })
+            
         },
         handleDelete(row){
             console.log(row.docid)
             axios({
                 method: 'post',
                 url: 'http://localhost:8000/api/deletegroupdoc/',
-                data: {'docid': row.docid, 'groupid': this.$route.query.group_id}
+                data: {'username': localStorage.getItem('username'), 'docid': row.docid, 'groupid': this.$route.query.group_id}
             })
             .then(response =>{
                 console.log(response)
@@ -356,6 +384,9 @@ export default {
                 else if(response.data.code === 400){
                     alert('删除团队文档失败')
                     this.$router.go(0)
+                }
+                else if(response.data.code === 300){
+                    alert('您的权限不足。')
                 }
                 else{
                     alert("错误")
@@ -385,10 +416,14 @@ export default {
                     this.$router.go(0)
                 }
                 else if(response.data.code === 400){
-                    alert('非团队管理员无权限删除团队成员')
+                    alert(response.data.msg)
+                    
                 }
                 else if(response.data.code === 401){
-                    alert('无法删除团队创建者')
+                    alert(response.data.msg)
+                }
+                else if(response.data.code === 402){
+                    alert(response.data.msg)
                 }
                 else{
                     alert("错误")
@@ -403,7 +438,34 @@ export default {
 
         },
         NewGroupdoc(){
-            this.$router.push({path: '/newgroupdoc', query: {group_id: this.$route.query.group_id, group_name: this.$route.query.group_name}})
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/checkauthority/',
+                data: {'username': localStorage.getItem('username'), 'group_id': this.$route.query.group_id}
+            })
+            .then(response =>{
+                if(response.data.code === 200){
+                    if(response.data.authority >= 1){
+                        this.$router.push({path: '/newgroupdoc', query: {group_id: this.$route.query.group_id, group_name: this.$route.query.group_name}})
+                    }
+                    else{
+                        alert('您的权限不足。')
+                    }
+                }
+                else if(response.data.code === 400){
+                    alert('错误')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+            .catch(error =>{
+                console.log(error)
+                alert('错误')
+                this.$router.go(0)
+            })
         },
         Home(){
             this.$router.push('/');
@@ -449,7 +511,7 @@ export default {
                     this.$router.push('/Team');
                 }
                 else if(response.data.code===400){
-                    alert('团队创建者才可以解散团队')
+                    alert('只有团队创建者才可以解散团队。')
                     this.$router.go(0)
                 }
                 else{
@@ -506,12 +568,39 @@ export default {
         handleSelectionChange(val) {
         this.multipleSelection = val;
         },
-        submitSelectedDoc(){  
-            for(var i=0;i<this.multipleSelection.length;i++)
-            {
-                this.submitADoc(this.multipleSelection[i]);
-            }
-            this.$router.go(0)
+        submitSelectedDoc(){ 
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/checkauthority/',
+                data: {'username': localStorage.getItem('username'), 'group_id': this.$route.query.group_id}
+            })
+            .then(response =>{
+                if(response.data.code === 200){
+                    if(response.data.authority >= 1){
+                        for(var i=0;i<this.multipleSelection.length;i++)
+                        {
+                            this.submitADoc(this.multipleSelection[i]);
+                        }
+                        this.$router.go(0)
+                    }
+                    else{
+                        alert('您的权限不足。')
+                    }
+                }
+                else if(response.data.code === 400){
+                    alert('错误')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+            .catch(error =>{
+                console.log(error)
+                alert('错误')
+                this.$router.go(0)
+            })
         },
         submitADoc(item){
             console.log(item);
@@ -547,18 +636,49 @@ export default {
             }
         });
         },
+        checkinvite(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/checkauthority/',
+                data: {'username': localStorage.getItem('username'), 'group_id': this.$route.query.group_id}
+            })
+            .then(response =>{
+                if(response.data.code === 200){
+                    if(response.data.authority >= 1){
+                        this.InvitedialogVisible = true
+                    }
+                    else{
+                        alert('您的权限不足。')
+                    }
+                }
+                else if(response.data.code === 400){
+                    alert('错误')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+            .catch(error =>{
+                console.log(error)
+                alert('错误')
+                this.$router.go(0)
+            })
+        },
         GetInvitedPersonList(){
             var username = this.InvitedUsername;
             console.log(username);
             axios({
                 method:'post',
                 url:'http://localhost:8000/api/returnusername/',
-                data:{'InvitedUsername': username}
+                data:{'keyword': username,
+                      'groupid': this.$route.query.group_id}
             })
             .then(response =>{
                 console.log(response)
                 if(response.data.code === 200){
-                    this.$set(this,'InvitedPersonList',response.data.list)
+                    this.$set(this,'InvitedPersonList',response.data.userlist)
                 }
                 else if(response.data.code === 400){
                     alert('文件不存在')
@@ -575,11 +695,11 @@ export default {
             console.log(username);
             axios({
                 method:'post',
-                url:'http://localhost:8000/api/sendTeamInvitation/',
-                data:{'username':username,'class':'TeamInvitation',groupname:this.$route.query.group_name}
+                url:'http://localhost:8000/api/invite/',
+                data:{'username':username,'class':'TeamInvitation',groupid:this.$route.query.group_id}
             }).then(response =>{
                 if(response.data.code === 200){
-                    alert('发送邀请成昆！')
+                    alert('发送邀请成功！')
                 }
             })
         }

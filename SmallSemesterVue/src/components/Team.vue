@@ -62,7 +62,7 @@
                 size="mini"  @click="toteam(scope.row)">管理</el-button>
                 <el-button
                 size="mini"
-                type="danger">退出</el-button>
+                type="danger" @click="leave(scope.row)">退出</el-button>
             </template>
             </el-table-column>
             </el-table>     
@@ -181,6 +181,30 @@ export default {
             console.log(row.group_id)//此时就能拿到整行的信息
             this.$router.push({path: '/teammanagement', query: {group_id: row.group_id, group_name: row.group_name}})
         },
+        leave(row){
+            console.log(row.group_id)
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/leavegroup/',
+                data: {'username': localStorage.getItem('username'),
+                       'groupid':row.group_id}
+            })
+            .then(response => {
+                console.log(response)
+                if(response.data.code===200){
+                    alert('退出团队成功')
+                    this.$router.go(0)
+                }
+                else if(response.data.code===400){
+                    alert('小组创建者无法退出团队')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+        },
         // 添加一个方法 兼容
         handleScroll () {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
@@ -227,39 +251,44 @@ export default {
                 this.$router.go(0)
             });            
         },
+        getTeamList(){
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/showgrouplist/',
+                data: {'creater': localStorage.getItem('username')}
+            })
+            .then(response => {
+                console.log(response)
+                if(response.data.code===200){
+                    this.tableData = response.data.grouplist
+                }
+                else if(response.data.code===400){
+                    alert('加载团队列表失败')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                alert('出现错误')
+                this.$router.go(0)
+            });
+        },
         submitForm(formName,item){
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                axios({
-                    method: 'post',
-                    url: 'http://localhost:8000/api/creategroup/',
-                    data: {'creater': localStorage.getItem('username'), 'name': this.ruleForm.name, 'introduction': this.ruleForm.introduction}
-                })
-                .then(response => {
-                    console.log(response)
-                    if(response.data.code===200){
-                        alert('创建团队成功')
-                        this.$router.go(0)
-                    }
-                    else if(response.data.code===400){
-                        alert('创建团队失败')
-                        this.$router.go(0)
-                    }
-                    else{
-                        alert('错误')
-                        this.$router.go(0)
-                    }
-                })
-                .catch(error => {
-                    console.log(error)
-                    alert('出现错误')
-                    this.$router.go(0)
-                }); 
+                this.addTeam(item);
+                alert('提交成功');
             } else {
-                console.log('输入不合法');
+                console.log('提交失败');
                 return false;
             }
-            });
+            this.getTeamList();
+            }); 
+
         },
         
     },

@@ -58,9 +58,23 @@
             <div slot="header" class="clearfix">
                 <span class="title" >{{item.MessageTitle}}</span>
                 <span class="time">{{item.date}}</span>
-                <div v-if="item.class == 'TeamInvitation' " align="right">
-                    <el-button type="primary">接受</el-button>
-                    <el-button type="danger">忽略</el-button>
+            </div>
+            <div class="text item" >
+                {{ item.MessageContent }}
+            </div>
+            </el-card>
+        </el-tab-pane>
+        <el-tab-pane label="团队邀请">
+            <el-card class="box-card" v-for="(item) in InvitationData" :key="item" style="margin-bottom:20px">
+            <div slot="header" class="clearfix">
+                <span class="title" >{{item.MessageTitle}}</span>
+                <span class="time">{{item.date}}</span>
+                <div v-if="item.notifytype == 4 " align="right">
+                    <el-button type="primary" @click="accept(item.id)">接受</el-button>
+                    <el-button type="danger" @click="ignore(item.id)">忽略</el-button>
+                </div>
+                <div v-if="item.notifytype == 5 " align="right">
+                    <el-button type="info" disabled>已处理</el-button>
                 </div>
             </div>
             <div class="text item" >
@@ -104,7 +118,8 @@ export default {
             istabBar: false,
             SystemMessageData:[],
             TeamMessageData:[],
-            DocumentMessageData:[]
+            DocumentMessageData:[],
+            InvitationData:[]
         }
     },
     created:function(){
@@ -159,6 +174,23 @@ export default {
         .catch(error => {
             alert('出现错误')
         });
+        axios({
+            method:'post',
+            url:'http://localhost:8000/api/receiveinvitation/',
+            data:{'username':localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code === 200){
+                this.$set(this,'InvitationData',response.data.notifydata)
+            }
+            else{
+                alert('错误')
+            }
+        })
+        .catch(error => {
+            alert('出现错误')
+        });
     },
     methods: {
         //侧边栏的跳转
@@ -199,16 +231,54 @@ export default {
         handleScroll () {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
                     
-            // 固定导航栏
-            let navBar = document.querySelector("#navBar");
-            let mainPart = document.querySelector("#mainPart");
-            if (scrollTop > 0){
-                this.istabBar = true
-                mainPart.style.paddingTop = navBar.offsetHeight + "px";
-            } else {
-                this.istabBar = false
-                mainPart.style.paddingTop = "0px";
-            }
+                // 固定导航栏
+                let navBar = document.querySelector("#navBar");
+                let mainPart = document.querySelector("#mainPart");
+                if (scrollTop > 0){
+                    this.istabBar = true
+                    mainPart.style.paddingTop = navBar.offsetHeight + "px";
+                } else {
+                    this.istabBar = false
+                    mainPart.style.paddingTop = "0px";
+                }
+                        },
+        accept(id){
+            axios({
+            method:'post',
+            url:'http://localhost:8000/api/accept/',
+            data:{'username':localStorage.getItem('username'),'notifyid':id}
+            })
+            .then(response => {
+                console.log(response)
+                if(response.data.code === 200){
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                }
+            })
+            .catch(error => {
+                alert('出现错误')
+            });
+        },
+        ignore(id){
+            axios({
+            method:'post',
+            url:'http://localhost:8000/api/ignore/',
+            data:{'notifyid':id}
+            })
+            .then(response => {
+                console.log(response)
+                if(response.data.code === 200){
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                }
+            })
+            .catch(error => {
+                alert('出现错误')
+            });
         }
     },
     mounted () {
