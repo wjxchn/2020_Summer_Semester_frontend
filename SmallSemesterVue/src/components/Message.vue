@@ -59,8 +59,8 @@
                 <span class="title" >{{item.MessageTitle}}</span>
                 <span class="time">{{item.date}}</span>
                 <div v-if="item.class == 'TeamInvitation' " align="right">
-                    <el-button type="primary" @click="AcceptTeamInvitation(item);item.class=''">接受</el-button>
-                    <el-button type="danger" @click="item.class=''">忽略</el-button>
+                    <el-button type="primary">接受</el-button>
+                    <el-button type="danger">忽略</el-button>
                 </div>
             </div>
             <div class="text item" >
@@ -68,11 +68,18 @@
             </div>
             </el-card>
         </el-tab-pane>
-        <el-tab-pane label="文档通知">角色管理</el-tab-pane>
+        <el-tab-pane label="文档通知">
+            <el-card class="box-card" v-for="(item) in SystemMessageData" :key="item" style="margin-bottom:20px">
+                <div slot="header" class="clearfix">
+                    <span class="title" >{{item.MessageTitle}}</span>
+                    <span class="time">{{item.date}}</span>
+                </div>
+                <div class="text item" >
+                    {{ item.MessageContent }}
+                </div>
+            </el-card>            
+        </el-tab-pane>
         </el-tabs>
-
-        
-
         </main>
         </el-container>
         </el-container>
@@ -96,17 +103,62 @@ export default {
             uniqueOpened:false,
             istabBar: false,
             SystemMessageData:[],
-            TeamMessageData:[{
-                TeamName:"药水哥的宁配吗",
-                MessageTitle:"团队【药水哥的宁配吗】邀请您加入",
-                date:"2020/10/10",
-                MessageContent:"你看到药水哥来了 开始freestyle 准备接受我的ruap（rap） 午夜一哥不会怕 全体倒立把“好汀”给我准备好 你评论what？ei what？ 他竟在玩hiphop",
-                class:"TeamInvitation"
-            }],
+            TeamMessageData:[],
+            DocumentMessageData:[]
         }
     },
-       created(){
-        this.getMessage()
+    created:function(){
+        axios({
+            method:'post',
+            url:'http://localhost:8000/api/getsystemmessage/',
+            data:{'username':localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code === 200){
+                this.$set(this,'SystemMessageData',response.data.notifydata)
+            }
+            else{
+                alert('错误')
+            }
+        })
+        .catch(error => {
+            alert('出现错误')
+        });
+        axios({
+            method:'post',
+            url:'http://localhost:8000/api/getteammessage/',
+            data:{'username':localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code === 200){
+                this.$set(this,'TeamMessageData',response.data.notifydata)
+            }
+            else{
+                alert('错误')
+            }
+        })
+        .catch(error => {
+            alert('出现错误')
+        });
+        axios({
+            method:'post',
+            url:'http://localhost:8000/api/getdocumentmessage/',
+            data:{'username':localStorage.getItem('username')}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code === 200){
+                this.$set(this,'DocumentMessageData',response.data.notifydata)
+            }
+            else{
+                alert('错误')
+            }
+        })
+        .catch(error => {
+            alert('出现错误')
+        });
     },
     methods: {
         //侧边栏的跳转
@@ -147,44 +199,16 @@ export default {
         handleScroll () {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
                     
-                // 固定导航栏
-                let navBar = document.querySelector("#navBar");
-                let mainPart = document.querySelector("#mainPart");
-                if (scrollTop > 0){
-                    this.istabBar = true
-                    mainPart.style.paddingTop = navBar.offsetHeight + "px";
-                } else {
-                    this.istabBar = false
-                    mainPart.style.paddingTop = "0px";
-                }
-                        },
-        getSystemMessage(){
-         axios.post('/api/post/messagelist').then(res=>{
-                this.SystemMessageData = res.data.MessageList
-            })
-        },
-        AcceptTeamInvitation(item){
-            axios({
-                method:'post',
-                url:'http://localhost:8000/api/addgroupmember/',
-                data:{'username':localStorage.getItem('username'),
-                'teamname':item.TeamName}
-            }).then(response=>{
-                console.log(response)
-                if(response.data.code === 200){
-                    alert('加入团队成昆！')
-                    this.$router.go(0)
-                    }
-                else if(response.data.code === 400){
-                    alert('加入团队失败')
-                    this.$router.go(0)
-                }
-                else{
-                    alert("错误")
-                    this.$router.go(0)
-                }
-            })
-            return;
+            // 固定导航栏
+            let navBar = document.querySelector("#navBar");
+            let mainPart = document.querySelector("#mainPart");
+            if (scrollTop > 0){
+                this.istabBar = true
+                mainPart.style.paddingTop = navBar.offsetHeight + "px";
+            } else {
+                this.istabBar = false
+                mainPart.style.paddingTop = "0px";
+            }
         }
     },
     mounted () {
