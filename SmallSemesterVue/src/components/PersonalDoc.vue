@@ -41,8 +41,6 @@
             <div class="personaldoc" >
                 <div style="padding-top:20px">
                 <div style="float:right">
-                <el-input  placeholder="请输入内容" style="width:250px">
-                <el-button  slot="append" icon="el-icon-search"></el-button></el-input>
                 <router-link to='/DocForm'>
                     <el-button style="background-color:#f96332;color:white"  >新建 </el-button>                 
                 </router-link>
@@ -69,9 +67,10 @@
 
                 <hr>
                 <el-table
-                    :data="tableData"
+                    :data="tableData.filter(data => !search || data.docname.toLowerCase().includes(search.toLowerCase()))"
                     style="width: 100%"
-                    :row-class-name="tableRowClassName">
+                    :row-class-name="tableRowClassName"
+                    >
                      <el-table-column type="index" label="序号"></el-table-column>
                     <el-table-column
                     prop="docname"
@@ -82,21 +81,25 @@
                     fixed="right"
                     prop="creator"
                     label="创建者"
-                    width="180">
+                    width="200">
                     </el-table-column>
                     <el-table-column
                     fixed="right"
                     prop="createtime"
                     label="最近打开"
-                    width="180">
+                    width="200">
                     </el-table-column>  
                      <el-table-column
                     fixed="right"
-                    label="操作"
-                    width="150px">
-                    
+                    width="200px">
+                     <template slot="header" slot-scope="scope">
+                        <el-input
+                        v-model="search"
+                        size="mini"
+                        placeholder="输入关键字搜索"/>
+                    </template>
                     <template   slot-scope="scope">
-                    <el-dropdown  split-button style="color:#f96332">
+                    <el-dropdown  split-button style="color:#f96332;float:right">
                         <v class="el-icon-folder-opened"></v>操作
                         <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item><el-button @click="handleview(scope.row)" size="small" style="background-color:#f96332;color:white"><v class="el-icon-view">查看</v></el-button></el-dropdown-item>
@@ -124,7 +127,7 @@
                     :total="3">
                 </el-pagination>
             </div>
-             <el-dialog title="分享文档" :visible.sync="dialogFormVisible" width="60%">
+             <el-dialog title="分享文档" :visible.sync="dialogFormVisible" width="40%">
                         <el-input type="textarea" style="width:90%" readonly="true" :value="docname" id="input"></el-input>
                         <div slot="footer" class="dialog-footer">
                     <el-button @click="copyUrl()">复制到剪切板</el-button>
@@ -169,6 +172,7 @@ export default {
             resource: '',
             desc: ''
             },
+            search:'',
             formLabelWidth: '120px',
             dialogFormVisible: false,
             url: 'http://localhost:8000/api/showpersonaldoclist/'

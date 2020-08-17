@@ -123,7 +123,13 @@
             </el-tab-pane>
             <el-tab-pane label="团队管理" name="second">
                 <el-button style="width:100px;background-color:#f96332;color:white;float:right" type="danger" @click="dismiss">解散团队</el-button>
-                <el-button style="width:100px;background-color:#f96332;color:white;float:right">邀请成员</el-button>
+                <el-button style="width:100px;background-color:#f96332;color:white;float:right;margin-right:15px" @click="InvitedialogVisible=true">邀请成员</el-button>
+                <el-dialog
+                title="邀请成员"
+                :visible.sync="InvitedialogVisible">
+                <label style="padding-right:10px">请输入用户名</label><el-input v-model="InvitedUsername" id="invitedUsername" style="width:40%"></el-input>
+                <el-button @click="I">确定</el-button>
+                </el-dialog>
                 <el-table
                     :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
                     style="width: 100%"
@@ -173,6 +179,7 @@
                 <div class="text item" >
                     {{ item.MessageContent }}
                 </div>
+                    </el-card>
             </el-tab-pane>
             <el-tab-pane label="历史记录" name="fourth">历史记录</el-tab-pane>
         </el-tabs>
@@ -205,7 +212,9 @@ export default {
             dialogFormVisible: false,
             formLabelWidth: '120px',
             PersonalDocData:[],
-            multipleSelection: []
+            multipleSelection: [],
+            InvitedialogVisible:false,
+            InvitedUsername:''
         }
     },
     created:function(){
