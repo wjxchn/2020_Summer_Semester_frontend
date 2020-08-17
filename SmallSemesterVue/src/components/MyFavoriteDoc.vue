@@ -81,7 +81,7 @@
                 :page-sizes="[5, 10, 15, 20]"
                 :page-size="1"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="3">
+                :total="total">
               </el-pagination>
               
           </div>
@@ -104,6 +104,7 @@ export default {
     },
     data () {
         return {
+            total:0,
             opend:['1','2','3'],
             uniqueOpened:false,
             FileTime:'2020-8-11 12:00',
