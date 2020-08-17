@@ -188,7 +188,6 @@
                 </div>
                     </el-card>
             </el-tab-pane>
-            <el-tab-pane label="分享" name="third">分享</el-tab-pane>
             <el-tab-pane label="历史记录" name="fourth">历史记录</el-tab-pane>
         </el-tabs>
         </main>
@@ -229,7 +228,15 @@ export default {
             PersonalDocData:[],
             multipleSelection: [],
             InvitedialogVisible:false,
-            InvitedUsername:''
+            InvitedUsername:'',
+            MessageData:[
+                {
+                    id:'1',
+                    MessageTitle:'特朗普决定变更国籍为中国',
+                    MessageContent:'北京时间8月26日，特朗普来到中国，在天安门面前大喊:\'Make Chine Great Again！\'，然后宣誓入籍中国。',
+                    date:'2000-8-13 19:19:68'
+                }
+                ]
         }
     },
     created:function(){
@@ -511,6 +518,29 @@ export default {
 </script>
 
 <style scoped>
+.time{
+    font-size: 13px;
+    margin: 20px;
+    color:rgb(153, 153 ,153)
+}
+.text {
+    font-size: 15px;
+    color: rgb(102,102,102);
+}
+  .item {
+    margin-bottom: 18px;
+}
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+.box-card {
+    width: 100%;
+}
 .isFixed {
     position: fixed;
     top: 0;
