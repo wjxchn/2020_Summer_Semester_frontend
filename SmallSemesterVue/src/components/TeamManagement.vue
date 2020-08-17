@@ -124,7 +124,15 @@
                  </el-table>
             </el-tab-pane>
             <el-tab-pane label="团队管理" name="second">
-                <el-button style="width:100px;background-color:#f96332;color:white;float:right" type="danger" @click="dismiss">解散团队</el-button>
+                <el-button style="width:100px;background-color:#f96332;color:white;float:right" type="danger" @click="DismissDialogVisible=true">解散团队</el-button>
+                <el-dialog
+                title="解散团队"
+                :visible.sync="DismissDialogVisible"
+                width=200px>
+                 <p>确定解散您的团队吗？</p>
+                <el-button type="danger" @click="dismiss;DismissDialogVisible=false">确定</el-button>
+                <el-button @click="DismissDialogVisible=false">取消</el-button>
+                </el-dialog>
                 <el-button style="width:100px;background-color:#f96332;color:white;float:right;margin-right:15px" @click="InvitedialogVisible=true">邀请成员</el-button>
                 <el-dialog
                 title="邀请成员"
@@ -229,6 +237,8 @@ export default {
             authoritylevel:0,
             opend:['1','2','3'],
             uniqueOpened:false,
+            DismissDialogVisible:false,
+            DismissInput:'',
             activeName: 'first',
             istabBar: false,
             tableData: [{name:'1',authority:1,identity:'33333'},{name:'1',authority:2,identity:'33333'}],     //团队成员管理数据
@@ -293,6 +303,12 @@ export default {
     },
     
     methods: {
+        isInputValid(){
+            if(this.DismissInput=="解散团队")
+                return true;
+            else
+                return false;
+        },
         change(e){
             this.authoritylevel=e
         },
