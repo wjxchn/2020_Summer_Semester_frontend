@@ -10,6 +10,7 @@ const routerOptions = [
   { path: '/carousel', component: 'Carousel' },//封面（暂时弃置）
   { path: '/createfromdemo', component: 'CreateFromDemo' },//使用模板创建文档页面
   { path: '/createteam', component: 'CreateTeam' },//创建团队页面
+  { path: '/editgroupdoc', component: 'EditGroupDoc'},//编辑团队文档页面
   { path: '/editperson' , component: 'EditPerson'},//编辑个人资料页面
   { path: '/editpersonaldoc', component: 'EditPersonalDoc' },//编辑个人文档页面
   { path: '/firstpage' , component: 'Firstpage'},//首页

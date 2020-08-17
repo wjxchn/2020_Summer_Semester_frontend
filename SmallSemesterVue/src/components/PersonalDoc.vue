@@ -281,6 +281,31 @@ export default {
             console.log(row.docid)//此时就能拿到整行的信息
             this.$router.push({path: '/editpersonaldoc', query: {doc_id: row.docid}})
         },
+        //收藏文档
+        handlefavorite(row){
+            console.log(row.docid)
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/addfavoritedoc/',
+                data: {'username': localStorage.getItem('username'), 'doc_id': row.docid}
+            })
+            .then(response =>{
+                if(response.data.code === 200){
+                    alert('收藏文档成功')
+                }
+                else if(response.data.code === 400){
+                    alert('收藏文档失败')
+                }
+                else {
+                    alert('错误')
+                }
+
+            })
+            .catch(error =>{
+                console.log(error)
+                alert('错误')
+            })
+        },
         //分享文档
         handleshare(row){
             this.docname=" 【福报文档】 "+row.docname+ "  \n  " +"http://localhost:8000/showplaintext_new?doc_id="+row.docid;
