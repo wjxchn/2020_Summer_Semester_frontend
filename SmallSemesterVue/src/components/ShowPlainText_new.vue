@@ -67,7 +67,20 @@
                    
                 <div style="font-size:30px;margin-top:100px">
                     <b>评论区</b>
-                    <el-button @click="showInput" style="float:right"><i class="el-icon-chat-round" style="width:30px;"></i></el-button>
+                    <!-- -->
+                    <el-button style="background-color:#f96332;color:white;float:right" @click="dialogHistoryVisible = true"><i class="el-icon-timer" style="width:30px;"></i></el-button>
+                    <el-dialog title="历史修改记录" :visible.sync="dialogHistoryVisible">
+                    <el-table :data="alterhistory" style="width: 100%">
+                        <el-table-column prop="altername" label="修改者" width="400"></el-table-column>
+                        <el-table-column prop="altertime" label="修改日期" width="400"></el-table-column>
+                    </el-table>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button style="width:70px;background-color:#f96332;color:white" @click="dialogHistoryVisible = false">返回</el-button>
+                    </div>
+                    </el-dialog>
+                    <!-- -->
+
+                    <el-button @click="showInput" style="float:right;background-color:#f96332;color:white"><i class="el-icon-chat-round" style="width:30px;"></i></el-button>
                 <div v-bind:class="{'div1':isTrue}" :rules="rules" prop="content" required>
                     <el-input v-model="ruleForm.content" placeholder="请输入内容"></el-input>
                      <el-button style="width:70px;background-color:#f96332;color:white" @click="addCommentFunc(),dialogFormVisible = false">确 定</el-button>
@@ -122,12 +135,19 @@ export default {
             uniqueOpened:false,
             istabBar: false,
             dialogFormVisible:false,
+            dialogHistoryVisible:false,
             dialogDelComVisible:false,
             doc_name: '',
             doc_creater: '',
             doc_intro: '',
             htmlData: '',
             commentData: [],
+            alterhistory:[
+                {altername:'1',altertime:'2'},
+                {altername:'1',altertime:'2'},
+                {altername:'1',altertime:'2'},
+                {altername:'1',altertime:'2'},
+            ],
             ruleForm:{
                 content:''
             },
