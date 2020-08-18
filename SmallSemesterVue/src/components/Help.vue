@@ -45,7 +45,7 @@
                 <el-input  placeholder="请输入内容" style="width:250px">
                 <el-button  slot="append" icon="el-icon-search"></el-button></el-input>
                 </div>
-                <h3 fixed="right"> 帮助中心 </h3>
+                <p style="font-size:30px;margin-top:20px"><b>帮助中心</b></p>
             <div>
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="这里是问题1" name="1">
