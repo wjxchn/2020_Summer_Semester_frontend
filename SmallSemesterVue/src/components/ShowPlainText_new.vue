@@ -50,7 +50,7 @@
             </div>
             <br><br><br>
             <div class="zw" >
-                <el-card class="box-card" style="width:100%">
+                <el-card class="box-card" style="width:100%；height:1000px">
                     <div slot="header" class="clearfix">
                         <h3 style="text-align:center">{{doc_name}}</h3>
                         <p style="text-align:right;padding-top:10px;font-size:13px;color:rgb(153,153,153)">创建者：{{doc_creater}}</p>   
