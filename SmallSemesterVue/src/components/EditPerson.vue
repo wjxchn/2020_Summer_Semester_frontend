@@ -41,7 +41,7 @@
 
     <!-- 页面内部的内容写在main中间即可 -->
         <div class="header">
-            <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/Person' }">个人资料</el-breadcrumb-item>
             <el-breadcrumb-item>编辑个人信息</el-breadcrumb-item>
             </el-breadcrumb>
