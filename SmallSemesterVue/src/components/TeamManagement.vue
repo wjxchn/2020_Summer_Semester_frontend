@@ -161,12 +161,16 @@
                     </el-table-column>
                     <el-table-column
                     label="权限"
-                    prop="authority" width="300px">
+                    prop="authority" width="400px">
                     <template slot-scope="scope">
-                        <div style="width:100%;height:50px">
+                        <div style="width:300px;height:50px">
                             <el-slider  v-model="scope.row.authority" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change(scope.row)"></el-slider>
                         </div>
                     </template>  
+                    </el-table-column>
+                    <el-table-column
+                    label="角色"
+                    prop="role" width="150px">
                     </el-table-column>
                     <el-table-column
                     align="right">
