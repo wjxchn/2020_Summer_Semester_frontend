@@ -66,7 +66,7 @@
 
                 <hr>
                 <el-table
-                    :data="tableData.filter(data => !search || data.docname.toLowerCase().includes(search.toLowerCase()))"
+                    :data="pageData.filter(data => !search || data.docname.toLowerCase().includes(search.toLowerCase()))"
                     style="width: 100%"
                     :row-class-name="tableRowClassName"
                     >
@@ -119,9 +119,9 @@
                  <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="1"
+                    :current-page="currentPage"
                     :page-sizes="[5, 10, 15, 20]"
-                    :page-size="1"
+                    :page-size="pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total">
                 </el-pagination>
@@ -160,6 +160,9 @@ export default {
             uniqueOpened:false,
             FileTime:'2020-8-11 12:00',
             tableData:[],
+            pageData:[],
+            currentPage:1,
+            pageSize:5,
             latestData: [1,2,3,4,5,6],
             istabBar: false,
             form: {
@@ -214,9 +217,24 @@ export default {
                 alert('错误')
                 this.$router.go(0)
             }
-        });        
+        });
+        this.initpageData();
     },
     methods: {
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.pageData = this.tableData.slice(0,val);
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            this.pageData = this.tableData.slice(this.pageSize * (val - 1),this.pageSize * val)
+            console.log(`当前页: ${val}`);
+        },
+        initpageData(){
+            this.total = this.tableData.length;
+            this.pageData = this.tableData.slice(0,5);
+        },
         //侧边栏的跳转
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
