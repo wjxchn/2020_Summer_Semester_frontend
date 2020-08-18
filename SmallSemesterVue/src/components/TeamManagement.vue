@@ -190,7 +190,19 @@
                 </el-table>
             </el-tab-pane>
             <el-tab-pane label="团队简介" name="third">
-                <el-button style="float:right;background-color:#f96332;color:white;">修改</el-button>
+                <el-button style="float:right;background-color:#f96332;color:white;" @click="IntroVisible = true">修改</el-button>
+                <p v-text="groupintro"></p>
+                <el-dialog title="创建团队" :visible.sync="IntroVisible">
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                    <el-form-item label="团队简介" :label-width="formLabelWidth" prop="introduction" required>
+                    <el-input type="textarea" v-model="ruleForm.introduction"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button style="width:70px;background-color:#f96332;color:white" @click="IntroVisible = false">取 消</el-button>
+                    <el-button style="width:70px;background-color:#f96332;color:white" @click="submitIntroForm('ruleForm',ruleForm),IntroVisible = false">确 定</el-button>
+                </div>
+                </el-dialog>
             </el-tab-pane>
         </el-tabs>
         </main>
@@ -225,7 +237,7 @@ export default {
             DismissInput:'',
             activeName: 'first',
             istabBar: false,
-            tableData: [{name:'1',authority:1,identity:'33333'},{name:'1',authority:2,identity:'33333'}],     //团队成员管理数据
+            tableData: [],     //团队成员管理数据
             search: '',              
             DocData:[],            //显示团队文件数据
             dialogFormVisible: false,
@@ -234,7 +246,18 @@ export default {
             multipleSelection: [],
             InvitedialogVisible:false,
             InvitedPersonList:[],
-            InvitedUsername:''
+            InvitedUsername:'',
+            groupintro: '',
+            IntroVisible: false,
+            ruleForm:{
+                introduction:''
+            },
+            rules:{
+                introduction:[
+                    {required:true, message:'请输入团队简介', trigger:'blur'},
+                    {min:5,max:50,message:'长度在 5 到 50 个字符',trigger:'blur'}
+                ]
+            },
         }
     },
     created:function(){
@@ -266,6 +289,25 @@ export default {
                 console.log(response)
                 if(response.data.code===200){
                     this.$set(this,'tableData',response.data.memberlist)
+                }
+                else if(response.data.code===400){
+                    alert('返回失败')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+            })
+        axios({
+                method: 'post',
+                url: 'http://localhost:8000/api/showgroupintro/',
+                data: {'group_id':this.$route.query.group_id}
+            })
+            .then(response => {
+                console.log(response)
+                if(response.data.code===200){
+                    this.$set(this,'groupintro',response.data.introduction)
                 }
                 else if(response.data.code===400){
                     alert('返回失败')
@@ -323,33 +365,77 @@ export default {
             console.log(row.docid)//此时就能拿到整行的信息
             axios({
                 method: 'POST',
-                url: 'http://localhost:8000/api/checkauthority/',
-                data: {'username': localStorage.getItem('username'), 'group_id': this.$route.query.group_id}
-            })
-            .then(response =>{
-                if(response.data.code === 200){
-                    if(response.data.authority >= 1){
-                        this.$router.push({path: '/editgroupdoc', query: {doc_id: row.docid, group_id: this.$route.query.group_id, group_name:
-                                            this.$route.query.group_name}})
+                url: 'http://localhost:8000/api/returnlockstatus/',
+                data: {'doc_id': row.docid}
+                })
+                .then(response =>{
+                    if(response.data.code === 200){
+                        console.log(row.islock)
+                        row.islock=response.data.islock
+                        console.log(row.islock)
                     }
-                    else{
-                        alert('您的权限不足。')
+                    else if(response.data.code === 400){
+                        alert('获取参数失败')
                     }
-                }
-                else if(response.data.code === 400){
-                    alert('错误')
-                    this.$router.go(0)
-                }
-                else{
-                    alert('错误')
-                    this.$router.go(0)
-                }
-            })
-            .catch(error =>{
-                console.log(error)
-                alert('错误')
-                this.$router.go(0)
-            })
+                    else {
+                        alert('错误')
+                    }
+
+                }).catch(error=>{
+                    console.log(error)
+                }).then(()=>{
+                    if(row.islock === false)
+                    {
+                        console.log(row.islock)
+                        axios({
+                        method: 'POST',
+                        url: 'http://localhost:8000/api/checkauthority/',
+                        data: {'username': localStorage.getItem('username'), 'group_id': this.$route.query.group_id}
+                        })
+                        .then(response =>{
+                            if(response.data.code === 200){
+                                if(response.data.authority >= 1){
+                                    axios({
+                                    method: 'POST',
+                                    url: 'http://localhost:8000/api/lockdoc/',
+                                    data: {'doc_id': row.docid}
+                                    })
+                                    .then(response =>{
+                                        if(response.data.code === 200){
+                                            alert('锁定成功')
+                                        }
+                                        else if(response.data.code === 400){
+                                            alert('锁定失败')
+                                        }
+                                        else {
+                                            alert('错误')
+                                        }
+
+                                    })
+                                    this.$router.push({path: '/editgroupdoc', query: {doc_id: row.docid, group_id: this.$route.query.group_id, group_name:
+                                                        this.$route.query.group_name}})
+                                }
+                                else{
+                                    alert('您的权限不足。')
+                                }
+                            }
+                            else if(response.data.code === 400){
+                                alert('错误')
+                                this.$router.go(0)
+                            }
+                            else{
+                                alert('错误')
+                                this.$router.go(0)
+                            }
+                        })
+                        .catch(error =>{
+                            console.log(error)
+                            alert('错误')
+                            this.$router.go(0)
+                        })
+                    }
+                    else
+                        alert('文档正在编辑中，请稍后')})
             
         },
         handleDelete(row){
@@ -686,7 +772,38 @@ export default {
                     alert('发送邀请成功！')
                 }
             })
-        }
+        },
+        submitIntroForm(formName,item){
+            this.$refs[formName].validate((valid) => {
+            if (valid) {
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:8000/api/changegroupintro/',
+                    data: {'group_id': this.$route.query.group_id, 'introduction':this.ruleForm.introduction}
+                })
+                .then(response => {
+                    console.log(response)
+                    if(response.data.code===200){
+                        alert('修改组名成功')
+                        this.$router.go(0)
+                    }
+                    else{
+                        alert('错误')
+                        this.$router.go(0)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    alert('出现错误')
+                    this.$router.go(0)
+                });
+            } else {
+                console.log('提交失败');
+                alert('组名长度在 2 到 15 个字符,简介长度在 5 到 50 个字符')
+                return false;
+            }
+            }); 
+        },
     },
     mounted () {
         window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕

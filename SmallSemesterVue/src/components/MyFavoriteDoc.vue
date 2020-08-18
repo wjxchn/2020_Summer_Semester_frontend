@@ -43,7 +43,7 @@
         </div>
           <div class="recycler">         
             <el-table
-                :data="pageData"
+                :data="tableData"
                 style="width: 100%"
                 :row-class-name="tableRowClassName">
                 <el-table-column type="index" label="序号"></el-table-column>
@@ -81,18 +81,7 @@
                 </template>
                 </el-table-column>
             </el-table>
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[5, 10, 15, 20]"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="total">
-              </el-pagination>
-              
           </div>
-
         </main>
         </el-container>
         </el-container>

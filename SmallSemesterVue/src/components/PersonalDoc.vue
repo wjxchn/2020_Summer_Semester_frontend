@@ -66,7 +66,7 @@
 
                 <hr>
                 <el-table
-                    :data="pageData.filter(data => !search || data.docname.toLowerCase().includes(search.toLowerCase()))"
+                    :data="tableData.filter(data => !search || data.docname.toLowerCase().includes(search.toLowerCase()))"
                     style="width: 100%"
                     :row-class-name="tableRowClassName"
                     >
@@ -106,25 +106,12 @@
                         <el-dropdown-item><el-button @click="handlefavorite(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-star-off">收藏</v></el-button></el-dropdown-item>
                         <el-dropdown-item><el-button @click="handledelete(scope.row)" size="small" type="danger"><v class="el-icon-delete">删除</v></el-button></el-dropdown-item>
                         <el-dropdown-item><el-button @click="handleshare(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-share">分享</v></el-button>
-
                         </el-dropdown-item>
-                        
                     </el-dropdown-menu>
                     </el-dropdown>
                     </template>
-                    
                     </el-table-column>
                  </el-table>
-                 
-                 <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    :page-sizes="[5, 10, 15, 20]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
-                </el-pagination>
             </div>
              <el-dialog title="分享文档" :visible.sync="dialogFormVisible" width="40%">
                         <el-input type="textarea" style="width:90%" readonly="true" :value="docname" id="input"></el-input>
@@ -133,7 +120,6 @@
                     <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
                 </div>
             </el-dialog>
-           
         </main>
         </el-container>
         </el-container>
@@ -163,7 +149,7 @@ export default {
             pageData:[],
             currentPage:1,
             pageSize:5,
-            latestData: [1,2,3,4,5,6],
+            latestData: [],
             istabBar: false,
             form: {
             name: '',
@@ -191,6 +177,8 @@ export default {
             console.log(response)
             if(response.data.code===200){
                 this.$set(this,'tableData',response.data.list)
+                this.total = this.tableData.length;
+                this.pageData = this.tableData.slice(0,5);
             }
             else if(response.data.code===400){
                 alert('文件不存在')
@@ -218,23 +206,8 @@ export default {
                 this.$router.go(0)
             }
         });
-        this.initpageData();
     },
     methods: {
-        handleSizeChange(val) {
-            this.pageSize = val;
-            this.pageData = this.tableData.slice(0,val);
-            console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {
-            this.currentPage = val;
-            this.pageData = this.tableData.slice(this.pageSize * (val - 1),this.pageSize * val)
-            console.log(`当前页: ${val}`);
-        },
-        initpageData(){
-            this.total = this.tableData.length;
-            this.pageData = this.tableData.slice(0,5);
-        },
         //侧边栏的跳转
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
@@ -297,8 +270,57 @@ export default {
 
         handleedit(row){
             console.log(row.docid)//此时就能拿到整行的信息
-            this.$router.push({path: '/editpersonaldoc', query: {doc_id: row.docid}})
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/returnlockstatus/',
+                data: {'doc_id': row.docid}
+                })
+                .then(response =>{
+                    if(response.data.code === 200){
+                        console.log(row.islock)
+                        row.islock=response.data.islock
+                        console.log(row.islock)
+                    }
+                    else if(response.data.code === 400){
+                        alert('获取参数失败')
+                    }
+                    else {
+                        alert('错误')
+                    }
+                })
+                .then(()=>{
+                    if(row.islock === false)
+                    {
+                        console.log(row.islock)
+                        axios({
+                        method: 'POST',
+                        url: 'http://localhost:8000/api/lockdoc/',
+                        data: {'doc_id': row.docid}
+                        })
+                        .then(response =>{
+                            if(response.data.code === 200){
+                                alert('锁定成功')
+                            }
+                            else if(response.data.code === 400){
+                                alert('锁定失败')
+                            }
+                            else {
+                                alert('错误')
+                            }
+
+                        })
+                        this.$router.push({path: '/editpersonaldoc', query: {doc_id: row.docid}})
+                    }
+                    else
+                    {
+                        console.log(row.islock)
+                        alert('文档正在编辑中，请稍后')
+                    }
+                })
+            
+                
         },
+
         //收藏文档
         handlefavorite(row){
             console.log(row.docid)

@@ -84,7 +84,7 @@
             </el-card>
         </el-tab-pane>
         <el-tab-pane label="文档通知">
-            <el-card class="box-card" v-for="(item) in SystemMessageData" :key="item" style="margin-bottom:20px">
+            <el-card class="box-card" v-for="(item) in DocumentMessageData" :key="item" style="margin-bottom:20px">
                 <div slot="header" class="clearfix">
                     <span class="title" >{{item.MessageTitle}}</span>
                     <span class="time">{{item.date}}</span>
