@@ -41,29 +41,32 @@
 
     <!-- 页面内部的内容写在main中间即可 -->
         <div >
-            <div style="float:right">
-                <el-input  placeholder="请输入内容" style="width:250px">
-                <el-button  slot="append" icon="el-icon-search"></el-button></el-input>
-                </div>
-                <h3 fixed="right"> 帮助中心 </h3>
+                <h3 fixed="right" style="padding:20px"> 帮助中心 </h3>
             <div>
                 <el-collapse v-model="activeNames" @change="handleChange">
-                    <el-collapse-item title="这里是问题1" name="1">
-                        <div>这里是问题1的回答</div>
-                        <div>这里是问题1的回答</div>
+                    <el-collapse-item title="哪些浏览器可以使用石墨文档？" name="1">
+                        <div>Chrome、Firefox、Safari、IE10以上，以及其他以Webkit为内核的浏览器（如：360安全/极速浏览器，QQ浏览器，搜狗浏览器等等）。
+
+我们推荐您优先使用 最新稳定版 Chrome 浏览器。
+</div>
                     </el-collapse-item>
-                    <el-collapse-item title="这里是问题2" name="2">
-                        <div>这里是问题2的回答</div>
-                        <div>这里是问题2的回答</div>
+                    <el-collapse-item title="福报最多支持多少人同时编辑一个文档？" name="2">
+                        <div>1个。当有人正在编辑文档时，福报文档会禁止其他人编辑文档，等候文档无人编辑时方可编辑。</div>
                     </el-collapse-item>
-                    <el-collapse-item title="这里是问题3" name="3">
-                        <div>这里是问题3的回答</div>
-                        <div>这里是问题3的回答</div>
-                        <div>这里是问题3的回答</div>
+                    <el-collapse-item title="福报有iOS和Android客户端吗？" name="3">
+                        <div>不好意思，没有。福报目前仅支持桌面端web.</div>
                     </el-collapse-item>
-                    <el-collapse-item title="这里是问题4" name="4">
-                        <div>这里是问题4的回答</div>
-                        <div>这里是问题4的回答</div>
+                    <el-collapse-item title="如何新建福报个人doc文档？" name="4">
+                        <div>在工作台-我的文档 界面右上角【新建】,即可通过模板创建文档。</div>
+                    </el-collapse-item>
+                    <el-collapse-item title="如何新建福报团队doc文档？" name="5">
+                        <div>在工作台-我的团队 进入团队页面后 界面右上角【新建】,即可创建文档。</div>
+                    </el-collapse-item>
+                    <el-collapse-item title="误删的文件如何恢复？" name="6">
+                        <div>在工作台-回收站 即可找到误删的文件并恢复。</div>
+                    </el-collapse-item>
+                    <el-collapse-item title="网站不好使了怎么办？" name="7">
+                        <div>在开发者信息中，找到我们的开发人员邮箱并投递邮件，即可联系开发人员修复Bug。</div>
                     </el-collapse-item>
                 </el-collapse>
             </div>

@@ -41,13 +41,13 @@
         <div class="a4">
             <div class="plaintext_new">
             <br>
-                <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="文档名">
+                <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+                <el-form-item label="文档名" prop="name">
                     <el-col :span="22">
                     <el-input v-model="form.doc_name"></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="简介">
+                <el-form-item label="简介" prop="introduction">
                     <el-col :span="22">
                     <el-input type="textarea" :rows="4"  v-model="form.introduction"></el-input>
                     </el-col>
@@ -66,7 +66,7 @@
 
                 <br><br><br>
                  
-                 <el-button class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="submitPlainText" plain>提交修改</el-button>
+                 <el-button class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="IsformValid('form')" plain>提交修改</el-button>
             </div>
         </div>
         </main>
@@ -87,6 +87,10 @@ export default {
     },
     data () {
         return {
+            rules:{
+                name:[{required: true, message: '请输入文档名称', trigger: 'blur'}],
+                introduction:[{required: true, message: '请输入文档简介', trigger: 'blur'}]
+            },
             opend:['1','2','3'],
             uniqueOpened:false,
             isUnmodifiable:true,
@@ -205,6 +209,18 @@ export default {
             this.content = editor.html;
             console.log(editor);
         },
+        IsformValid(formName){
+            this.$refs[formName].validate((valid) => {
+            if (valid) {
+            this.submitPlainText();
+            alert('submit!');
+
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+        },
         submitPlainText(){
             console.log(this.content);
             axios({
@@ -243,7 +259,14 @@ export default {
                     this.istabBar = false
                     mainPart.style.paddingTop = "0px";
                 }
+        },
+        beforeunloadHandler(e) {
+        e = e || window.event;
+        if (e) {
+            e.returnValue = "您是否确认离开此页面-您输入的数据可能不会被保存";
         }
+        return "您是否确认离开此页面-您输入的数据可能不会被保存";
+        },
     },
     computed: {
         editor() {
@@ -251,10 +274,16 @@ export default {
         }
     },
     mounted () {
-        window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
+        window.addEventListener("beforeunload", e => {
+        this.beforeunloadHandler(e);
+        });
+        window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕  
     },
     destroyed () {
-        window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
+        window.removeEventListener("beforeunload", e => {
+        this.beforeunloadHandler(e);
+        });
+        window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除  
     }
 }
 </script>

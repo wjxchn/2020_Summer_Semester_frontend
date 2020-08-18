@@ -41,13 +41,13 @@
         <div class="a4">
             <div class="plaintext_new">
             <br>
-                <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="文档名">
+                <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+                <el-form-item label="文档名" prop="doc_name">
                     <el-col :span="22">
                     <el-input v-model="form.doc_name"></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="简介">
+                <el-form-item label="简介" prop="introduction">
                     <el-col :span="22">
                     <el-input type="textarea" :rows="4"  v-model="form.introduction"></el-input>
                     </el-col>
@@ -75,7 +75,7 @@
 
                 <br><br><br>
                  
-                 <el-button class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="submitPlainText" plain>提交修改</el-button>
+                 <el-button class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="isFormValid('form')" plain>提交修改</el-button>
             </div>
         </div>
         </main>
@@ -96,6 +96,10 @@ export default {
     },
     data () {
         return {
+            rules:{
+              doc_name: [{ required: true, message: '请输入文档名称', trigger: 'blur' }],
+              introduction:[{required: true, message: '请输入文档名称', trigger: 'blur'}]
+            },
             opend:['1','2','3'],
             uniqueOpened:false,
             isUnmodifiable:true,
@@ -162,6 +166,17 @@ export default {
         })
     },
     methods: {
+        isFormValid(formName){
+            this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.submitPlainText();
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+        },
         //侧边栏的跳转
         handleOpen(key, keyPath) {
             console.log(key, keyPath);

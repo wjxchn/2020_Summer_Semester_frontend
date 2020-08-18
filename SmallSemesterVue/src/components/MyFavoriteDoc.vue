@@ -77,6 +77,7 @@
                         <el-dropdown-item><el-button @click="handleedit(scope.row)" size="small" style="background-color:#f96332;color:white" ><v class="el-icon-edit">编辑</v></el-button></el-dropdown-item>
                         <el-dropdown-item><el-button @click="RmFavorDoc(scope.row)" size="small" type="danger"><v class="el-icon-delete">移除</v></el-button></el-dropdown-item>
                 </el-dropdown-menu>
+                </el-dropdown>
                 </template>
                 </el-table-column>
             </el-table>

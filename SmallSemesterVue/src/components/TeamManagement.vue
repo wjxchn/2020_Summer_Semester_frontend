@@ -185,6 +185,9 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
+            <el-tab-pane label="团队简介" name="third">
+                <el-button style="float:right;background-color:#f96332;color:white;">修改</el-button>
+            </el-tab-pane>
         </el-tabs>
         </main>
         </el-container>
