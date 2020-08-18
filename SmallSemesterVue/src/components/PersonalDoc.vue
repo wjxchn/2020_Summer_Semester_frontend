@@ -54,10 +54,10 @@
                 <br>
                 <p class="history"> 最近浏览记录 </p>
                 
-                <el-row>
-                     <el-col :span="8" v-for="item in latestData" :key="item.divid" :offset="index > 0 ? 2 : 0">
-                        <el-card class="box-card">
-                        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2170127953,2276382196&fm=26&gp=0.jpg" class="image">
+                <el-row :gutter="12">
+                     <el-col :span="4" v-for="item in latestData" :key="item.divid">
+                        <el-card class="box-card" style="width:100%;margin:10px" :body-style="{ padding: '0px' }">
+                        <img src="http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEAxN*ehXb41BOpIxuE7*t7IIN.9KqKMcME9zKo1RSrFQIv2kdlBJ.3tT.JDpDUKkVGoFAPq9hP656gFSteR81Jo!/r" class="image">
                         <div class="card">
                             <el-button type="text" class="button" v-model="item.doc_name" @click="tolatestcontent(item.doc_id)">{{item.doc_name}}</el-button>
                         </div>                    
@@ -161,7 +161,7 @@ export default {
             uniqueOpened:false,
             FileTime:'2020-8-11 12:00',
             tableData:[],
-            latestData: [],
+            latestData: [1,2,3,4,5,6],
             istabBar: false,
             form: {
             name: '',
@@ -377,9 +377,9 @@ export default {
     font-size: 13px;
     color: #999;
   }
-.box-card{
+    .box-card{
     width: 250px;
-}
+    }
   .clearfix:before,
   .clearfix:after {
       display: table;
