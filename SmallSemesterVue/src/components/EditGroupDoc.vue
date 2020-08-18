@@ -234,7 +234,7 @@ export default {
             axios({
                 method: 'post',
                 url: 'http://localhost:8000/api/changepersonaldoc/',
-                data: {'doc_id':this.$route.query.doc_id, 'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction}
+                data: {'doc_id':this.$route.query.doc_id, 'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction, 'username': localStorage.getItem('username')}
             })
             .then(response => {
                 console.log(response)

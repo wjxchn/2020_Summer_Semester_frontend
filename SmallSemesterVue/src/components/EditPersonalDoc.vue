@@ -42,7 +42,7 @@
             <div class="plaintext_new">
             <br>
                 <el-form ref="form" :model="form" label-width="80px" :rules="rules">
-                <el-form-item label="文档名" prop="name">
+                <el-form-item label="文档名" prop="doc_name">
                     <el-col :span="22">
                     <el-input v-model="form.doc_name"></el-input>
                     </el-col>
@@ -88,7 +88,7 @@ export default {
     data () {
         return {
             rules:{
-                name:[{required: true, message: '请输入文档名称', trigger: 'blur'}],
+                doc_name:[{required: true, message: '请输入文档名称', trigger: 'blur'}],
                 introduction:[{required: true, message: '请输入文档简介', trigger: 'blur'}]
             },
             opend:['1','2','3'],
@@ -96,7 +96,10 @@ export default {
             isUnmodifiable:true,
             istabBar: false,
             content: null,
-            form:null,
+            form:{
+                doc_name: '',
+                introduction: ''
+            },
             editorOption: {
 
                 modules: {
@@ -226,7 +229,7 @@ export default {
             axios({
                 method: 'post',
                 url: 'http://localhost:8000/api/changepersonaldoc/',
-                data: {'doc_id':this.$route.query.doc_id, 'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction}
+                data: {'doc_id':this.$route.query.doc_id, 'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction, 'username': localStorage.getItem('username')}
             })
             .then(response => {
                 console.log(response)
