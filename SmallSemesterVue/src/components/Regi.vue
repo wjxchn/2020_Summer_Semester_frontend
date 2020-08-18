@@ -5,25 +5,27 @@
 		<h1 style="color:#f96332" >注册</h1>
 	</div>
 	<div class="bc">
-		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
-			<el-form-item  label="用户名" prop="name">
+		<el-form class="mmain":model="ruleForm" :rules="rules" ref="ruleForm"  class="demo-ruleForm">
+			<el-form-item label-width="160px" style="width:370px" label="用户名" prop="name">
 				<el-input style="width:240px" v-model="ruleForm.name"></el-input></el-form-item>
-			<el-form-item label="密码" prop="pass">
+			<el-form-item label-width="160px" style="width:370px" label="密码" prop="pass">
 				<el-input type="password" style="width:240px" v-model="ruleForm.pass" auto-complete="off"></el-input></el-form-item>
-			<el-form-item label="确认密码" prop="checkPass">
+			<el-form-item label-width="160px" style="width:370px" label="确认密码" prop="checkPass">
 				<el-input type="password" style="width:240px" v-model="ruleForm.checkPass" auto-complete="off"></el-input></el-form-item>
-			<el-form-item label="电子邮箱" prop="email">
+			<el-form-item label-width="160px" style="width:370px" label="电子邮箱" prop="email">
 				<el-input type="email" style="width:240px" v-model="ruleForm.email" auto-complete="off"></el-input></el-form-item>
-			<el-form-item label-width="78px"><el-button-group >
+			<el-form-item label-width="135px"><el-button-group >
 				
 				<el-button style="background-color:#f96332;color:white;width:82px" @click="submitForm('ruleForm')">注册</el-button>
 				<el-button style="background-color:#f96332;color:white;width:82px" @click="resetForm('ruleForm')">重置</el-button>
 				<el-button style="background-color:#f96332;color:white;width:82px" @click="Guider">返回</el-button>
 				
 			</el-button-group>
-			
 			</el-form-item>
-			<i >点击[注册]按钮表示已阅读并同意福报文档服务条款</i>
+			<el-form-item label-width="95px">
+			<i style="text-align:center" >点击[注册]按钮表示已阅读并同意福报文档服务条款</i>
+			</el-form-item>
+			
 		</el-form>
 		<div class="tz">已有账号？点击此处登录
 			<el-button style="background-color:#f96332;color:white;width:82px" @click="Login" :loading="logining">登录</el-button>
@@ -139,22 +141,19 @@ export default {
     overflow-y: auto;
 }
 .tz{
-	height:70px;
-	padding-top:7%;
 	padding-left:35%;
-}
-.mid
-{
-	height:100%;
+	padding-bottom:3%;
 }
 .bc
 {
-    background-color: rgba(255, 255, 255, 0.7);
+   background-color: rgba(255, 255, 255, 0.7);
     border-radius:50px;
-	padding-top:2%;
-	padding-bottom:1%;
-	padding-left:3.5%;
-    margin: 3% auto;
+    margin:0 auto;
+    margin-top:5%;
+    width: 500px;
+}
+.mmain{
+    padding-top:5%;
     width: 500px;
 }
 </style>
