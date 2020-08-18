@@ -39,7 +39,7 @@
         <el-container>
         <main id="mainPart" role="main" class="container">
         <div class="th"> 
-            <h5 fixed="right" style="float:left"> 回收站 </h5>
+            <p style="font-size:30px;margin-top:20px"><b>回收站</b></p>
         </div>
             <el-button type="danger" icon="el-icon-delete" style="float:right" @click="Deleteall">全部删除</el-button>
 
