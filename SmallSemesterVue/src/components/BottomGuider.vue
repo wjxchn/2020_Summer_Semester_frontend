@@ -31,7 +31,7 @@ export default {
     padding: 30px;
 }
 .bottom-guider-text{
-    font-size: 10px;
+    font-size: 15px;
     color: black;
 }
 .bottom-guider-link{
