@@ -65,7 +65,7 @@
                 <quill-editor class="editor"
                 ref="myTextEditor"
                 v-model="content"
-                style="height:800px"
+                style="height:1000px"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
                 @focus="onEditorFocus($event)"
