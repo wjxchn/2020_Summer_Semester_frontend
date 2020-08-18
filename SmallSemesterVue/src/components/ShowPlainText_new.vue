@@ -50,7 +50,7 @@
             </div>
             <br><br><br>
             <div class="zw" >
-                <el-card class="box-card" style="width:100%；height:1000px">
+                <el-card class="box-card" style="width:100%;height:1000px">
                     <div slot="header" class="clearfix">
                         <h3 style="text-align:center">{{doc_name}}</h3>
                         <p style="text-align:right;padding-top:10px;font-size:13px;color:rgb(153,153,153)">创建者：{{doc_creater}}</p>   
@@ -68,11 +68,11 @@
                 <div style="font-size:30px;margin-top:100px">
                     <b>评论区</b>
                     <!-- -->
-                    <el-button style="background-color:#f96332;color:white;float:right" @click="dialogHistoryVisible = true"><i class="el-icon-timer" style="width:30px;"></i></el-button>
+                    <el-button style="background-color:#f96332;color:white;float:right" @click="getalterhistory(),dialogHistoryVisible = true"><i class="el-icon-timer" style="width:30px;"></i></el-button>
                     <el-dialog title="历史修改记录" :visible.sync="dialogHistoryVisible">
                     <el-table :data="alterhistory" style="width: 100%">
                         <el-table-column prop="altername" label="修改者" width="400"></el-table-column>
-                        <el-table-column prop="altertime" label="修改日期" width="400"></el-table-column>
+                        <el-table-column prop="altertime" label="修改时间" width="400"></el-table-column>
                     </el-table>
                     <div slot="footer" class="dialog-footer">
                         <el-button style="width:70px;background-color:#f96332;color:white" @click="dialogHistoryVisible = false">返回</el-button>
@@ -91,7 +91,7 @@
                     <el-card class="box-card" style="width:100%;margin-top:20px;">
                         <div slot="header" class="clearfix">
                             <div style="float:left;height:50px;width:50px;">
-                                <img src="../assets/logo.png" style="height:50px;width:50px;">
+                                <img :src="item.userphotopath"  @click="touserinfo(item.com_author)" style="height:50px;width:50px;">
                             </div>
                             <div style="float:left;height:50px;width:500px`;">
                                 <div style="height:25px;width:500px;"></div>
@@ -142,12 +142,7 @@ export default {
             doc_intro: '',
             htmlData: '',
             commentData: [],
-            alterhistory:[
-                {altername:'1',altertime:'2'},
-                {altername:'1',altertime:'2'},
-                {altername:'1',altertime:'2'},
-                {altername:'1',altertime:'2'},
-            ],
+            alterhistory:[],
             ruleForm:{
                 content:''
             },
@@ -212,6 +207,9 @@ export default {
                     mainPart.style.paddingTop = "0px";
                 }
         },
+        touserinfo(inusername){
+            this.$router.push({path: '/userinfo', query: {'username': inusername}})
+        },
         addCommentFunc(){
             axios({
                 method: 'post',
@@ -257,6 +255,32 @@ export default {
                 console.log(error)
                 alert('出现错误')            
             });
+        },
+        getalterhistory(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/showalterhistory/',
+                data: {'doc_id': this.$route.query.doc_id}
+            })
+            .then(response =>{
+                if(response.data.code === 200){
+                    this.$set(this, 'alterhistory', response.data.list)
+                }
+                else if(response.data.code === 400){
+                    alert('查看历史修改记录失败')
+                    this.$router.go(0)
+                }
+                else{
+                    alert('错误')
+                    this.$router.go(0)
+                }
+                
+            })
+            .catch(err =>{
+                console.log(err)
+                alert('错误')
+                this.$router.go(0)
+            })
         }    
     },
     created:function(){

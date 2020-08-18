@@ -72,7 +72,7 @@
                 <br><br><br>
                 <el-button style="width:100px;background-color:#f96332;color:white;float:right" class="btn btn-primary" @click="submitPlainText" plain>提交</el-button>
             </div>
-            </div>
+        </div>
         </main>
         </el-container>
         </el-container>

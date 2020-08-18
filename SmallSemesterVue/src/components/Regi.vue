@@ -5,7 +5,7 @@
 		<h1 style="color:#f96332" >注册</h1>
 	</div>
 	<div class="bc">
-		<el-form class="mmain":model="ruleForm" :rules="rules" ref="ruleForm"  class="demo-ruleForm">
+		<el-form class="mmain demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm">
 			<el-form-item label-width="160px" style="width:370px" label="用户名" prop="name">
 				<el-input style="width:240px" v-model="ruleForm.name"></el-input></el-form-item>
 			<el-form-item label-width="160px" style="width:370px" label="密码" prop="pass">
@@ -79,7 +79,7 @@ export default {
 				email: ''
 			},
 			rules: {
-				name: [{ required: true, message: '请输入您的名称', trigger: 'blur' }, { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }],
+				name: [{ required: true, message: '请输入您的名称', trigger: 'blur' }, { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }],
 				pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
 				checkPass: [{ required: true, validator: validatePass2, trigger: 'blur' }],
 				email:[{ required: true, validator: validateEmail, trigger: 'blur' }]

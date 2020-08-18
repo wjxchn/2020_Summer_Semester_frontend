@@ -779,13 +779,17 @@ export default {
                 axios({
                     method: 'post',
                     url: 'http://localhost:8000/api/changegroupintro/',
-                    data: {'group_id': this.$route.query.group_id, 'introduction':this.ruleForm.introduction}
+                    data: {'username': localStorage.getItem('username'), 'group_id': this.$route.query.group_id, 'introduction':this.ruleForm.introduction}
                 })
                 .then(response => {
                     console.log(response)
                     if(response.data.code===200){
-                        alert('修改组名成功')
+                        alert('修改团队简介成功')
                         this.$router.go(0)
+                    }
+                    else if(response.data.code === 401){
+                        alert(response.data.msg)
+
                     }
                     else{
                         alert('错误')
@@ -799,7 +803,7 @@ export default {
                 });
             } else {
                 console.log('提交失败');
-                alert('组名长度在 2 到 15 个字符,简介长度在 5 到 50 个字符')
+                alert('简介长度在 5 到 50 个字符')
                 return false;
             }
             }); 
