@@ -39,7 +39,7 @@
         <el-container>
         <main id="mainPart" role="main" class="container">
         <div class="fh">
-            <h5 fixed="right" style="float:left"> 收藏文件 </h5>
+            <p style="font-size:30px;margin-top:20px"><b>收藏文件</b></p>
         </div>
           <div class="recycler">         
             <el-table
