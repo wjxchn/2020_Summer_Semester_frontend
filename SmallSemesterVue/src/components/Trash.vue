@@ -47,7 +47,7 @@
 
 
             <el-table
-                :data="tableData"
+                :data="pageData"
                 style="width: 100%"
                 :row-class-name="tableRowClassName">
                 <el-table-column type="index" label="序号"></el-table-column>
@@ -75,9 +75,9 @@
               <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="1"
+                :current-page="currentPage"
                 :page-sizes="[5, 10, 15, 20]"
-                :page-size="1"
+                :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
               </el-pagination>
@@ -104,14 +104,31 @@ export default {
     data () {
         return {
             total:0,
+            pageSize:5,
+            currentPage:1,
             opend:['1','2','3'],
             uniqueOpened:false,
             FileTime:'2020-8-11 12:00',
             tableData:[],
+            pageData:[],
             istabBar: false
         }
     },
     methods: {
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.pageData = this.tableData.slice(0,val);
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            this.pageData = this.tableData.slice(this.pageSize * (val - 1),this.pageSize * val)
+            console.log(`当前页: ${val}`);
+        },
+        initpageData(){
+            this.total = this.tableData.length;
+            this.pageData = this.tableData.slice(0,5);
+        },
         //侧边栏的跳转
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
@@ -266,7 +283,8 @@ export default {
             console.log(error)
             alert('出现错误')
             this.$router.go(0)
-        })             
+        })
+        this.initpageData()           
     },
     mounted () {
         window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
