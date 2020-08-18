@@ -38,6 +38,7 @@
             </el-aside>
         <el-container>
         <main id="mainPart" role="main" class="container">
+        <div class="a4">
         <div class="header">
             <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
@@ -62,7 +63,7 @@
                 <quill-editor class="editor"
                 ref="myTextEditor"
                 v-model="content"
-                style="height:400px"
+                style="height:1000px"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
                 @focus="onEditorFocus($event)"
@@ -73,6 +74,7 @@
                 <br><br><br>
                  <el-button type="primary" class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="submitPlainText" plain>提交</el-button>
 
+                </div>
                 </div>
         </main>
         </el-container>
@@ -237,6 +239,10 @@ export default {
 </script>
 
 <style scoped>
+.a4{
+    width:800px;
+    margin:auto;
+}
 .header{
     margin-top:2%;
 }
