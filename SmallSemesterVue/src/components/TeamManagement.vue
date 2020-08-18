@@ -156,7 +156,7 @@
                     max-height="450"
                     >
                     <el-table-column
-                    label="姓名"
+                    label="用户名"
                     prop="name" width="150px">
                     </el-table-column>
                     <el-table-column
