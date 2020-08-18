@@ -39,7 +39,7 @@
         <el-container>
         <main id="mainPart" role="main" class="container">
         <div class="header">
-            <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
             <el-breadcrumb-item>新建文档</el-breadcrumb-item>
             </el-breadcrumb>
@@ -57,15 +57,7 @@
                     <el-input type="textarea" :rows="4"  v-model="form.introduction"></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="文件位置">
-                    <el-col :span="20">
-                    <el-input v-model="form.address" value="/个人文档" :disabled=true></el-input>
-                    </el-col>
-                    <el-col class="line" :span="2"></el-col>
-                    <el-col :span="3">
-                    <el-button>更改</el-button>
-                    </el-col>
-                </el-form-item>
+                
                 </el-form>
                 <quill-editor class="editor"
                 ref="myTextEditor"

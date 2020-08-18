@@ -6,23 +6,23 @@
     </div>
     <div class="bc">
           <el-form :model="ruleForm2" :rules="rules2" status-icon ref="ruleForm2">
-            <el-form-item label-width="40px" style="width:310px" prop="username">
+            <el-form-item label-width="120px" style="width:380px" prop="username">
                 <el-input v-model="ruleForm2.username" type="text" auto-complete="off" placeholder="用户名"></el-input>
             </el-form-item>
-            <el-form-item label-width="40px" style="width:310px" prop="email">
+            <el-form-item label-width="120px" style="width:380px" prop="email">
                 <el-input v-model="ruleForm2.email" style="width:60%;float:left" type="email" auto-complete="off" placeholder="邮箱"></el-input>
                 <el-button style="background-color:#f96332;color:white;width:40%;float:left" @click="sendverifycode">发送验证码</el-button>
             </el-form-item>
-            <el-form-item label-width="40px" style="width:310px" prop="verifycode">
+            <el-form-item label-width="120px" style="width:380px" prop="verifycode">
                 <el-input v-model="ruleForm2.verifycode" type="text" auto-complete="off" placeholder="验证码"></el-input>
             </el-form-item>
-            <el-form-item label-width="40px" style="width:310px" prop="newpassword">
+            <el-form-item label-width="120px" style="width:380px" prop="newpassword">
                 <el-input v-model="ruleForm2.newpassword" type="password" auto-complete="off" placeholder="新密码"></el-input>
             </el-form-item > 
-            <el-form-item label-width="40px" style="width:310px" prop="checkpassword">
+            <el-form-item label-width="120px" style="width:380px" prop="checkpassword">
                 <el-input v-model="ruleForm2.checkpassword" type="password2"  auto-complete="off" placeholder="重复密码"></el-input>
             </el-form-item > 
-            <el-form-item label-width="20px" style="width:400px">
+            <el-form-item label-width="105px" style="width:400px">
               <el-button style="background-color:#f96332;color:white;" @click="changepassword">确认更改</el-button>
               <el-button style="background-color:#f96332;color:white;" @click="Return" >返回</el-button>
               <el-button style="background-color:#f96332;color:white;" @click="Login" >直接登录</el-button>
@@ -153,10 +153,10 @@ export default {
 {
  background-color: rgba(255, 255, 255, 0.7);
     border-radius:50px;
-	padding-top:2%;
-	padding-bottom:1%;
-	padding-left:3.5%;
-    margin: 3% auto;
+	  padding-top:2%;
+	  padding-bottom:1%;
+    margin: 0 auto;
+    margin-top:5%;
     width: 500px;
 }
 </style>

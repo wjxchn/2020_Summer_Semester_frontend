@@ -41,7 +41,11 @@
 
     <!-- 页面内部的内容写在main中间即可 -->
         <div >
-                <h3 fixed="right" style="padding:20px"> 帮助中心 </h3>
+            <div style="float:right">
+                <el-input  placeholder="请输入内容" style="width:250px">
+                <el-button  slot="append" icon="el-icon-search"></el-button></el-input>
+                </div>
+                <p style="font-size:30px;margin-top:20px"><b>帮助中心</b></p>
             <div>
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="哪些浏览器可以使用石墨文档？" name="1">

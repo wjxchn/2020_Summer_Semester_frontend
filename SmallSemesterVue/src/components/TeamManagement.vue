@@ -40,7 +40,7 @@
         <main id="mainPart" role="main" class="container">
 
     
-        <h5 style="padding:20px">{{this.$route.query.group_name}}团队 的团队主页</h5>
+        <p style="font-size:30px;margin-top:20px">{{this.$route.query.group_name}}<b>团队 的团队主页</b></p>
         <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="团队文档" name="first">
                 <el-button style="width:70px;background-color:#f96332;color:white;float:right;margin-left:15px" @click="NewGroupdoc" >新建</el-button>
@@ -156,17 +156,21 @@
                     max-height="450"
                     >
                     <el-table-column
-                    label="姓名"
+                    label="用户名"
                     prop="name" width="150px">
                     </el-table-column>
                     <el-table-column
                     label="权限"
-                    prop="authority" width="300px">
+                    prop="authority" width="400px">
                     <template slot-scope="scope">
-                        <div style="width:100%;height:50px">
+                        <div style="width:300px;height:50px">
                             <el-slider  v-model="scope.row.authority" :show-tooltip="false" :max=2 :marks="marks" :step="1" show-stops @change="change(scope.row)"></el-slider>
                         </div>
                     </template>  
+                    </el-table-column>
+                    <el-table-column
+                    label="角色"
+                    prop="role" width="150px">
                     </el-table-column>
                     <el-table-column
                     align="right">

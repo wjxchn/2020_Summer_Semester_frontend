@@ -4,25 +4,24 @@
 		<el-image style="height:120px;width:405px" :src="'http://r.photo.store.qq.com/psc?/V143D3j445iBwL/45NBuzDIW489QBoVep5mcVXyL*BsvZygoyXkXSowchA7gJ2NMBMBsOjMwY5piqegdZCDtFL6KmYG89tApO1qbCXbnAYUG9HzopHGRYUR1HI!/r'"></el-image>
 		<h1 style="color:#f96332" >登录</h1>
 	</div>
-    <div class="bc">
-          <el-form :model="ruleForm2" :rules="rules2" status-icon ref="ruleForm2">
-            <el-form-item label-width="40px" style="width:310px" prop="username">
+    <div class="bc" >
+          <el-form class="mmain" :model="ruleForm2" :rules="rules2" status-icon ref="ruleForm2">
+            <el-form-item label-width="130px" style="width:370px" prop="username">
                 <el-input type="text" v-model="ruleForm2.username" auto-complete="off" placeholder="用户名"></el-input>
             </el-form-item>
-            <el-form-item label-width="40px" style="width:310px" prop="password">
+            <el-form-item label-width="130px" style="width:370px" prop="password">
                 <el-input type="password" v-model="ruleForm2.password" auto-complete="off" placeholder="密码"></el-input>
             </el-form-item >
-            <el-form-item label-width="100px">
+            <el-form-item label-width="175px">
               <el-button style="background-color:#f96332;color:white;" @click="handleSubmit" >登录</el-button>
               <el-button style="background-color:#f96332;color:white;" @click="Guider" >返回</el-button>
             </el-form-item>
-            <el-form-item label-width="105px" >
+            <el-form-item label-width="270px" >
                 <el-button style="color:#f96332" type="text" @click="forgetpassword">忘记密码?</el-button>
             </el-form-item>
-            <el-form-item label="还未注册？点击此处注册" label-width="270px">
+            <el-form-item label="还未注册？点击此处注册" label-width="370px">
                 <el-button style="background-color:#f96332;color:white;" @click="Regi" >注册</el-button>
             </el-form-item>
-            
           </el-form>
         </div>
     </div>
@@ -119,18 +118,16 @@ export default {
     background-size: 100% 100%;
     overflow-y: auto;
 }
-.mid
-{
-	height:100%;
-}
 .bc
 {
     background-color: rgba(255, 255, 255, 0.7);
     border-radius:50px;
-	padding-top:2%;
-	padding-bottom:1%;
-	padding-left:3.5%;
-    margin: 3% auto;
+    margin:0 auto;
+    margin-top:5%;
+    width: 500px;
+}
+.mmain{
+    padding-top:5%;
     width: 500px;
 }
 </style>

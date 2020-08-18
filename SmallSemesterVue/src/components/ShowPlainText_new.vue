@@ -43,7 +43,7 @@
         <div class="a4">
             <div class="showplaintext_new">
             <div class="header">
-                <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
                 <el-breadcrumb-item>查看文档</el-breadcrumb-item>
             </el-breadcrumb>

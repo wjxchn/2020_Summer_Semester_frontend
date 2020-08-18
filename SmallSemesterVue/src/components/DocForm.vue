@@ -41,7 +41,7 @@
 
     <!-- 页面内部的内容写在main中间即可 -->
         <div class="header" style="padding:20px">
-            <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
             <el-breadcrumb-item>新建文档</el-breadcrumb-item>
             </el-breadcrumb>

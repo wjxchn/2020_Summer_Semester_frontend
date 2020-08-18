@@ -40,7 +40,8 @@
         <main id="mainPart" role="main" class="container" color="black">
 
     <!-- 页面内部的内容写在main中间即可 -->
-    <br>
+       <p style="font-size:30px;margin-top:20px"><b>收件箱</b></p>
+     <br>
     <el-tabs type="card">
         <el-tab-pane label="系统通知">
             <el-card class="box-card" v-for="(item) in SystemMessageData" :key="item" style="margin-bottom:20px">

@@ -38,7 +38,7 @@
             </el-aside>
         <el-container>
         <main id="mainPart" role="main" class="container">
-            <h5 style="padding:15px">我的团队</h5>
+            <p style="font-size:30px;margin-top:20px"><b>我的团队</b></p>
             <el-table
             :data="tableData"
             style="width: 100%">
