@@ -40,6 +40,12 @@
         <main id="mainPart" role="main" class="container">
         <div class="a4">
             <div class="plaintext_new">
+            <div class="header">
+                <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
+                <el-breadcrumb-item>编辑文档</el-breadcrumb-item>
+            </el-breadcrumb>
+            </div>
             <br>
                 <el-form ref="form" :model="form" label-width="80px" :rules="rules">
                 <el-form-item label="文档名" prop="doc_name">
@@ -295,6 +301,9 @@ export default {
 .a4{
     width:800px;
     margin:auto;
+}
+.header{
+    margin-top:2%;
 }
 .isFixed {
     position: fixed;
