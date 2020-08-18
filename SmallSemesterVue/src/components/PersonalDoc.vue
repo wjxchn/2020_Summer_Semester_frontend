@@ -45,8 +45,7 @@
                     <el-button style="background-color:#f96332;color:white"  >新建 </el-button>                 
                 </router-link>
                 </div>
-    
-                <h5 fixed="right"> 我的文档 </h5>
+                <p style="font-size:30px;margin-top:20px"><b>我的文档</b></p>
                 <span v-html="htmlData">
                     {{htmlData}}
                 </span>
