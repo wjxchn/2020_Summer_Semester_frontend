@@ -41,7 +41,7 @@
         <div class="a4">
         <div class="header">
             <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/Team' }">我的团队T</el-breadcrumb-item>
             <el-breadcrumb-item>新建文档</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
