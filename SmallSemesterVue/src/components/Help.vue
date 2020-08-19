@@ -48,7 +48,7 @@
                 <p style="font-size:30px;margin-top:20px"><b>帮助中心</b></p>
             <div>
                 <el-collapse v-model="activeNames" @change="handleChange">
-                    <el-collapse-item title="哪些浏览器可以使用石墨文档？" name="1">
+                    <el-collapse-item title="哪些浏览器可以使用福报文档？" name="1">
                         <div>Chrome、Firefox、Safari、IE10以上，以及其他以Webkit为内核的浏览器（如：360安全/极速浏览器，QQ浏览器，搜狗浏览器等等）。
 
 我们推荐您优先使用 最新稳定版 Chrome 浏览器。
