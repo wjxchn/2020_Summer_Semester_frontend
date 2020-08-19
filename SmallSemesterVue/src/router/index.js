@@ -4,12 +4,15 @@ import Router from 'vue-router'
 const routerOptions = [
   { path: '/', component: 'Firstpage' },//主页
   { path: '/aboutus' , component: 'Aboutus' },//开发者信息页面
+  { path: '/addgroupdocfromdemo' , component: 'AddGroupDocFromDemo' },//开发者信息页面
   { path: '/animation', component: 'Animation' },//封面（暂时弃置）
   { path: '/article', component: 'Article' },//文章（暂时弃置）
   { path: '/bottomguider', component: 'BottomGuider' },//底边栏挂件
   { path: '/carousel', component: 'Carousel' },//封面（暂时弃置）
   { path: '/createfromdemo', component: 'CreateFromDemo' },//使用模板创建文档页面
   { path: '/createteam', component: 'CreateTeam' },//创建团队页面
+  { path: '/docform', component:'DocForm'},//文档模板
+  { path: '/groupdocform', component:'GroupDocForm'},//文档模板
   { path: '/editgroupdoc', component: 'EditGroupDoc'},//编辑团队文档页面
   { path: '/editperson' , component: 'EditPerson'},//编辑个人资料页面
   { path: '/editpersonaldoc', component: 'EditPersonalDoc' },//编辑个人文档页面
@@ -30,7 +33,7 @@ const routerOptions = [
   { path: '/team', component:'Team'},//我的团队页面
   { path: '/teammanagement', component:'TeamManagement'},//团队管理页面
   { path: '/trash' , component: 'Trash'},//回收站页面
-  { path: '/docform', component:'DocForm'},//文档模板
+  { path: '/userinfo', component:'UserInfo'},//文档模板
   { path: '*', component: 'NotFound' },
 ]
 const routes = routerOptions.map(route => {

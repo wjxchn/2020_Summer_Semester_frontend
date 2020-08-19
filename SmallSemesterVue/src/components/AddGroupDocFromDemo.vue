@@ -41,12 +41,12 @@
         <div class="a4">
         <div class="header">
             <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
-            <el-breadcrumb-item>新建文档</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/teammanagement', query: {group_id: this.$route.query.group_id, group_name: this.$route.query.group_name} }">团队文档</el-breadcrumb-item>
+            <el-breadcrumb-item>使用模板新建文档</el-breadcrumb-item>
             </el-breadcrumb>
-        </div>
+        </div><br><br>
             <div class="plaintext_new">
-            <br>
+                <br>
                 <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="文档名">
                     <el-col :span="22">
@@ -62,7 +62,7 @@
                 <quill-editor class="editor"
                 ref="myTextEditor"
                 v-model="content"
-                style="height:1000px;width:92%"
+                style="height:1000px"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
                 @focus="onEditorFocus($event)"
@@ -71,8 +71,8 @@
                 </quill-editor>
                 <br><br><br>
                 <el-button style="width:100px;background-color:#f96332;color:white;float:right" class="btn btn-primary" @click="submitPlainText" plain>提交</el-button>
-                </div>
-                </div>
+            </div>
+        </div>
         </main>
         </el-container>
         </el-container>
@@ -85,7 +85,6 @@ import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
 import axios from 'axios'
 export default {
-    name: 'PlainText_new',
     components: {
         Guider,
         BottomGuider
@@ -95,11 +94,12 @@ export default {
             opend:['1','2','3'],
             uniqueOpened:false,
             istabBar: false,
-            content: '',
+            content: null,
             form:null,
+            demo_id:null,
             editorOption: {
+
                 modules: {
-                    
                 toolbar: [
                     ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
                     ["blockquote", "code-block"], // 引用  代码块
@@ -121,26 +121,39 @@ export default {
                 readyOnly: false, //是否只读
                 theme: 'snow', //主题 snow/bubble
                 syntax: true, //语法检测
-            },
-            form: {
+        },
+             form: {
                 doc_name: '',
                 introduction:'',
                 address:''
-            }
+                 }
         }
     },
+    created:function(){
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/returndemo/',
+            data: {'demo_id': this.$route.query.demo_id}
+        })
+        .then(response => {
+            console.log(response)
+            if(response.data.code===200){
+                this.content = response.data.content
+            }
+            else if(response.data.code===400){
+                alert('选择模板失败')
+            }
+            else{
+                alert('错误')
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            alert('出现错误')
+        })
+    },
     methods: {
-         // 失去焦点
-        onEditorBlur(editor) {},
-        // 获得焦点
-        onEditorFocus(editor) {},
-        // 开始
-        onEditorReady(editor) {},
-        // 值发生变化
-        onEditorChange(editor) {
-            this.content = editor.html;
-            console.log(editor);
-        },
+        //侧边栏的跳转
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -153,11 +166,11 @@ export default {
         Mywork(){
             this.$router.push('/Personaldoc');
         },
-        Myteam(){
-            this.$router.push('/Team');
-        },
         MyFavorite(){
             this.$router.push('/MyFavoriteDoc');
+        },
+        Myteam(){
+            this.$router.push('/Team');
         },
         TeamM(){
             this.$router.push('/TeamManagement');
@@ -174,21 +187,32 @@ export default {
         Aboutus(){
             this.$router.push('/Aboutus');
         },
+         // 失去焦点
+        onEditorBlur(editor) {},
+        // 获得焦点
+        onEditorFocus(editor) {},
+        // 开始
+        onEditorReady(editor) {},
+        // 值发生变化
+        onEditorChange(editor) {
+            this.content = editor.html;
+            console.log(editor);
+        },
         submitPlainText(){
             console.log(this.content);
             axios({
                 method: 'post',
-                url: 'http://localhost:8000/api/addpersonaldoc/',
-                data: {'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction, 'doc_creater': localStorage.getItem('username')}
+                url: 'http://localhost:8000/api/newgroupdoc/',
+                data: {'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction, 'doc_creater': localStorage.getItem('username'), 'group_id': this.$route.query.group_id}
             })
             .then(response => {
                 console.log(response)
                 if(response.data.code===200){
-                    alert('添加文档成功')
-                    this.$router.push('/Personaldoc')
+                    alert('添加团队文档成功')
+                    this.$router.push({path: '/teammanagement', query: {'group_id': this.$route.query.group_id, 'group_name': this.$route.query.group_name}})
                 }
                 else if(response.data.code===400){
-                    alert('添加文档失败')
+                    alert('添加团队文档失败')
                 }
                 else{
                     alert('错误')

@@ -189,9 +189,11 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
-            <el-tab-pane label="团队简介" name="third">
-                <el-button style="float:right;background-color:#f96332;color:white;" @click="IntroVisible = true">修改</el-button>
-                <p v-text="groupintro"></p>
+            <el-tab-pane label="团队简介" name="third">             
+                <el-card class="box-card">
+                    <p v-text="groupintro"></p>
+                    <el-button style="float:right;background-color:#f96332;color:white;" @click="IntroVisible = true">修改</el-button>
+                </el-card> 
                 <el-dialog title="创建团队" :visible.sync="IntroVisible">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                     <el-form-item label="团队简介" :label-width="formLabelWidth" prop="introduction" required>
@@ -395,23 +397,7 @@ export default {
                         .then(response =>{
                             if(response.data.code === 200){
                                 if(response.data.authority >= 1){
-                                    axios({
-                                    method: 'POST',
-                                    url: 'http://localhost:8000/api/lockdoc/',
-                                    data: {'doc_id': row.docid}
-                                    })
-                                    .then(response =>{
-                                        if(response.data.code === 200){
-                                            alert('锁定成功')
-                                        }
-                                        else if(response.data.code === 400){
-                                            alert('锁定失败')
-                                        }
-                                        else {
-                                            alert('错误')
-                                        }
 
-                                    })
                                     this.$router.push({path: '/editgroupdoc', query: {doc_id: row.docid, group_id: this.$route.query.group_id, group_name:
                                                         this.$route.query.group_name}})
                                 }
@@ -516,7 +502,7 @@ export default {
             .then(response =>{
                 if(response.data.code === 200){
                     if(response.data.authority >= 1){
-                        this.$router.push({path: '/newgroupdoc', query: {group_id: this.$route.query.group_id, group_name: this.$route.query.group_name}})
+                        this.$router.push({path: '/groupdocform', query: {group_id: this.$route.query.group_id, group_name: this.$route.query.group_name}})
                     }
                     else{
                         alert('您的权限不足。')

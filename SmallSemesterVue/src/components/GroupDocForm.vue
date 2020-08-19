@@ -1,7 +1,7 @@
 <template>
     <div>
         <Guider id="navBar" :class="{isFixed:istabBar}"/>
-        <el-container>
+      <el-container>
             <el-aside class="leftside" width="210px">
 
             <!--     ↓↓↓↓↓↓↓↓↓↓↓↓↓↓  这个default-active是指当前激活的页面，把页面对应的index写进去，例如：当前页面是我的文档，则写进去2-1 -->
@@ -38,41 +38,30 @@
             </el-aside>
         <el-container>
         <main id="mainPart" role="main" class="container">
-        <div class="a4">
-        <div class="header">
+
+    <!-- 页面内部的内容写在main中间即可 -->
+        <div class="header" style="padding:20px">
             <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/Personaldoc' }">我的文档</el-breadcrumb-item>
-            <el-breadcrumb-item>新建文档</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/teammanagement', query: {group_id: this.$route.query.group_id, group_name: this.$route.query.group_name} }">团队文档</el-breadcrumb-item>
+            <el-breadcrumb-item>选择文档样式</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-            <div class="plaintext_new">
-            <br>
-                <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="文档名">
-                    <el-col :span="22">
-                    <el-input v-model="form.doc_name"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="简介">
-                    <el-col :span="22">
-                    <el-input type="textarea" :rows="4"  v-model="form.introduction"></el-input>
-                    </el-col>
-                </el-form-item>
-                </el-form>
-                <quill-editor class="editor"
-                ref="myTextEditor"
-                v-model="content"
-                style="height:1000px;width:92%"
-                :options="editorOption"
-                @blur="onEditorBlur($event)"
-                @focus="onEditorFocus($event)"
-                @ready="onEditorReady($event)"
-                @change="onEditorChange($event)">
-                </quill-editor>
-                <br><br><br>
-                <el-button style="width:100px;background-color:#f96332;color:white;float:right" class="btn btn-primary" @click="submitPlainText" plain>提交</el-button>
+        <div >
+        <el-row :gutter="20">
+            <el-col :span="8" v-for="item in DocFormData" :key="item.index">
+                <el-card :body-style="{ padding: '0px' }" style="width:90%;margin:10px" >
+                <img v-bind:src="item.url" class="image">
+                <div style="padding: 14px;">
+                    <p style="text-align:center;font-size:18px">{{item.name}}</p>
+                    <div class="bottom clearfix">
+                        <el-button type="primary" class="button" style="float:right" @click="createFile(item.index)">创建</el-button>
+                    </div>
                 </div>
-                </div>
+                </el-card>
+            </el-col>
+        </el-row>
+        </div>
+
         </main>
         </el-container>
         </el-container>
@@ -83,64 +72,44 @@
 <script>
 import Guider from '../components/Guider'
 import BottomGuider from '../components/BottomGuider'
-import axios from 'axios'
 export default {
-    name: 'PlainText_new',
+    name: 'DocForm',
     components: {
         Guider,
         BottomGuider
     },
     data () {
-        return {
+       return {
+            currentDate: new Date(),
             opend:['1','2','3'],
             uniqueOpened:false,
             istabBar: false,
-            content: '',
-            form:null,
-            editorOption: {
-                modules: {
-                    
-                toolbar: [
-                    ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
-                    ["blockquote", "code-block"], // 引用  代码块
-                    [{ header: 1 }, { header: 2 }], // 1、2 级标题
-                    [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
-                    [{ script: "sub" }, { script: "super" }], // 上标/下标
-                    [{ indent: "-1" }, { indent: "+1" }], // 缩进
-                    // [{'direction': 'rtl'}],                         // 文本方向
-                    [{ size: ["small", false, "large", "huge"] }], // 字体大小
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题
-                    [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
-                    [{ font: [] }], // 字体种类
-                    [{ align: [] }], // 对齐方式
-                    ["clean"], // 清除文本格式
-                    ["link", "image"] // 链接、图片、视频
-                ], //工具菜单栏配置
+            DocFormData:[
+                {
+                    index:0,
+                    url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEMT8KH0kcT3GJdu591pDPMHvKRq6V0oZz2WYRGHa*5HDdbsK3Jtiy7R3RREPBMdTE3dyu1Vc5B3WNGtjpY.*oqM!/r",
+                    name:"空白文档"
                 },
-                placeholder: '请在此输入正文', //提示
-                readyOnly: false, //是否只读
-                theme: 'snow', //主题 snow/bubble
-                syntax: true, //语法检测
-            },
-            form: {
-                doc_name: '',
-                introduction:'',
-                address:''
-            }
+                {
+                    index:1,
+                    url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEHeIaLb1nBdjPmb.0O68t0xWJgDJuwdk3eCyySdqAhMkqFiRn5LgVaTaBxdwlXYEuIOo2nFBDj0p0WcWXeFuh8Q!/r",
+                    name:"2019年终总结通用模板"
+                },
+                {
+                    index:2,
+                    url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrENR9RqfZdv7djXdnENnqrNUCOh2*J27vcJutVYM6RAKu74keFAYfPSFda.7p2ZsjTPQqZ0oq2Sh3O5NuILAZYoM!/r",
+                    name:"个人借款协议（无居间人）"
+                },
+                {
+                    index:3,
+                    url:"http://r.photo.store.qq.com/psc?/V50IFnJp4XxV2s3cUReP2J6k3C3FNeXZ/TmEUgtj9EK6.7V8ajmQrEExUsMhEflJArhirKLG6TLQHljbfxE3ApdSkVBLjwC1jrQ0uokJSIIkU1Y0H7b70ma8We1GVl2jroX58S0b.ZTo!/r",
+                    name:"外贸合同"
+                }
+            ]
         }
     },
     methods: {
-         // 失去焦点
-        onEditorBlur(editor) {},
-        // 获得焦点
-        onEditorFocus(editor) {},
-        // 开始
-        onEditorReady(editor) {},
-        // 值发生变化
-        onEditorChange(editor) {
-            this.content = editor.html;
-            console.log(editor);
-        },
+        //侧边栏的跳转
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -174,31 +143,6 @@ export default {
         Aboutus(){
             this.$router.push('/Aboutus');
         },
-        submitPlainText(){
-            console.log(this.content);
-            axios({
-                method: 'post',
-                url: 'http://localhost:8000/api/addpersonaldoc/',
-                data: {'content': this.content, 'doc_name': this.form.doc_name, 'introduction': this.form.introduction, 'doc_creater': localStorage.getItem('username')}
-            })
-            .then(response => {
-                console.log(response)
-                if(response.data.code===200){
-                    alert('添加文档成功')
-                    this.$router.push('/Personaldoc')
-                }
-                else if(response.data.code===400){
-                    alert('添加文档失败')
-                }
-                else{
-                    alert('错误')
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                alert('出现错误')
-            })
-        },
         // 添加一个方法 兼容
         handleScroll () {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
@@ -213,11 +157,14 @@ export default {
                     this.istabBar = false
                     mainPart.style.paddingTop = "0px";
                 }
-        }
-    },
-    computed: {
-        editor() {
-            return this.$refs.myTextEditor.quillEditor;
+        },
+        createFile(pos){
+            if(pos === 0){
+                this.$router.push({path: '/newgroupdoc', query: {'group_id': this.$route.query.group_id, 'group_name': this.$route.query.group_name}})
+            }
+            else{
+                this.$router.push({path: '/addgroupdocfromdemo', query: {'group_id': this.$route.query.group_id, 'group_name': this.$route.query.group_name, 'demo_id': pos}})
+            }
         }
     },
     mounted () {
@@ -230,13 +177,6 @@ export default {
 </script>
 
 <style scoped>
-.a4{
-    width:800px;
-    margin:auto;
-}
-.header{
-    margin-top:2%;
-}
 .isFixed {
     position: fixed;
     top: 0;
@@ -250,4 +190,29 @@ export default {
 #mainPart {
     width: 100%;
 }
+ .time {
+    font-size: 13px;
+    color: #999;
+  }
+  
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .image {
+    width: 100%;
+    height: 450px;
+    display: block;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  
+  .clearfix:after {
+      clear: both
+  }
 </style>

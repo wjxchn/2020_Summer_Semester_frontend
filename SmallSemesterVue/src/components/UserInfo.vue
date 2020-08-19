@@ -198,7 +198,7 @@ export default {
             }
             else if(response.data.code === 200){
                 this.$set(this, 'tableData', response.data)
-                this.$set(this, 'showusername', localStorage.getItem('username'))
+                this.$set(this, 'showusername', response.data.username)
                 this.$set(this, 'input', response.data.intro)
                 this.tableData2 = [{'info': response.data.name}, {'info': response.data.sex}, {'info': response.data.birthday}, {'info': response.data.email}]
                 console.log(this.tableData)
@@ -216,7 +216,7 @@ export default {
         axios({
             method: 'post',
             url: 'http://localhost:8000/api/showbackgroundphoto/',
-            data: {'username': localStorage.getItem('username')}
+            data: {'username': this.$route.query.username}
         })
         .then(response => {
             console.log(response)
@@ -240,7 +240,7 @@ export default {
         axios({
             method: 'post',
             url: 'http://localhost:8000/api/showprofilephoto/',
-            data: {'username': localStorage.getItem('username')}
+            data: {'username': this.$route.query.username}
         })
         .then(response => {
             console.log(response)

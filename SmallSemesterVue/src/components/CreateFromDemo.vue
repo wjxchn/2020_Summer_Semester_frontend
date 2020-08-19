@@ -208,11 +208,11 @@ export default {
             .then(response => {
                 console.log(response)
                 if(response.data.code===200){
-                    alert('添加富文本成功')
+                    alert('添加个人文档成功')
                     this.$router.push('/Personaldoc')
                 }
                 else if(response.data.code===400){
-                    alert('添加富文本失败')
+                    alert('添加个人文档失败')
                 }
                 else{
                     alert('错误')

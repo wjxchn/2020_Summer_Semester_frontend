@@ -70,7 +70,7 @@
                   label="操作"
                   width="260">
                 <template slot-scope="scope">
-                <el-dropdown  split-button style="color:#f96332;float:right">
+                <el-dropdown  split-button style="color:#f96332">
                         <v class="el-icon-folder-opened"></v>操作
                         <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item><el-button @click="handleview(scope.row)" size="small" style="background-color:#f96332;color:white"><v class="el-icon-view">查看</v></el-button></el-dropdown-item>

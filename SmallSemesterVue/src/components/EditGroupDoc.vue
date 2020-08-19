@@ -136,6 +136,7 @@ export default {
         }
     },
     created:function(){
+        this.getLock();
         axios({
             method: 'post',
             url: 'http://localhost:8000/api/showpersonaldoc/',
@@ -264,6 +265,72 @@ export default {
                     this.istabBar = false
                     mainPart.style.paddingTop = "0px";
                 }
+        },
+        unlockdoc(){
+            axios({
+                method:'post',
+                url:'http://localhost:8000/api/unlock/',
+                data:{'doc_id':this.$route.query.doc_id}
+            })
+            .then(response=>{
+                console.log(response)
+                if(response.data.code===200){
+                }
+                else if(response.data.code===400){
+                    alert('解锁失败')
+                }
+                else{
+                    alert('错误')
+                }
+            })
+        }, 
+        beforeunloadHandler(e) {
+        e = e || window.event;
+        if (e) {
+            e.returnValue = "您是否确认离开此页面-您输入的数据可能不会被保存";
+        }
+        this.unlockdoc();
+        return "您是否确认离开此页面-您输入的数据可能不会被保存";
+        },
+        getLock(){
+             axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/returnlockstatus/',
+                data: {'doc_id': this.$route.query.doc_id}
+                })
+                .then(response =>{
+                    if(response.data.code === 200){
+                        if(response.data.islock==1)
+                        {
+                            alert('该文档正在编辑中，请稍后');
+                            this.$router.push({path: '/teammanagement',query: {'group_id': this.$route.query.group_id, 'group_name': this.$route.query.group_name}});
+                        }
+                        else{
+                            axios({
+                        method: 'POST',
+                        url: 'http://localhost:8000/api/lockdoc/',
+                        data: {'doc_id':this.$route.query.doc_id }
+                        })
+                        .then(response =>{
+                            if(response.data.code === 200){
+                                //alert('锁定成功')
+                            }
+                            else if(response.data.code === 400){
+                                alert('锁定失败')
+                            }
+                            else {
+                                alert('错误')
+                            }
+                        })
+                        }
+                    }
+                    else if(response.data.code === 400){
+                        alert('获取参数失败')
+                    }
+                    else {
+                        alert('错误')
+                    }
+                })
         }
     },
     computed: {
@@ -272,10 +339,16 @@ export default {
         }
     },
     mounted () {
-        window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕
+        window.addEventListener("beforeunload", e => {
+        this.beforeunloadHandler(e);
+        });
+        window.addEventListener('scroll', this.handleScroll); // Dom树加载完毕  
     },
     destroyed () {
-        window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除
+        window.removeEventListener("beforeunload", e => {
+        this.beforeunloadHandler(e);
+        });
+        window.removeEventListener('scroll', this.handleScroll) // 销毁页面时清除  
     }
 }
 </script>

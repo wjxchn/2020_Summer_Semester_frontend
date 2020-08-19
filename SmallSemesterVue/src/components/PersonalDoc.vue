@@ -85,7 +85,7 @@
                     <el-table-column
                     fixed="right"
                     prop="createtime"
-                    label="最近打开"
+                    label="创建时间"
                     width="200">
                     </el-table-column>  
                      <el-table-column
@@ -292,23 +292,6 @@ export default {
                     if(row.islock === false)
                     {
                         console.log(row.islock)
-                        axios({
-                        method: 'POST',
-                        url: 'http://localhost:8000/api/lockdoc/',
-                        data: {'doc_id': row.docid}
-                        })
-                        .then(response =>{
-                            if(response.data.code === 200){
-                                alert('锁定成功')
-                            }
-                            else if(response.data.code === 400){
-                                alert('锁定失败')
-                            }
-                            else {
-                                alert('错误')
-                            }
-
-                        })
                         this.$router.push({path: '/editpersonaldoc', query: {doc_id: row.docid}})
                     }
                     else

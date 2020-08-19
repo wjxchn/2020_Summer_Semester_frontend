@@ -41,7 +41,7 @@
         <div class="a4">
         <div class="header">
             <el-breadcrumb style="font-size:20px" separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/Team' }">我的团队T</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/teammanagement', query: {group_id: this.$route.query.group_id, group_name: this.$route.query.group_name} }">团队文档</el-breadcrumb-item>
             <el-breadcrumb-item>新建文档</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -72,8 +72,7 @@
                 </quill-editor>
 
                 <br><br><br>
-                 <el-button type="primary" class="btn btn-primary" style="background-color:#f96332;color:white;float:right" @click="submitPlainText" plain>提交</el-button>
-
+                <el-button style="width:100px;background-color:#f96332;color:white;float:right" class="btn btn-primary" @click="submitPlainText" plain>提交</el-button>
                 </div>
                 </div>
         </main>

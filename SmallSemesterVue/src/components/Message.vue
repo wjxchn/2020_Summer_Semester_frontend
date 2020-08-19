@@ -72,7 +72,7 @@
                 <span class="time">{{item.date}}</span>
                 <div v-if="item.notifytype == 4 " align="right">
                     <el-button type="primary" @click="accept(item.id)">接受</el-button>
-                    <el-button type="danger" @click="ignore(item.id)">忽略</el-button>
+                    <el-button type="danger" @click="ignore(item.id)">拒绝</el-button>
                 </div>
                 <div v-if="item.notifytype == 5 " align="right">
                     <el-button type="info" disabled>已处理</el-button>
