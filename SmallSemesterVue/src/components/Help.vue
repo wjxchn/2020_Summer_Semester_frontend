@@ -41,10 +41,6 @@
 
     <!-- 页面内部的内容写在main中间即可 -->
         <div >
-            <div style="float:right">
-                <el-input  placeholder="请输入内容" style="width:250px">
-                <el-button  slot="append" icon="el-icon-search"></el-button></el-input>
-                </div>
                 <p style="font-size:30px;margin-top:20px"><b>帮助中心</b></p>
             <div>
                 <el-collapse v-model="activeNames" @change="handleChange">
